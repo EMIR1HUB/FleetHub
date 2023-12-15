@@ -18,12 +18,13 @@ public class Region {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String name;
+  private String capital;
   private String code;
-  private String details;
 
   @ManyToOne
   @JoinColumn(name = "idCountry", insertable = false, updatable = false)
   private Country country;
 
   private Integer idCountry;
+  private String details;
 }
