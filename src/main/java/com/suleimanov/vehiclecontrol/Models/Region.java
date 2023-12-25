@@ -22,9 +22,9 @@ public class Region {
   private String code;
 
   @ManyToOne
-  @JoinColumn(name = "idCountry", insertable = false, updatable = false)
+  @JoinColumn(name = "countryid", insertable = false, updatable = false)
   private Country country;
 
-  private Integer idCountry;
+  private Integer countryid;
   private String details;
 }

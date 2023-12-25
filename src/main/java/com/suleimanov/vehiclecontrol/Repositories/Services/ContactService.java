@@ -1,4 +1,4 @@
-package com.suleimanov.vehiclecontrol.Services;
+package com.suleimanov.vehiclecontrol.Repositories.Services;
 
 import org.springframework.stereotype.Service;
 
