@@ -1,7 +1,8 @@
 package com.suleimanov.vehiclecontrol.Controllers;
 
 import com.suleimanov.vehiclecontrol.Models.Country;
-import com.suleimanov.vehiclecontrol.Repositories.Services.CountryService;
+import com.suleimanov.vehiclecontrol.Services.CountryService;
+import com.suleimanov.vehiclecontrol.Services.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +17,13 @@ public class CountryController {
   @Autowired
   private CountryService countryService;
 
+  @Autowired
+  RegionService regionService;
+
   @GetMapping()
   public String getAll(Model model) {
     model.addAttribute("countries", countryService.getCountries());
+    model.addAttribute("regions", regionService.getRegions());
     return "country";
   }
 

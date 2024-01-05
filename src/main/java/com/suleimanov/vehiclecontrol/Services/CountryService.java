@@ -1,4 +1,4 @@
-package com.suleimanov.vehiclecontrol.Repositories.Services;
+package com.suleimanov.vehiclecontrol.Services;
 
 import com.suleimanov.vehiclecontrol.Models.Country;
 import com.suleimanov.vehiclecontrol.Repositories.CountryRepository;

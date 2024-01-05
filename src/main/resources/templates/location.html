@@ -409,34 +409,287 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Pages</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i>Список местоположений</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-bars"></i>Pages</li>
-                        <li><i class="fa fa-square-o"></i>Pages</li>
+                        <li><i class="fa fa-home"></i><a th:href="@{index.html}">Главная</a></li>
+                        <li><i class="fa fa-bars"></i>Локации</li>
+                        <li><i class="fa fa-square-o"></i>Местоположения</li>
                     </ol>
                 </div>
             </div>
             <!-- page start-->
-            <h1>Список местоположений</h1>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить
+                    </button>
+                    <table class="table table-advance table-hover">
+                        <thead>
+                        <tr>
+                            <th><i class="icon_table"></i> id</th>
+                            <th><i class="icon_table"></i> Город</th>
+                            <th><i class="icon_table"></i> Адрес</th>
+                            <th><i class="icon_cogs"></i> Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="location:${locations}">
+                            <td th:text="${location.id}">Id</td>
+                            <td th:text="${location.city}">Город</td>
+                            <td th:text="${location.address}">Адрес</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" id="editButton" th:href="@{/locations/findById(id=${location.id})}"><i class="icon_pencil-edit"></i></a>
+                                    <a class="btn btn-success" id="detailsButton" th:href="@{/locations/findById(id=${location.id})}"><i class="icon_document_alt"></i></a>
+                                    <a class="btn btn-danger" id="deleteButton" th:href="@{/locations/delete(id=${location.id})}" th:data-address="${location.address}"><i class="icon_close_alt2"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <!-- page end-->
         </section>
     </section>
-    <!--main content end-->
-    <div class="text-right">
-        <div class="credits">
-            <!--
-              All the links in the footer should remain intact.
-              You can delete the links only if you purchased the pro version.
-              Licensing information: https://bootstrapmade.com/license/
-              Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-            -->
-            Designed by
-            <!--          <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
-        </div>
-    </div>
 </section>
 <!-- container section end -->
+
+<!--modal Add New -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <form th:action="@{/locations/addNew}" method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Новое местоположение</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="descriptionAdd" class="col-form-label">Название:</label>
+                        <input type="text" class="form-control" id="descriptionAdd" name="description" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cityAdd" class="col-form-label">Город:</label>
+                        <input type="text" class="form-control" id="cityAdd" name="city" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addressAdd" class="col-form-label">Адрес:</label>
+                        <textarea type="text" class="form-control" id="addressAdd" name="address"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddlCountryAdd" class="col-form-label">Страна: </label>
+                        <select class="form-control" id="ddlCountryAdd" name="countryid" >
+                            <option>-Выбрать-</option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:text="${country.description}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddlRegionAdd" class="col-form-label">Регион: </label>
+                        <select class="form-control" id="ddlRegionAdd" name="regionid" >
+                            <option>-Выбрать-</option>
+                            <option th:each="region : ${regions}"
+                                    th:value="${region.id}"
+                                    th:text="${region.name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="detailsAdd" class="col-form-label">Детали:</label>
+                        <textarea type="text" class="form-control" id="detailsAdd" name="details"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--Modal Edit-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <form th:action="@{/locations/update}" method="PUT">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Обновление данных местоположения</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="idEdit" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="idEdit" name="id" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descriptionEdit" class="col-form-label">Название:</label>
+                        <input type="text" class="form-control" id="descriptionEdit" name="description" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cityEdit" class="col-form-label">Город:</label>
+                        <input type="text" class="form-control" id="cityEdit" name="city" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addressEdit" class="col-form-label">Адрес:</label>
+                        <textarea type="text" class="form-control" id="addressEdit" name="address"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddlCountryEdit" class="col-form-label">Страна: </label>
+                        <select class="form-control" id="ddlCountryEdit" name="countryid" >
+                            <option>-Выбрать-</option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:text="${country.description}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddlRegionEdit" class="col-form-label">Регион: </label>
+                        <select class="form-control" id="ddlRegionEdit" name="regionid" >
+                            <option>-Выбрать-</option>
+                            <option th:each="region : ${regions}"
+                                    th:value="${region.id}"
+                                    th:text="${region.name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="detailsEdit" class="col-form-label">Детали:</label>
+                        <textarea type="text" class="form-control" id="detailsEdit" name="details"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--Modal Details-->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Детали Местоположения</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="idDetails" name="id" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descriptionDetails" class="col-form-label">Название:</label>
+                        <input type="text" class="form-control" id="descriptionDetails" name="description" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cityDetails" class="col-form-label">Город:</label>
+                        <input type="text" class="form-control" id="cityDetails" name="city" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addressDetails" class="col-form-label">Адрес:</label>
+                        <textarea type="text" class="form-control" id="addressDetails" name="address" readonly></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddlCountryDetails" class="col-form-label">Страна: </label>
+                        <select class="form-control" id="ddlCountryDetails" name="countryid" readonly>
+                            <option>-Выбрать-</option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:text="${country.description}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ddlStateDetails" class="col-form-label">Регион: </label>
+                        <select class="form-control" id="ddlStateDetails" name="stateid" readonly>
+                            <option>-Выбрать-</option>
+                            <option th:each="region : ${regions}"
+                                    th:value="${region.id}"
+                                    th:text="${region.name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="detailsDetails" class="col-form-label">Детали:</label>
+                        <input type="text" class="form-control" id="detailsDetails" name="details" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Последнее обновление от:</label>
+                        <input type="text" class="form-control" id="lastModifiedByDetails" name="lastModifiedByDetails" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Последнее обновление на:</label>
+                        <input type="text" class="form-control" id="lastModifiedDateDetails" name="lastModifiedDateDatails" readonly>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтвердить удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить данные с адресом "<span id="locationAddressSpan"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" id="confirmDeleteButton" href="">Подтвердить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -445,7 +698,7 @@
 <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
 <!--custome script for all page-->
 <script src="js/scripts.js"></script>
-
+<script src="js/location.js"></script>
 
 </body>
 

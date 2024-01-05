@@ -2,8 +2,8 @@ package com.suleimanov.vehiclecontrol.Controllers;
 
 import com.suleimanov.vehiclecontrol.Models.Country;
 import com.suleimanov.vehiclecontrol.Models.Region;
-import com.suleimanov.vehiclecontrol.Repositories.Services.CountryService;
-import com.suleimanov.vehiclecontrol.Repositories.Services.RegionService;
+import com.suleimanov.vehiclecontrol.Services.CountryService;
+import com.suleimanov.vehiclecontrol.Services.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
