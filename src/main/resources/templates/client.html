@@ -30,12 +30,6 @@
     <script src="js/lte-ie7.js"></script>
     <![endif]-->
 
-    <!-- =======================================================
-      Theme Name: NiceAdmin
-      Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-      Author: BootstrapMade
-      Author URL: https://bootstrapmade.com
-    ======================================================= -->
 </head>
 
 <body>
@@ -409,34 +403,284 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Pages</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Список клиентов</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-bars"></i>Pages</li>
-                        <li><i class="fa fa-square-o"></i>Pages</li>
+                        <li><i class="fa fa-home"></i><a th:href="@{index}">Главная</a></li>
+                        <li><i class="fa fa-bars"></i>Люди</li>
+                        <li><i class="fa fa-square-o"></i>Клиенты</li>
                     </ol>
                 </div>
             </div>
             <!-- page start-->
-            <h1>Список клиентов</h1>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить
+                    </button>
+                    <table class="table table-advance table-hover">
+                        <thead>
+                        <tr>
+                            <th><i class="icon_profile"></i> Имя</th>
+                            <th><i class="icon_calendar"></i> Вебсайт</th>
+                            <th><i class="icon_mail_alt"></i> Email</th>
+                            <th><i class="icon_pin_alt"></i> Город</th>
+                            <th><i class="icon_mobile"></i> Телефон</th>
+                            <th><i class="icon_cogs"></i> Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="client:${clients}">
+                            <td th:text="${client.name}">Имя</td>
+                            <td th:text="${client.website}">Вебсайт</td>
+                            <td th:text="${client.email}">Email</td>
+                            <td th:text="${client.city}">Город</td>
+                            <td th:text="${client.phone}">Телефон</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" id="editButton" th:href="@{/clients/findById(id=${client.id})}"><i class="icon_pencil-edit"></i></a>
+                                    <a class="btn btn-success" id="detailsButton" th:href="@{/clients/findById(id=${client.id})}"><i class="icon_document_alt"></i></a>
+                                    <a class="btn btn-danger" id="deleteButton" th:href="@{/clients/delete(id=${client.id})}" th:data-name="${client.name}"><i class="icon_close_alt2"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <!-- page end-->
         </section>
     </section>
-    <!--main content end-->
-    <div class="text-right">
-        <div class="credits">
-            <!--
-              All the links in the footer should remain intact.
-              You can delete the links only if you purchased the pro version.
-              Licensing information: https://bootstrapmade.com/license/
-              Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-            -->
-            Designed by
-            <!--          <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
-        </div>
-    </div>
 </section>
 <!-- container section end -->
+
+<!--modal Add New-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/clients/addNew}" method="POST">
+        <div class="modal-dialog modal-dialog_double" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Новый клиент</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <table width="100%">
+                        <tr style="display: flex">
+                            <td width="50%">
+                                <div class="form-group row">
+                                    <label for="txtNameAdd" class="col-sm-4 col-form-label">Имя: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtNameAdd" name="name" placeholder="Name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtDetailsAdd" class="col-sm-4 col-form-label">Детали: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtDetailsAdd" name="details" placeholder="Details">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtWebsiteAdd" class="col-sm-4 col-form-label">Вебсайт: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtWebsiteAdd" name="website" placeholder="Website" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtAddressAdd" class="col-sm-4 col-form-label">Адрес: </label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" id="txtAddressAdd" name="address" placeholder="Address" rows="2" required></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="50%">
+                                <div class="form-group row">
+                                    <label for="ddlRegionAdd" class="col-sm-4 col-form-label">Регион/Область: </label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlRegionAdd" name="regionid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="region : ${regions}"
+                                                    th:value="${region.id}"
+                                                    th:text="${region.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlCountryAdd" class="col-sm-4 col-form-label">Страна: </label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCountryAdd" name="countryid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="country : ${countries}"
+                                                    th:value="${country.id}"
+                                                    th:text="${country.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtCityAdd" class="col-sm-4 col-form-label">Город: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtCityAdd" name="city" placeholder="City" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtPhoneAdd" class="col-sm-4 col-form-label">Телефон: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPhoneAdd" name="phone" placeholder="Phone" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtEmailAdd" class="col-sm-4 col-form-label">Email: </label>
+                                    <div class="col-sm-6">
+                                        <input type="email" class="form-control" id="txtEmailAdd" name="email" placeholder="Email" required>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--Modal Edit-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/clients/update}" method="PUT">
+        <div class="modal-dialog modal-dialog_double" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Обновление данных клиента</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <table width="100%">
+                        <tr style="display: flex">
+                            <td width="50%">
+                                <div class="form-group row">
+                                    <label for="txtIdEdit" class="col-sm-4 col-form-label">ID: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtIdEdit" name="id" placeholder="Id" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtNameEdit" class="col-sm-4 col-form-label">Имя: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtNameEdit" name="name" placeholder="Name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtDetailsEdit" class="col-sm-4 col-form-label">Детали: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtDetailsEdit" name="details" placeholder="Details">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtWebsiteEdit" class="col-sm-4 col-form-label">Вебсайт: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtWebsiteEdit" name="website" placeholder="Website" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtAddressEdit" class="col-sm-4 col-form-label">Адрес: </label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" id="txtAddressEdit" name="address" placeholder="Address" rows="2" required></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="50%">
+                                <div class="form-group row">
+                                    <label for="ddlRegionEdit" class="col-sm-4 col-form-label">Регион/Область: </label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlRegionEdit" name="regionid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="region : ${regions}"
+                                                    th:value="${region.id}"
+                                                    th:text="${region.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlCountryEdit" class="col-sm-4 col-form-label">Страна: </label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCountryEdit" name="countryid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="country : ${countries}"
+                                                    th:value="${country.id}"
+                                                    th:text="${country.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtCityEdit" class="col-sm-4 col-form-label">Город: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtCityEdit" name="city" placeholder="City" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtPhoneEdit" class="col-sm-4 col-form-label">Телефон: </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPhoneEdit" name="phone" placeholder="Phone" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtEmailEdit" class="col-sm-4 col-form-label">Email: </label>
+                                    <div class="col-sm-6">
+                                        <input type="email" class="form-control" id="txtEmailEdit" name="email" placeholder="Email" required>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтвердить удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить данные с клиентом "<span id="clientNameSpan"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" id="confirmDeleteButton" href="">Подтвердить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -445,7 +689,7 @@
 <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
 <!--custome script for all page-->
 <script src="js/scripts.js"></script>
-
+<script src="js/client.js"></script>
 
 </body>
 

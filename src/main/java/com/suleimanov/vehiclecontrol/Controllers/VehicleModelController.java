@@ -1,6 +1,8 @@
 package com.suleimanov.vehiclecontrol.Controllers;
 
+import com.suleimanov.vehiclecontrol.Models.VehicleMake;
 import com.suleimanov.vehiclecontrol.Models.VehicleModel;
+import com.suleimanov.vehiclecontrol.Services.VehicleMakeService;
 import com.suleimanov.vehiclecontrol.Services.VehicleModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +19,16 @@ public class VehicleModelController {
   @Autowired
   private VehicleModelService vehicleModelService;
 
+  @Autowired
+  private VehicleMakeService vehicleMakeService;
+
   @GetMapping()
   public String getVehicleModel(Model model) {
     List<VehicleModel> vehicleModelsList = vehicleModelService.getVehiclesModels();
+    List<VehicleMake> vehicleMakeList = vehicleMakeService.getVehiclesMakes();
 
     model.addAttribute("vehicleModels", vehicleModelsList);
+    model.addAttribute("vehicleMakes", vehicleMakeList);
     return "vehicle_model";
   }
 

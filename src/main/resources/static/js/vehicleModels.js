@@ -8,6 +8,7 @@ $('document').ready(function () {
         var href = $(this).attr('href');
         $.get(href, function (vehicleModels, status) {
             $('#idEdit').val(vehicleModels.id);
+            $('#ddlVehicleMakesEdit').val(vehicleModels.vehiclemakeid);
             $('#descriptionEdit').val(vehicleModels.description);
             $('#detailsEdit').val(vehicleModels.details);
         });
@@ -20,6 +21,7 @@ $('document').ready(function () {
         var href = $(this).attr('href');      // Получаем значение "href" (URL), текущего элемента, на котором произошло событие
         $.get(href, function (vehicleModels, status) {
             $('#idDetails').val(vehicleModels.id);
+            $('#ddlVehicleMakesDetails').val(vehicleModels.vehiclemakeid);
             $('#descriptionDetails').val(vehicleModels.description);
             $('#detailsDetails').val(vehicleModels.details);
             $('#lastModifiedByDetails').val(vehicleModels.lastModifiedBy);
