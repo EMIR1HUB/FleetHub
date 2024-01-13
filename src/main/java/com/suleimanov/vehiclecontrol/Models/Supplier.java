@@ -23,7 +23,6 @@ public class Supplier {
   private String address;
   private String city;
   private String phone;
-  private String mobile;
   private String website;
   private String email;
 
@@ -35,7 +34,7 @@ public class Supplier {
   @ManyToOne
   @JoinColumn(name="regionid", insertable=false, updatable=false)
   private Region region;
-  private Integer stateid;
+  private Integer regionid;
 
   private String details;
 }
