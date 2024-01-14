@@ -18,12 +18,12 @@ public class Person {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  private String firstName;
-  private String lastName;
-  private String otherName;
+  private String firstname;
+  private String lastname;
+  private String othername;
 
   @Formula(value = " concat(firstName, ' ', lastName) ")
-  private String fullName;
+  private String fullname;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date dateOfBirth;

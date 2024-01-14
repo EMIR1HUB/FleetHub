@@ -9,7 +9,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Управление автотранспортами</title>
+    <title>Управление данными об автотранспортах</title>
 
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -29,13 +29,6 @@
     <script src="js/respond.min.js"></script>
     <script src="js/lte-ie7.js"></script>
     <![endif]-->
-
-    <!-- =======================================================
-      Theme Name: NiceAdmin
-      Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-      Author: BootstrapMade
-      Author URL: https://bootstrapmade.com
-    ======================================================= -->
 </head>
 
 <body>
@@ -381,7 +374,7 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/invoices}">Счета-фактура</a></li>
+                        <li><a class="" th:href="@{/invoices}">Счета-фактуры</a></li>
                         <li><a class="" th:href="@{/invoices_statuses}">Статусы счетов</a></li>
                     </ul>
                 </li>
@@ -409,34 +402,611 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Pages</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i>Список автотранспортов</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-bars"></i>Pages</li>
-                        <li><i class="fa fa-square-o"></i>Pages</li>
+                        <li><i class="fa fa-home"></i><a th:href="@{index}">Главная</a></li>
+                        <li><i class="fa fa-bars"></i>Транспорт</li>
+                        <li><i class="fa fa-square-o"></i>Данные о транспорте</li>
                     </ol>
                 </div>
             </div>
             <!-- page start-->
-            <h1>Список клиентов</h1>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить
+                    </button>
+                    <table class="table table-advance table-hover">
+                        <thead>
+                        <tr>
+                            <th><i class="icon_table"></i> Название</th>
+                            <th><i class="icon_table"></i> Описание</th>
+                            <th><i class="icon_table"></i> Дата приобретения</th>
+                            <th><i class="icon_cogs"></i> Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="vehicle:${vehicles}">
+                            <td th:text="${vehicle.name}">Название</td>
+                            <td th:text="${vehicle.description}">Описание</td>
+                            <td th:text="${#dates.format(vehicle.acquisitionDate, 'dd-MM-yyyy')}">Дата приобретения</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" id="editButton" th:href="@{/vehicles/findById(id=${vehicle.id})}"><i class="icon_pencil-edit"></i></a>
+                                    <a class="btn btn-success" id="detailsButton" th:href="@{/vehicles/findById(id=${vehicle.id})}"><i class="icon_document_alt"></i></a>
+                                    <a class="btn btn-danger" id="deleteButton" th:href="@{/vehicles/delete(id=${vehicle.id})}" th:data-name="${vehicle.name}"><i class="icon_close_alt2"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <!-- page end-->
         </section>
     </section>
-    <!--main content end-->
-    <div class="text-right">
-        <div class="credits">
-            <!--
-              All the links in the footer should remain intact.
-              You can delete the links only if you purchased the pro version.
-              Licensing information: https://bootstrapmade.com/license/
-              Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-            -->
-            Designed by
-            <!--          <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
-        </div>
-    </div>
 </section>
 <!-- container section end -->
+
+<!--modal Add New-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/vehicles/addNew}" method="POST">
+        <div class="modal-dialog modal-dialog_double" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Новый транспорт</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table width="100%">
+                        <tr style="display: flex">
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleTypeAdd" class="col-sm-4 col-form-label">Тип транспорта:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleTypeAdd" name="vehicletypeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleType : ${vehicleTypes}"
+                                                    th:value="${vehicleType.id}"
+                                                    th:text="${vehicleType.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="txtVehicleNameAdd" class="col-sm-4 col-form-label">Название:</label>-->
+<!--                                    <div class="col-sm-6">-->
+<!--                                        <input type="text" class="form-control" id="txtVehicleNameAdd" name="name" placeholder="Название транспорта">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNumberAdd" class="col-sm-4 col-form-label">Номер:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtVehicleNumberAdd" name="vehicleNumber" placeholder="Номер транспорта">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRegistrationDateAdd" class="col-sm-4 col-form-label">Дата регистрации:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtRegistrationDateAdd" name="registrationDate" placeholder="Дата регистрации">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtDescriptionAdd" class="col-sm-4 col-form-label">Описание:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionAdd" name="description" placeholder="Описание" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAcquisitionDateAdd" class="col-sm-4 col-form-label">Дата приобретения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtAcquisitionDateAdd" name="acquisitionDate" placeholder="Дата приобретения">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleMakeAdd" class="col-sm-4 col-form-label">Марка:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleMakeAdd" name="vehiclemakeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleMake : ${vehicleMakes}"
+                                                    th:value="${vehicleMake.id}"
+                                                    th:text="${vehicleMake.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleModelAdd" class="col-sm-4 col-form-label">Модель:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleModelAdd" name="vehiclemodelid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleModel : ${vehicleModels}"
+                                                    th:value="${vehicleModel.id}"
+                                                    th:text="${vehicleModel.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentLocationAdd" class="col-sm-4 col-form-label">Текущее местоположение:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCurrentLocationAdd" name="locationid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="location : ${locations}"
+                                                    th:value="${location.id}"
+                                                    th:text="${location.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="txtPowerAdd" class="col-sm-4 col-form-label">Питание:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPowerAdd" name="power" placeholder="Топливо или дизель">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFuelCapacityAdd" class="col-sm-4 col-form-label">Объем:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtFuelCapacityAdd" name="fuelCapacity" placeholder="Объем топливного бака">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtNetWeightAdd" class="col-sm-4 col-form-label">Вес:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtNetWeightAdd" name="netWeight" placeholder="Вес нетто">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRemarksAdd" class="col-sm-4 col-form-label">Комментарий:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtRemarksAdd" name="remarks" placeholder="Комментарий" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlEmployeeAdd" class="col-sm-4 col-form-label">Ответственный:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlEmployeeAdd" name="employeeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="employee:${employees}"
+                                                    th:value="${employee.id}"
+                                                    th:text="${employee.firstname}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentStatusAdd" class="col-sm-4 col-form-label">Текущий статус:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCurrentStatusAdd" name="vehiclestatusid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleStatuse : ${vehicleStatuses}"
+                                                    th:value="${vehicleStatuse.id}"
+                                                    th:text="${vehicleStatuse.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="fupImageAdd" class="col-sm-4 col-form-label">Фото:</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control-file" id="fupImageAdd" name="photo" placeholder="Выберите изображение">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--modal Edit-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/vehicles/update}" method="PUT">
+        <div class="modal-dialog modal-dialog_double" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Обновление данных транспорта</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table width="100%">
+                        <tr style="display: flex">
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleTypeEdit" class="col-sm-4 col-form-label">Тип транспорта:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleTypeEdit" name="vehicletypeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleType : ${vehicleTypes}"
+                                                    th:value="${vehicleType.id}"
+                                                    th:text="${vehicleType.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNameEdit" class="col-sm-4 col-form-label">Название:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtVehicleNameEdit" name="name" placeholder="Название транспорта">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNumberEdit" class="col-sm-4 col-form-label">Номер:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtVehicleNumberEdit" name="vehicleNumber" placeholder="Номер транспорта">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRegistrationDateEdit" class="col-sm-4 col-form-label">Дата регистрации:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtRegistrationDateEdit" name="registrationDate" placeholder="Дата регистрации">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtDescriptionEdit" class="col-sm-4 col-form-label">Описание:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionEdit" name="description" placeholder="Описание" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAcquisitionDateEdit" class="col-sm-4 col-form-label">Дата приобретения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtAcquisitionDateEdit" name="acquisitionDate" placeholder="Дата приобретения">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleMakeEdit" class="col-sm-4 col-form-label">Марка:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleMakeEdit" name="vehiclemakeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleMake : ${vehicleMakes}"
+                                                    th:value="${vehicleMake.id}"
+                                                    th:text="${vehicleMake.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleModelEdit" class="col-sm-4 col-form-label">Модель:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleModelEdit" name="vehiclemodelid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleModel : ${vehicleModels}"
+                                                    th:value="${vehicleModel.id}"
+                                                    th:text="${vehicleModel.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentLocationEdit" class="col-sm-4 col-form-label">Текущее местоположение:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCurrentLocationEdit" name="locationid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="location : ${locations}"
+                                                    th:value="${location.id}"
+                                                    th:text="${location.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="txtPowerEdit" class="col-sm-4 col-form-label">Питание:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPowerEdit" name="power" placeholder="Топливо или дизель">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFuelCapacityEdit" class="col-sm-4 col-form-label">Объем:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtFuelCapacityEdit" name="fuelCapacity" placeholder="Объем топливного бака">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtNetWeightEdit" class="col-sm-4 col-form-label">Вес:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtNetWeightEdit" name="netWeight" placeholder="Вес нетто">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRemarksEdit" class="col-sm-4 col-form-label">Комментарий:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtRemarksEdit" name="remarks" placeholder="Комментарий" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlEmployeeEdit" class="col-sm-4 col-form-label">Ответственный:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlEmployeeEdit" name="employeeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="employee:${employees}"
+                                                    th:value="${employee.id}"
+                                                    th:text="${employee.firstname}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentStatusEdit" class="col-sm-4 col-form-label">Текущий статус:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCurrentStatusEdit" name="vehiclestatusid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="vehicleStatuse : ${vehicleStatuses}"
+                                                    th:value="${vehicleStatuse.id}"
+                                                    th:text="${vehicleStatuse.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="fupImageEdit" class="col-sm-4 col-form-label">Фото:</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control-file" id="fupImageEdit" name="photo" placeholder="Выберите изображение">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--modal Details-->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog_double" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Детали транспорта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%">
+                    <tr style="display: flex">
+                        <td width="50%">
+
+                            <div class="form-group row">
+                                <label for="idDetails" class="col-sm-4 col-form-label">Id:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="idDetails" name="id" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlVehicleTypeDetails" class="col-sm-4 col-form-label">Тип транспорта:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlVehicleTypeDetails" name="vehicletypeid" readonly>
+                                        <option>-Выбрать-</option>
+                                        <option th:each="vehicleType : ${vehicleTypes}"
+                                                th:value="${vehicleType.id}"
+                                                th:text="${vehicleType.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtVehicleNameDetails" class="col-sm-4 col-form-label">Название:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtVehicleNameDetails" name="name" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtVehicleNumberDetails" class="col-sm-4 col-form-label">Номер:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtVehicleNumberDetails" name="vehicleNumber" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtRegistrationDateDetails" class="col-sm-4 col-form-label">Дата регистрации:</label>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" id="txtRegistrationDateDetails" name="registrationDate" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtDescriptionDetails" class="col-sm-4 col-form-label">Описание:</label>
+                                <div class="col-sm-6">
+                                    <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionDetails" name="description" readonly rows="2"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtAcquisitionDateDetails" class="col-sm-4 col-form-label">Дата приобретения:</label>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" id="txtAcquisitionDateDetails" name="acquisitionDate" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlVehicleMakeDetails" class="col-sm-4 col-form-label">Марка:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlVehicleMakeDetails" name="vehiclemakeid" readonly>
+                                        <option>-Выбрать-</option>
+                                        <option th:each="vehicleMake : ${vehicleMakes}"
+                                                th:value="${vehicleMake.id}"
+                                                th:text="${vehicleMake.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlVehicleModelDetails" class="col-sm-4 col-form-label">Модель:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlVehicleModelDetails" name="vehiclemodelid" readonly>
+                                        <option>-Выбрать-</option>
+                                        <option th:each="vehicleModel : ${vehicleModels}"
+                                                th:value="${vehicleModel.id}"
+                                                th:text="${vehicleModel.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlCurrentLocationDetails" class="col-sm-4 col-form-label">Текущее местоположение:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlCurrentLocationDetails" name="locationid" readonly>
+                                        <option>-Выбрать-</option>
+                                        <option th:each="location : ${locations}"
+                                                th:value="${location.id}"
+                                                th:text="${location.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td width="50%">
+
+                            <div class="form-group row">
+                                <label for="txtPowerDetails" class="col-sm-4 col-form-label">Питание:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtPowerDetails" name="power" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtFuelCapacityDetails" class="col-sm-4 col-form-label">Объем:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtFuelCapacityDetails" name="fuelCapacity" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtNetWeightDetails" class="col-sm-4 col-form-label">Вес:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtNetWeightDetails" name="netWeight" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtRemarksDetails" class="col-sm-4 col-form-label">Комментарий:</label>
+                                <div class="col-sm-6">
+                                    <textarea style="resize: vertical" type="text" class="form-control" id="txtRemarksDetails" name="remarks" readonly rows="2"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlEmployeeDetails" class="col-sm-4 col-form-label">Ответственный:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlEmployeeDetails" name="employeeid" readonly>
+                                        <option>-Выбрать-</option>
+                                        <option th:each="employee:${employees}"
+                                                th:value="${employee.id}"
+                                                th:text="${employee.firstname}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlCurrentStatusDetails" class="col-sm-4 col-form-label">Текущий статус:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlCurrentStatusDetails" name="vehiclestatusid" readonly>
+                                        <option>-Выбрать-</option>
+                                        <option th:each="vehicleStatuse : ${vehicleStatuses}"
+                                                th:value="${vehicleStatuse.id}"
+                                                th:text="${vehicleStatuse.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fupImageDetails" class="col-sm-4 col-form-label">Фото:</label>
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control-file" id="fupImageDetails" name="photo" readonly>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтвердить удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить данные с транспортом "<span id="vehicleNameSpan"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" id="confirmDeleteButton" href="">Подтвердить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -445,7 +1015,7 @@
 <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
 <!--custome script for all page-->
 <script src="js/scripts.js"></script>
-
+<script src="js/vehicle.js"></script>
 
 </body>
 
