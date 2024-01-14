@@ -1901,7 +1901,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .form-control {
-    /*resize: vertical;*/
     display: block;
     width: 100%;
     min-height: 34px;
