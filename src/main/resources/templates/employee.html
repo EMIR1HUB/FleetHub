@@ -29,13 +29,6 @@
     <script src="js/respond.min.js"></script>
     <script src="js/lte-ie7.js"></script>
     <![endif]-->
-
-    <!-- =======================================================
-      Theme Name: NiceAdmin
-      Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-      Author: BootstrapMade
-      Author URL: https://bootstrapmade.com
-    ======================================================= -->
 </head>
 
 <body>
@@ -381,7 +374,7 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/invoices}">Счета-фактура</a></li>
+                        <li><a class="" th:href="@{/invoices}">Счета-фактуры</a></li>
                         <li><a class="" th:href="@{/invoices_statuses}">Статусы счетов</a></li>
                     </ul>
                 </li>
@@ -409,34 +402,658 @@
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa fa-bars"></i> Pages</h3>
+                    <h3 class="page-header"><i class="fa fa fa-bars"></i>Список сотрудников</h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-bars"></i>Pages</li>
-                        <li><i class="fa fa-square-o"></i>Pages</li>
+                        <li><i class="fa fa-home"></i><a th:href="@{index}">Главная</a></li>
+                        <li><i class="fa fa-bars"></i>Люди</li>
+                        <li><i class="fa fa-square-o"></i>Сотрудники</li>
                     </ol>
                 </div>
             </div>
             <!-- page start-->
-            <h1>Список сотриудников</h1>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Добавить
+                    </button>
+                    <table class="table table-advance table-hover">
+                        <thead>
+                        <tr>
+                            <th>Фото</th>
+                            <th><i class="icon_profile"></i> Полное имя</th>
+                            <th><i class="icon_calendar"></i> Дата найма</th>
+                            <th><i class="icon_mail_alt"></i> Email</th>
+                            <th><i class="icon_pin_alt"></i> Город</th>
+                            <th><i class="icon_phone"></i> Телефон</th>
+                            <th><i class="icon_cogs"></i> Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="employee:${employees}">
+                            <td><a id="photoButton" th:href="@{'/img/photos/' + ${employee.id} + '.png'}">
+                                <img th:src="@{'/img/photos/' + ${employee.id} + '.png'}" width="40" height="40">
+                            </a></td>
+                            <td th:text="${employee.firstname} + ' ' + ${employee.lastname}">Полное имя</td>
+                            <td th:text="${#dates.format(employee.hireDate, 'dd-MM-yyyy')}">Дата найма</td>
+                            <td th:text="${employee.email}">Email</td>
+                            <td th:text="${employee.city}">Город</td>
+                            <td th:text="${employee.phone}">Телефон</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" id="editButton" th:href="@{/employees/findById(id=${employee.id})}"><i class="icon_pencil-edit"></i></a>
+                                    <a class="btn btn-success" id="detailsButton" th:href="@{/employees/findById(id=${employee.id})}"><i class="icon_document_alt"></i></a>
+                                    <a class="btn btn-danger" id="deleteButton" th:href="@{/employees/delete(id=${employee.id})}" th:data-name="${employee.initials}"><i class="icon_close_alt2"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <!-- page end-->
         </section>
     </section>
     <!--main content end-->
-    <div class="text-right">
-        <div class="credits">
-            <!--
-              All the links in the footer should remain intact.
-              You can delete the links only if you purchased the pro version.
-              Licensing information: https://bootstrapmade.com/license/
-              Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-            -->
-            Designed by
-            <!--          <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
-        </div>
-    </div>
 </section>
 <!-- container section end -->
+
+<!--modal Add New-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/employees/addNew}" method="POST">
+        <div class="modal-dialog modal-dialog_double" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Новый сотрудник</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table width="100%">
+                        <tr style="display: flex">
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="txtPassportAdd" class="col-sm-4 col-form-label">Номер паспорт:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPassportAdd" name="passport" placeholder="Номер паспорт">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFirstnameAdd" class="col-sm-4 col-form-label">Имя:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtFirstnameAdd" name="firstname" placeholder="Имя" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtLastnameAdd" class="col-sm-4 col-form-label">Фамилия:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtLastnameAdd" name="lastname" placeholder="Фамилия" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtOthernameAdd" class="col-sm-4 col-form-label">Отчество:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtOthernameAdd" name="othername" placeholder="Отчество">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlGenderAdd" class="col-sm-4 col-form-label">Пол:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlGenderAdd" name="gender">
+                                            <option>-Выбрать-</option>
+                                            <option value="Муж.">Муж.</option>
+                                            <option value="Жен.">Жен.</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlNationalityAdd" class="col-sm-4 col-form-label">Гражданство:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlNationalityAdd" name="countryid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="country : ${countries}"
+                                                    th:value="${country.id}"
+                                                    th:text="${country.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtDateOfBirthAdd" class="col-sm-4 col-form-label">Дата рождения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtDateOfBirthAdd" name="DateOfBirth" placeholder="Дата рождения" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAddressAdd" class="col-sm-4 col-form-label">Адрес проживания:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" class="form-control" id="txtAddressAdd" name="address" placeholder="Адрес проживания" rows="2" required></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="ddlRegionAdd" class="col-sm-4 col-form-label">Регион/Область:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlRegionAdd" name="regionid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="region : ${regions}"
+                                                    th:value="${region.id}"
+                                                    th:text="${region.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtCityAdd" class="col-sm-4 col-form-label">Город:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtCityAdd" name="city" placeholder="Город" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlMaritalStatusAdd" class="col-sm-4 col-form-label">Семейное положение:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlMaritalStatusAdd" name="maritalStatus">
+                                            <option>-Выбрать-</option>
+                                            <option value="В браке">В браке</option>
+                                            <option value="Разведен(-а)">Разведен(-а)</option>
+                                            <option value="Холост">Холост</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtPhoneAdd" class="col-sm-4 col-form-label">Телефон:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPhoneAdd" name="phone" placeholder="Телефон" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtEmailAdd" class="col-sm-4 col-form-label">Email:</label>
+                                    <div class="col-sm-6">
+                                        <input type="email" class="form-control" id="txtEmailAdd" name="email" placeholder="Email" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtHireDateAdd" class="col-sm-4 col-form-label">Дата найма:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtHireDateAdd" name="hireDate" placeholder="Дата найма" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlJobTitleAdd" class="col-sm-4 col-form-label">Должность:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlJobTitleAdd" name="jobtitleid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="jobTitle : ${jobTitles}"
+                                                    th:value="${jobTitle.id}"
+                                                    th:text="${jobTitle.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlEmployeeTypeAdd" class="col-sm-4 col-form-label">Тип:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlEmployeeTypeAdd" name="employeetypeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="employeeType : ${employeeTypes}"
+                                                    th:value="${employeeType.id}"
+                                                    th:text="${employeeType.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="fupImageAdd" class="col-sm-4 col-form-label">Фото:</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control-file" id="fupImageAdd" name="photo" accept="image/*" placeholder="Выберите изображение">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--modal Edit-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/employees/update}" method="PUT">
+        <div class="modal-dialog modal-dialog_double" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Обновление данных транспорта</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table width="100%">
+                        <tr style="display: flex">
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="txtIdEdit" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtIdEdit" name="id" placeholder="Id" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtInitialsEdit" class="col-sm-4 col-form-label">Инициалы:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtInitialsEdit" name="initials" placeholder="Иванов П.И." readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFirstnameEdit" class="col-sm-4 col-form-label">Имя:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtFirstnameEdit" name="firstname" placeholder="Имя" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtLastnameEdit" class="col-sm-4 col-form-label">Фамилия:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtLastnameEdit" name="lastname" placeholder="Фамилия" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtOthernameEdit" class="col-sm-4 col-form-label">Отчество:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtOthernameEdit" name="othername" placeholder="Отчество">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlGenderEdit" class="col-sm-4 col-form-label">Пол:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlGenderEdit" name="gender">
+                                            <option>-Выбрать-</option>
+                                            <option value="Муж.">Муж.</option>
+                                            <option value="Жен.">Жен.</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlNationalityEdit" class="col-sm-4 col-form-label">Гражданство:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlNationalityEdit" name="countryid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="country : ${countries}"
+                                                    th:value="${country.id}"
+                                                    th:text="${country.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtDateOfBirthEdit" class="col-sm-4 col-form-label">Дата рождения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtDateOfBirthEdit" name="dateOfBirth" placeholder="Дата рождения" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAddressEdit" class="col-sm-4 col-form-label">Адрес проживания:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" class="form-control" id="txtAddressEdit" name="address" placeholder="Адрес проживания" rows="2" required></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="ddlRegionEdit" class="col-sm-4 col-form-label">Регион/Область:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlRegionEdit" name="regionid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="region : ${regions}"
+                                                    th:value="${region.id}"
+                                                    th:text="${region.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtCityEdit" class="col-sm-4 col-form-label">Город:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtCityEdit" name="city" placeholder="Город" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlMaritalStatusEdit" class="col-sm-4 col-form-label">Семейное положение:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlMaritalStatusEdit" name="maritalStatus">
+                                            <option>-Выбрать-</option>
+                                            <option value="В браке">В браке</option>
+                                            <option value="Разведен(-а)">Разведен(-а)</option>
+                                            <option value="Холост">Холост</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtPhoneEdit" class="col-sm-4 col-form-label">Телефон:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPhoneEdit" name="phone" placeholder="Телефон" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtEmailEdit" class="col-sm-4 col-form-label">Email:</label>
+                                    <div class="col-sm-6">
+                                        <input type="email" class="form-control" id="txtEmailEdit" name="email" placeholder="Email" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtHireDateEdit" class="col-sm-4 col-form-label">Дата найма:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="txtHireDateEdit" name="hireDate" placeholder="Дата найма" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlJobTitleEdit" class="col-sm-4 col-form-label">Должность:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlJobTitleEdit" name="jobtitleid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="jobTitle : ${jobTitles}"
+                                                    th:value="${jobTitle.id}"
+                                                    th:text="${jobTitle.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlEmployeeTypeEdit" class="col-sm-4 col-form-label">Тип сотрудника:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlEmployeeTypeEdit" name="employeetypeid">
+                                            <option>-Выбрать-</option>
+                                            <option th:each="employeeType : ${employeeTypes}"
+                                                    th:value="${employeeType.id}"
+                                                    th:text="${employeeType.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="fupImageEdit" class="col-sm-4 col-form-label">Фото:</label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control-file" id="fupImageEdit" name="photo" accept="image/*" placeholder="Выберите изображение">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--modal Details-->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog_double" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Детали транспорта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%">
+                    <tr style="display: flex">
+                        <td width="50%">
+
+                            <div class="form-group row">
+                                <label for="txtIdDetails" class="col-sm-4 col-form-label">Id:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtIdDetails" name="id" placeholder="Id" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtInitialsDetails" class="col-sm-4 col-form-label">Инициалы:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtInitialsDetails" name="initials" placeholder="Иванов П.И." readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtFirstnameDetails" class="col-sm-4 col-form-label">Имя:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtFirstnameDetails" name="firstname" placeholder="Имя" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtLastnameDetails" class="col-sm-4 col-form-label">Фамилия:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtLastnameDetails" name="lastname" placeholder="Фамилия" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtOthernameDetails" class="col-sm-4 col-form-label">Отчество:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtOthernameDetails" name="othername" placeholder="Отчество">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlGenderDetails" class="col-sm-4 col-form-label">Пол:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlGenderDetails" name="gender">
+                                        <option>-Выбрать-</option>
+                                        <option value="Муж.">Муж.</option>
+                                        <option value="Жен.">Жен.</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlNationalityDetails" class="col-sm-4 col-form-label">Гражданство:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlNationalityDetails" name="countryid">
+                                        <option>-Выбрать-</option>
+                                        <option th:each="country : ${countries}"
+                                                th:value="${country.id}"
+                                                th:text="${country.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtDateOfBirthDetails" class="col-sm-4 col-form-label">Дата рождения:</label>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" id="txtDateOfBirthDetails" name="dateOfBirth" placeholder="Дата рождения" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtAddressDetails" class="col-sm-4 col-form-label">Адрес проживания:</label>
+                                <div class="col-sm-6">
+                                    <textarea style="resize: vertical" class="form-control" id="txtAddressDetails" name="address" placeholder="Адрес проживания" rows="2" required></textarea>
+                                </div>
+                            </div>
+                        </td>
+                        <td width="50%">
+
+                            <div class="form-group row">
+                                <label for="ddlRegionDetails" class="col-sm-4 col-form-label">Регион/Область:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlRegionDetails" name="regionid">
+                                        <option>-Выбрать-</option>
+                                        <option th:each="region : ${regions}"
+                                                th:value="${region.id}"
+                                                th:text="${region.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtCityDetails" class="col-sm-4 col-form-label">Город:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtCityDetails" name="city" placeholder="Город" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlMaritalStatusDetails" class="col-sm-4 col-form-label">Семейное положение:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlMaritalStatusDetails" name="maritalStatus">
+                                        <option>-Выбрать-</option>
+                                        <option value="В браке">В браке</option>
+                                        <option value="Разведен(-а)">Разведен(-а)</option>
+                                        <option value="Холост">Холост</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtPhoneDetails" class="col-sm-4 col-form-label">Телефон:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="txtPhoneDetails" name="phone" placeholder="Телефон" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtEmailDetails" class="col-sm-4 col-form-label">Email:</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="txtEmailDetails" name="email" placeholder="Email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtHireDateDetails" class="col-sm-4 col-form-label">Дата найма:</label>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" id="txtHireDateDetails" name="hireDate" placeholder="Дата найма" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlJobTitleDetails" class="col-sm-4 col-form-label">Должность:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlJobTitleDetails" name="jobtitleid">
+                                        <option>-Выбрать-</option>
+                                        <option th:each="jobTitle : ${jobTitles}"
+                                                th:value="${jobTitle.id}"
+                                                th:text="${jobTitle.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="ddlEmployeeTypeDetails" class="col-sm-4 col-form-label">Тип сотрудника:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlEmployeeTypeDetails" name="employeetypeid">
+                                        <option>-Выбрать-</option>
+                                        <option th:each="employeeType : ${employeeTypes}"
+                                                th:value="${employeeType.id}"
+                                                th:text="${employeeType.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="fupImageDetails" class="col-sm-4 col-form-label">Фото:</label>
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control-file" id="fupImageDetails" name="photo" accept="image/*" placeholder="Выберите изображение">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтвердить удаление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить данные со сотрудником "<span id="employeeFullNameSpan"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" id="confirmDeleteButton" href="">Подтвердить</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Photo -->
+<div class="modal fade" tabindex="-1" role="dialog" id="photoModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Фото</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="employeePhoto" src="" width="95%" height="95%">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -445,6 +1062,7 @@
 <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
 <!--custome script for all page-->
 <script src="js/scripts.js"></script>
+<script src="js/employee.js"></script>
 
 
 </body>

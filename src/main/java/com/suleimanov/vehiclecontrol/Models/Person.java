@@ -28,7 +28,6 @@ public class Person {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date dateOfBirth;
 
-  private String title;
   private String initials;
   private String passport;
   private String gender;
@@ -48,7 +47,6 @@ public class Person {
   private String city;
   private String address;
   private String phone;
-  private String mobile;
   private String email;
   private String photo;
 }

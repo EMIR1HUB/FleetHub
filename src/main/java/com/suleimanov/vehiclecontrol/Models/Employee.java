@@ -1,7 +1,5 @@
 package com.suleimanov.vehiclecontrol.Models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,7 +12,7 @@ import java.util.Date;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employee extends Person{
 
   @ManyToOne
@@ -23,7 +21,7 @@ public class Employee extends Person{
   private Integer employeetypeid;
 
   private String photo;
-  private String username;
+//  private String username;
 
   @ManyToOne
   @JoinColumn(name="jobtitleid", insertable=false, updatable=false)
