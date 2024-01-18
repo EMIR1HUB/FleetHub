@@ -9,15 +9,21 @@ import java.util.Collections;
 
 public class UserPrincipal implements UserDetails {
 
-  private UserAccount userAccount;
+  private User user;
 
-  public UserPrincipal(UserAccount userAccount) {
-    this.userAccount = userAccount;
+  public UserPrincipal(User user) {
+    this.user = user;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-  	return Collections.singleton(new SimpleGrantedAuthority("USER"));
+    return Collections.singleton(new SimpleGrantedAuthority("USER"));
+
+//    return Arrays.stream(user.getRoles().split(", "))
+//            .map(SimpleGrantedAuthority::new)
+//            .collect(Collectors.toList());
+
+
 //    List<GrantedAuthority> authorities = new ArrayList<>();
 //    for (UserAccount role : userAccount.getRoles()) {
 //      authorities.add(new SimpleGrantedAuthority(role.getFirstname()));
@@ -27,12 +33,12 @@ public class UserPrincipal implements UserDetails {
 
   @Override
   public String getPassword() {
-    return userAccount.getPassword();
+    return user.getPassword();
   }
 
   @Override
   public String getUsername() {
-    return userAccount.getUsername();
+    return user.getUsername();
   }
 
   @Override

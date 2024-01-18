@@ -12,22 +12,22 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount {
+@Table(name = "users")
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private Long id;
 
-//  private String firstname;
+  //  private String firstname;
 //  private String lastname;
+  @Column(unique = true)
   private String username;
   private String password;
 
   @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-  @JoinTable(
-          name = "user_role",
+  @JoinTable(name = "user_role",
           joinColumns = {@JoinColumn(name = "user_id")},
-          inverseJoinColumns = {@JoinColumn(name = "role_id")}
-  )
-  Set<UserAccount> roles = new HashSet<>();
+          inverseJoinColumns = {@JoinColumn(name = "role_id")})
+  Set<User> roles = new HashSet<>();
 }
