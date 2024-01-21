@@ -1,5 +1,6 @@
 package com.suleimanov.vehiclecontrol.Models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
@@ -13,13 +14,20 @@ import java.util.Date;
 
 import static jakarta.persistence.TemporalType.TIMESTAMP;
 
+// Указывает, что данный объект не сущность
+// Позволяет вынести общие поля в родительский класс, но при этом не создавать для него отдельную таблицу.
 @MappedSuperclass
+// Прослушиватель сущностей. Отслеживает изменения в полях данного класса
 @EntityListeners(AuditingEntityListener.class)
-public class Auditable<T> {
+public abstract class Auditable<T> {
 
+  // Столбцы, помеченные @CreatedBy и @LastModifiedBy , заполняются именем участника, создавшего или последним изменившего сущность.
+  // Информация поступает из экземпляра аутентификации SecurityContext
+  @Column(nullable = false, updatable = false)
   @CreatedBy
   protected T createdBy;
 
+  @Column(nullable = false, updatable = false)
   @CreatedDate
   @Temporal(TIMESTAMP)
   protected Date createdDate;

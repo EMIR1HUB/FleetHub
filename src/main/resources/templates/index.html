@@ -9,7 +9,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Creative - Bootstrap Admin Template</title>
+    <title>VehicleHub - Приборная панель</title>
 
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -35,12 +35,6 @@
     <link href="css/style-responsive.css" rel="stylesheet"/>
     <link href="css/xcharts.min.css" rel=" stylesheet">
     <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-    <!-- =======================================================
-      Theme Name: NiceAdmin
-      Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-      Author: BootstrapMade
-      Author URL: https://bootstrapmade.com
-    ======================================================= -->
 </head>
 
 <body>
@@ -279,33 +273,35 @@
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar-mini2.jpg">
+                                <img alt="" th:src="@{'/img/photos/' + ${#authentication.name} + '.jpg'}"
+                                     width="38" height="38">
                             </span>
-                        <span class="username">Name Lastname</span>
+                        <!-- другой варинат #authentication.getPrincipal().getUsername() -->
+                        <span class="username" th:text="${#authentication.name}">Гость</span>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu extended logout">
                         <div class="log-arrow-up"></div>
                         <li class="eborder-top">
-                            <a href="#"><i class="icon_profile"></i> My Profile</a>
+                            <a href="#"><i class="icon_profile"></i>Профиль</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon_mail_alt"></i> My Inbox</a>
+                            <a href="#"><i class="icon_mail_alt"></i>Входящие</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
+                            <a href="#"><i class="icon_clock_alt"></i>Timeline</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                            <a href="#"><i class="icon_chat_alt"></i>Чаты</a>
                         </li>
                         <li>
-                            <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                            <a th:href="@{/login}"><i class="icon_key_alt"></i>Выход</a>
                         </li>
                         <li>
-                            <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+                            <a href="documentation.html"><i class="icon_key_alt"></i>Документация</a>
                         </li>
                         <li>
-                            <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+                            <a href="documentation.html"><i class="icon_key_alt"></i>Документация</a>
                         </li>
                     </ul>
                 </li>

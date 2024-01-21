@@ -25,7 +25,9 @@ public class ApplicationSecurityConfig {
                     .requestMatchers("/login", "/resources/**", "/css/**", "/fonts/**", "/img/**").permitAll()
                     .anyRequest().authenticated())
             .formLogin(login -> login
-                    .loginPage("/login").permitAll())
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/index", true)  // Перенаправление на /index после успешной авторизации
+                    .permitAll())
             .logout(logout -> logout
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
