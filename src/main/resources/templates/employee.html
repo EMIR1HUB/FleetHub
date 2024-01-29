@@ -419,6 +419,7 @@
                         <thead>
                         <tr>
                             <th>Фото</th>
+                            <th><i class="icon_profile"></i> Логин</th>
                             <th><i class="icon_profile"></i> Полное имя</th>
                             <th><i class="icon_calendar"></i> Дата найма</th>
                             <th><i class="icon_mail_alt"></i> Email</th>
@@ -429,10 +430,11 @@
                         </thead>
                         <tbody>
                         <tr th:each="employee:${employees}">
-                            <td><a id="photoButton" th:href="@{'/img/photos/' + ${employee.id} + '.png'}">
-                                <img th:src="@{'/img/photos/' + ${employee.id} + '.png'}" width="40" height="40">
+                            <td><a id="photoButton" th:href="@{'/img/photos/' + ${employee.photo} + '.jpg'}">
+                                <img th:src="@{'/img/photos/' + ${employee.photo} + '.jpg'}" width="40" height="40">
                             </a></td>
-                            <td th:text="${employee.firstname} + ' ' + ${employee.lastname}">Полное имя</td>
+                            <td><a th:text="${employee.username} ?: 'Проверить'" th:href="@{/employees/assignUsername(id=${employee.id})}"></a></td>
+                            <td th:text="${employee.lastname} + ' ' + ${employee.firstname}">Полное имя</td>
                             <td th:text="${#dates.format(employee.hireDate, 'dd-MM-yyyy')}">Дата найма</td>
                             <td th:text="${employee.email}">Email</td>
                             <td th:text="${employee.city}">Город</td>
@@ -644,7 +646,7 @@
         <div class="modal-dialog modal-dialog_double" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Обновление данных транспорта</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Обновление данных сотрудника</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -832,7 +834,7 @@
     <div class="modal-dialog modal-dialog_double" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Детали транспорта</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Детали сотрудника</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -912,6 +914,20 @@
                                 <label for="txtAddressDetails" class="col-sm-4 col-form-label">Адрес проживания:</label>
                                 <div class="col-sm-6">
                                     <textarea style="resize: vertical" class="form-control" id="txtAddressDetails" name="address" placeholder="Адрес проживания" rows="2" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="createdByDetails" class="col-sm-4 col-form-label">Добавлен:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="createdByDetails" name="createdBy" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="createdDateDetails" class="col-sm-4 col-form-label">Дата добавления:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="createdDateDetails" name="createdDate" readonly>
                                 </div>
                             </div>
                         </td>
@@ -997,9 +1013,23 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="fupImageDetails" class="col-sm-4 col-form-label">Фото:</label>
+                                <label for="txtUsernameDetails" class="col-sm-4 col-form-label">Логин:</label>
                                 <div class="col-sm-6">
-                                    <input type="file" class="form-control-file" id="fupImageDetails" name="photo" accept="image/*" placeholder="Выберите изображение">
+                                    <input type="text" class="form-control" id="txtUsernameDetails" name="username" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastModifiedByDetails" class="col-sm-4 col-form-label">Последнее обновление от:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="lastModifiedByDetails" name="lastModifiedByDetails" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastModifiedDateDetails" class="col-sm-4 col-form-label">Последнее обновление:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="lastModifiedDateDetails" name="lastModifiedDateDetails" readonly>
                                 </div>
                             </div>
                         </td>

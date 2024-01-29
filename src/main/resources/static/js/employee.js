@@ -6,6 +6,7 @@ $('document').ready(function () {
         // /employees/getById/?id=1
         var href = $(this).attr('href');
         $.get(href, function (employee, status) {
+            $('#txtUsernameEdit').val(employee.username);
             $('#txtIdEdit').val(employee.id);
             $('#txtInitialsEdit').val(employee.initials);
             $('#txtFirstnameEdit').val(employee.firstname);
@@ -31,6 +32,7 @@ $('document').ready(function () {
         event.preventDefault();
         var href = $(this).attr('href');      // Получаем значение "href" (URL), текущего элемента, на котором произошло событие
         $.get(href, function (employee, status) {
+            $('#txtUsernameDetails').val(employee.username);
             $('#txtIdDetails').val(employee.id);
             $('#txtInitialsDetails').val(employee.initials);
             $('#txtFirstnameDetails').val(employee.firstname);
@@ -48,8 +50,10 @@ $('document').ready(function () {
             $('#txtEmailDetails').val(employee.email);
             $('#ddlJobTitleDetails').val(employee.jobtitleid);
             $('#ddlEmployeeTypeDetails').val(employee.employeetypeid);
-            // $('#lastModifiedByDetails').val(vehicleMaintenance.lastModifiedBy);
-            // $('#lastModifiedDateDetails').val(vehicleMaintenance.lastModifiedDate.substr(0, 19).replace("T", " "))
+            $('#createdByDetails').val(employee.createdBy);
+            $('#createdDateDetails').val(employee.createdDate.substr(0,19).replace("T", " "));
+            $('#lastModifiedByDetails').val(employee.lastModifiedBy);
+            $('#lastModifiedDateDetails').val(employee.lastModifiedDate.substr(0, 19).replace("T", " "));
         });
         $('#detailsModal').modal(); // запуск модального окна
     });

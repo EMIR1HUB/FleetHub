@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Регистрация пользователя</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link href="css/elegant-icons-style.css" rel="stylesheet"/>
+    <link href="css/font-awesome.css" rel="stylesheet"/>
+    <!-- Custom styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet"/>
+</head>
+
+<body class="login-img3-body">
+
+<div class="container">
+
+    <form class="login-form register" th:action="@{/users/register}" method="POST">
+        <div class="login-wrap">
+            <p class="login-img"><i class="icon_lock_alt"></i></p>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input type="text" class="form-control" placeholder="Имя" name="firstname" autofocus required>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input type="text" class="form-control" placeholder="Фамилия" name="lastname" required>
+            </div>
+            <div class="input-group">
+                <label for="username" class="input-group-addon"><i class="icon_profile"></i></label>
+                <input type="text" id="username" class="form-control" placeholder="Логин" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password" class="input-group-addon"><i class="icon_key_alt"></i></label>
+                <input type="password" class="form-control" placeholder="Пароль" id="password" name="password" required>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <input type="password" class="form-control" placeholder="Подтверждение Пароля" id="confirmPassword">
+            </div>
+            <label class="checkbox">
+                <span> <a th:href="@{/login}">Страница входа</a></span>
+                <span class="pull-right"><a th:href="@{/forgot-password}">Забыли пароль</a></span>
+            </label>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Зарегистрироваться</button>
+        </div>
+    </form>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/register.js"></script>
+
+
+</body>
+
+</html>

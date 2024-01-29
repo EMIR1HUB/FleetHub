@@ -49,7 +49,7 @@
         </div>
 
         <!--logo start-->
-        <a href="index.html" class="logo">Vehicle<span class="lite">Hub</span></a>
+        <a th:href="@{/index}" class="logo">Vehicle<span class="lite">Hub</span></a>
         <!--logo end-->
 
         <div class="nav search-row" id="top_menu">
@@ -283,7 +283,7 @@
                     <ul class="dropdown-menu extended logout">
                         <div class="log-arrow-up"></div>
                         <li class="eborder-top">
-                            <a href="#"><i class="icon_profile"></i>Профиль</a>
+                            <a th:href="@{/profile}"><i class="icon_profile"></i>Профиль</a>
                         </li>
                         <li>
                             <a href="#"><i class="icon_mail_alt"></i>Входящие</a>
@@ -295,7 +295,7 @@
                             <a href="#"><i class="icon_chat_alt"></i>Чаты</a>
                         </li>
                         <li>
-                            <a th:href="@{/login}"><i class="icon_key_alt"></i>Выход</a>
+                            <a th:href="@{/logout}"><i class="icon_key_alt"></i>Выход</a>
                         </li>
                         <li>
                             <a href="documentation.html"><i class="icon_key_alt"></i>Документация</a>

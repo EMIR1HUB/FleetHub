@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -31,8 +29,8 @@ public class EmployeeController {
 
   @GetMapping("/findById")
   @ResponseBody
-  public Optional<Employee> findById(Integer id) {
-    return employeeService.findById(id);
+  public Employee findById(Integer id) {
+    return employeeService.findById(id).orElse(null);
   }
 
   @PostMapping("/addNew")
@@ -40,13 +38,18 @@ public class EmployeeController {
     employee.setInitials(employee.getLastname() + " " +
             employee.getFirstname().substring(0, 1) + "." +
             employee.getOthername().substring(0, 1) + ".");
-
+//    if (employee.getPhoto().isEmpty()){
+//      employee.setPhoto("avatar_default.png");
+//    }
     employeeService.save(employee);
     return "redirect:/employees";
   }
 
   @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
   public String update(Employee employee) {
+//    if (employee.getPhoto().isEmpty()){
+//      employee.setPhoto("avatar_default.png");
+//    }
     employeeService.save(employee);
     return "redirect:/employees";
   }
@@ -54,6 +57,13 @@ public class EmployeeController {
   @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String delete(Integer id) {
     employeeService.delete(id);
+    return "redirect:/employees";
+  }
+
+  // назначить сотруднику Username
+  @GetMapping("/assignUsername")
+  public String assignUsername(Integer id){
+    employeeService.assignUsername(id);
     return "redirect:/employees";
   }
 }

@@ -1,15 +1,17 @@
 package com.suleimanov.vehiclecontrol.Models;
 
+import com.suleimanov.vehiclecontrol.Security.models.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-  private User user;
+  private final User user;
 
   public UserPrincipal(User user) {
     this.user = user;
@@ -17,18 +19,17 @@ public class UserPrincipal implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singleton(new SimpleGrantedAuthority("USER"));
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (Role role : user.getRoles()) {
+      authorities.add(new SimpleGrantedAuthority(role.getDescription()));
+    }
+//    return Collections.singleton(new SimpleGrantedAuthority("USER"));
+    return authorities;
+
 
 //    return Arrays.stream(user.getRoles().split(", "))
 //            .map(SimpleGrantedAuthority::new)
 //            .collect(Collectors.toList());
-
-
-//    List<GrantedAuthority> authorities = new ArrayList<>();
-//    for (UserAccount role : userAccount.getRoles()) {
-//      authorities.add(new SimpleGrantedAuthority(role.getFirstname()));
-//    }
-//    return authorities;
   }
 
   @Override

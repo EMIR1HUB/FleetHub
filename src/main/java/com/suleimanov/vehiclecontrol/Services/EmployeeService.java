@@ -1,7 +1,9 @@
 package com.suleimanov.vehiclecontrol.Services;
 
 import com.suleimanov.vehiclecontrol.Models.Employee;
+import com.suleimanov.vehiclecontrol.Models.User;
 import com.suleimanov.vehiclecontrol.Repositories.EmployeeRepository;
+import com.suleimanov.vehiclecontrol.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class EmployeeService {
   @Autowired
   private EmployeeRepository employeeRepository;
+  @Autowired private UserRepository userRepository;
 
   public List<Employee> getEmployees(){
     return employeeRepository.findAll();
@@ -25,7 +28,19 @@ public class EmployeeService {
     return employeeRepository.findById(id);
   }
 
+  public Optional<Employee> findByUsername(String username){
+    return Optional.ofNullable(employeeRepository.findByUsername(username));
+  }
+
   public void delete(Integer id) {
     employeeRepository.deleteById(id);
+  }
+
+  // Установить username сотрудника, firstname and lastname которого совпадают
+  public void assignUsername(Integer id){
+    Employee employee = employeeRepository.findById(id).orElse(null);
+    Optional<User> user = userRepository.findByFirstnameAndLastname(employee.getFirstname(), employee.getLastname());
+    employee.setUsername(user.map(User::getUsername).orElse(null));
+    employeeRepository.save(employee);
   }
 }

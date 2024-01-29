@@ -1,4 +1,4 @@
-package com.suleimanov.vehiclecontrol;
+package com.suleimanov.vehiclecontrol.Security;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

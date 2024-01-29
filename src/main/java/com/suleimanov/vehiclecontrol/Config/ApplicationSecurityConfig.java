@@ -1,4 +1,4 @@
-package com.suleimanov.vehiclecontrol.config;
+package com.suleimanov.vehiclecontrol.Config;
 
 import com.suleimanov.vehiclecontrol.Services.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -22,12 +21,16 @@ public class ApplicationSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
     return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                    .requestMatchers("/login", "/resources/**", "/css/**", "/fonts/**", "/img/**").permitAll()
+                    .requestMatchers("/login", "/register", "/resources/**", "/css/**", "/fonts/**", "/img/**", "/js/**").permitAll()
+                    .requestMatchers("/users/register").permitAll()
+                    .requestMatchers("/roles/user/edit/**").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
                     .anyRequest().authenticated())
             .formLogin(login -> login
                     .loginPage("/login")
                     .defaultSuccessUrl("/index", true)  // Перенаправление на /index после успешной авторизации
                     .permitAll())
+            .exceptionHandling(except -> except
+                    .accessDeniedPage("/accessDenied"))
             .logout(logout -> logout
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
@@ -42,7 +45,7 @@ public class ApplicationSecurityConfig {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder(){
+  public BCryptPasswordEncoder passwordEncoder(){
     return new BCryptPasswordEncoder();
   }
 
