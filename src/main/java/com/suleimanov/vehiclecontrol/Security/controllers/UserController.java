@@ -1,7 +1,7 @@
-package com.suleimanov.vehiclecontrol.Controllers;
+package com.suleimanov.vehiclecontrol.Security.controllers;
 
-import com.suleimanov.vehiclecontrol.Models.User;
-import com.suleimanov.vehiclecontrol.Services.UserService;
+import com.suleimanov.vehiclecontrol.Security.models.User;
+import com.suleimanov.vehiclecontrol.Security.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

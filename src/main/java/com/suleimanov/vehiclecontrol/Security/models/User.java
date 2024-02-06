@@ -1,4 +1,4 @@
-package com.suleimanov.vehiclecontrol.Models;
+package com.suleimanov.vehiclecontrol.Security.models;
 
 import com.suleimanov.vehiclecontrol.Security.models.Role;
 import jakarta.persistence.*;

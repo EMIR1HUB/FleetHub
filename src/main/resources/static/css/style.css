@@ -169,7 +169,7 @@ table tr th { color: #688a7e;}
 
 .login-img3-body{
 
-  background: url('../img/bg-11.jpg') no-repeat center center fixed;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../img/bg-login.jpg') no-repeat center center fixed;
 
   -webkit-background-size: cover;
 
@@ -2181,7 +2181,7 @@ div[data-role="editor-toolbar"] {
 
   font-size: 14px;
 
-  border-right:1px solid #e6e6e6 ;
+  /*border-right:1px solid #e6e6e6 ;*/
 
 }
 
@@ -6871,7 +6871,7 @@ ul.inbox-pagination li {
 
 .bio-row p span {
 
-    width: 100px;
+    width: 200px;
 
     display: inline-block;
 

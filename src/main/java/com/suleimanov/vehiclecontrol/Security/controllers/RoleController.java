@@ -1,9 +1,9 @@
 package com.suleimanov.vehiclecontrol.Security.controllers;
 
-import com.suleimanov.vehiclecontrol.Models.User;
+import com.suleimanov.vehiclecontrol.Security.models.User;
 import com.suleimanov.vehiclecontrol.Security.models.Role;
 import com.suleimanov.vehiclecontrol.Security.services.RoleService;
-import com.suleimanov.vehiclecontrol.Services.UserService;
+import com.suleimanov.vehiclecontrol.Security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,12 +60,12 @@ public class RoleController {
   @GetMapping("/user/assign/{userId}/{roleId}")
   public String assignRole(@PathVariable Long userId, @PathVariable Long roleId) {
     roleService.assignUserRole(userId, roleId);
-    return "redirect:/roles/user/edit" + userId;
+    return "redirect:/roles/user/edit/" + userId;
   }
 
   @GetMapping("/user/unassign/{userId}/{roleId}")
   public String unassignRole(@PathVariable Long userId, @PathVariable Long roleId){
     roleService.unassignUserRole(userId, roleId);
-    return "redirect:/roles/user/edit" + userId;
+    return "redirect:/roles/user/edit/" + userId;
   }
 }

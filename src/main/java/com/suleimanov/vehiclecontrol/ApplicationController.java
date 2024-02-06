@@ -17,11 +17,6 @@ public class ApplicationController {
     return "login";
   }
 
-  @GetMapping("/accessDenied")
-  public String accessDenied(){
-    return "accessDenied";
-  }
-
   @GetMapping("/logout")
   public String logout(){
     return "login";
@@ -30,6 +25,11 @@ public class ApplicationController {
   @GetMapping("/register")
   public String register(){
     return "register";
+  }
+
+  @GetMapping("/accessDenied")
+  public String accessDenied(){
+    return "accessDenied";
   }
 
   // Temp

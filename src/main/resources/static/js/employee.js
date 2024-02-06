@@ -6,8 +6,9 @@ $('document').ready(function () {
         // /employees/getById/?id=1
         var href = $(this).attr('href');
         $.get(href, function (employee, status) {
-            $('#txtUsernameEdit').val(employee.username);
             $('#txtIdEdit').val(employee.id);
+            $('#txtPassportEdit').val(employee.passport);
+            $('#txtUsernameEdit').val(employee.username);
             $('#txtInitialsEdit').val(employee.initials);
             $('#txtFirstnameEdit').val(employee.firstname);
             $('#txtLastnameEdit').val(employee.lastname);
@@ -24,6 +25,7 @@ $('document').ready(function () {
             $('#txtEmailEdit').val(employee.email);
             $('#ddlJobTitleEdit').val(employee.jobtitleid);
             $('#ddlEmployeeTypeEdit').val(employee.employeetypeid);
+            $('#fupPhotoEdit').val(employee.photo);
         });
         $('#editModal').modal();
     });

@@ -1933,7 +1933,7 @@ textarea.form-control {
 }
 
 .form-group {
-    display: flex;
+    /*display: flex;*/
     margin-bottom: 10px;
     align-items: center;
 }
@@ -4088,7 +4088,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .nav-tabs > li > a {
-    margin-right: 2px;
+    /*margin-right: 2px;*/
     line-height: 1.428571429;
     border: 1px solid transparent;
     border-radius: 4px 4px 0 0;

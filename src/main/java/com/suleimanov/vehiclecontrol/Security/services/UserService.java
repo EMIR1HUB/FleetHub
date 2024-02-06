@@ -1,7 +1,7 @@
-package com.suleimanov.vehiclecontrol.Services;
+package com.suleimanov.vehiclecontrol.Security.services;
 
-import com.suleimanov.vehiclecontrol.Models.User;
-import com.suleimanov.vehiclecontrol.Repositories.UserRepository;
+import com.suleimanov.vehiclecontrol.Security.models.User;
+import com.suleimanov.vehiclecontrol.Security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,10 @@ public class UserService {
 
   public Optional<User> findById(Long id){
     return userRepository.findById(id);
+  }
+
+  public Optional<User> findByUsername(String username){
+    return userRepository.findByUsername(username);
   }
 
   public void delete(Long id) {

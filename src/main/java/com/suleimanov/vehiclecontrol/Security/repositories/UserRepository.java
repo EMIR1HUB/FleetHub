@@ -1,6 +1,6 @@
-package com.suleimanov.vehiclecontrol.Repositories;
+package com.suleimanov.vehiclecontrol.Security.repositories;
 
-import com.suleimanov.vehiclecontrol.Models.User;
+import com.suleimanov.vehiclecontrol.Security.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -19,7 +19,7 @@ public class Employee extends Person{
   private EmployeeType employeeType;
   private Integer employeetypeid;
 
-  private String photo;
+//  private String photo;
   private String username;
 
   @ManyToOne

@@ -12,16 +12,16 @@
     <title>Профиль</title>
 
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-theme.css}" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="css/elegant-icons-style.css" rel="stylesheet"/>
-    <link href="css/font-awesome.min.css" rel="stylesheet"/>
-    <!-- Custom styles -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/style-responsive.css" rel="stylesheet"/>
+    <link th:href="@{/css/elegant-icons-style.css}" rel="stylesheet" />
+    <link th:href="@{/css/elegant-icons-style.css}" rel="stylesheet" />
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/style-responsive.css}" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -413,24 +413,25 @@
                     <div class="profile-widget profile-widget-info">
                         <div class="panel-body">
                             <div class="col-lg-2 col-sm-2">
-                                <h4>Jenifer Smith</h4>
+                                <h4 th:text="${employee.firstname} + ' ' + ${employee.lastname}"></h4>
                                 <div class="follow-ava">
-                                    <img src="img/profile-widget-avatar.jpg" alt="">
+                                    <img alt="" th:src="@{'/img/photos/' + ${#authentication.name} + '.jpg'}">
                                 </div>
-                                <h6>Administrator</h6>
+                                <h6 th:text="${employee.jobTitle.description}"></h6>
                             </div>
                             <div class="col-lg-4 col-sm-4 follow-info">
                                 <p>Hello I’m Jenifer Smith, a leading expert in interactive and creative design.</p>
-                                <p>@jenifersmith</p>
-                                <p><i class="fa fa-twitter">jenifertweet</i></p>
+                                <p th:text="${'@' + employee.email}"></p>
+<!--                                <p><i class="fa fa-twitter">jenifertweet</i></p>-->
                                 <h6>
                                     <span><i class="icon_clock_alt"></i>
-                                    <span th:text="${#dates.format(#dates.createNow(), 'HH:mm')}"></span>
+                                        <span th:text="${#dates.format(#dates.createNow(), 'HH:mm')}"></span>
                                     </span>
                                     <span><i class="icon_calendar"></i>
-                                    <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy')}"></span>
+                                        <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy')}"></span>
                                     </span>
-                                    <span><i class="icon_pin_alt"></i>NY</span>
+                                    <span><i class="icon_pin_alt"></i>
+                                        <span th:text="${employee.country.description}"></span></span>
                                 </h6>
                             </div>
                             <div class="col-lg-2 col-sm-6 follow-info weather-category">
@@ -475,20 +476,20 @@
                             <ul class="nav nav-tabs">
                                 <li class="active">
                                     <a data-toggle="tab" href="#recent-activity">
-                                        <i class="icon-home"></i>
-                                        Daily Activity
+                                        <i class="icon_house"></i>
+                                        Дневная активность
                                     </a>
                                 </li>
                                 <li>
                                     <a data-toggle="tab" href="#profile">
-                                        <i class="icon-user"></i>
-                                        Profile
+                                        <i class="icon_profile"></i>
+                                        Профиль
                                     </a>
                                 </li>
                                 <li class="">
                                     <a data-toggle="tab" href="#edit-profile">
-                                        <i class="icon-envelope"></i>
-                                        Edit Profile
+                                        <i class="icon_pencil-edit"></i>
+                                        Редактировать профиль
                                     </a>
                                 </li>
                             </ul>
@@ -657,37 +658,61 @@
                                 <!-- profile -->
                                 <div id="profile" class="tab-pane">
                                     <section class="panel">
-                                        <div class="bio-graph-heading">
-                                            Hello I’m Jenifer Smith, a leading expert in interactive and creative design
-                                            specializing in the mobile medium. My graduation from Massey University with
-                                            a Bachelor of Design majoring in visual communication.
-                                        </div>
+<!--                                        <div class="bio-graph-heading">-->
+<!--                                            Hello I’m Jenifer Smith, a leading expert in interactive and creative design-->
+<!--                                            specializing in the mobile medium. My graduation from Massey University with-->
+<!--                                            a Bachelor of Design majoring in visual communication.-->
+<!--                                        </div>-->
                                         <div class="panel-body bio-graph-info">
-                                            <h1>Bio Graph</h1>
+                                            <h1>Биография</h1>
                                             <div class="row">
                                                 <div class="bio-row">
-                                                    <p><span>First Name </span>: Jenifer </p>
+                                                    <p><span>Имя:</span><span th:text="${employee.firstname}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Last Name </span>: Smith</p>
+                                                    <p><span>Фамилия:</span><span th:text="${employee.lastname}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Birthday</span>: 27 August 1987</p>
+                                                    <p><span>Отчество:</span><span th:text="${employee.othername}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Country </span>: United</p>
+                                                    <p><span>Дата рождения:</span><span th:text="${#dates.format(employee.dateOfBirth, 'dd-MM-yyyy')}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Occupation </span>: UI Designer</p>
+                                                    <p><span>Паспорт:</span><span th:text="${employee.passport}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Email </span>:jenifer@mailname.com</p>
+                                                    <p><span>Пол:</span><span th:text="${employee.gender}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Mobile </span>: (+6283) 456 789</p>
+                                                    <p><span>Семейное положение:</span><span th:text="${employee.maritalStatus}"></span></p>
                                                 </div>
                                                 <div class="bio-row">
-                                                    <p><span>Phone </span>: (+021) 956 789123</p>
+                                                    <p><span>Страна проживания:</span><span th:text="${employee.country.description}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Регион:</span><span th:text="${employee.region.name}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Город:</span><span th:text="${employee.city}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Адрес:</span><span th:text="${employee.address}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Телефон:</span><span th:text="${employee.phone}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Email:</span><span th:text="${employee.email}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Тип сотрудника:</span><span th:text="${employee.employeeType.description}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Должность:</span><span th:text="${employee.jobTitle.description}"></span></p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Дата найма:</span><span th:text="${#dates.format(employee.hireDate, 'dd-MM-yyyy')}"></span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -701,76 +726,174 @@
                                 <div id="edit-profile" class="tab-pane">
                                     <section class="panel">
                                         <div class="panel-body bio-graph-info">
-                                            <h1> Profile Info</h1>
-                                            <form class="form-horizontal" role="form">
+                                            <form class="form-horizontal" th:action="@{/profile/update}" method="PUT" th:object="${employee}">
                                                 <div class="form-group">
-                                                    <label class="col-lg-2 control-label">First Name</label>
+                                                    <label class="col-lg-2 control-label">Фото:</label>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="f-name"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Last Name</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="l-name"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">About Me</label>
-                                                    <div class="col-lg-10">
-                                                        <textarea name="" id="" class="form-control" cols="30"
-                                                                  rows="5"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Country</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="c-name"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Birthday</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="b-day"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Occupation</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="occupation"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Email</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="email"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Mobile</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="mobile"
-                                                               placeholder=" ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Website URL</label>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="url"
-                                                               placeholder="http://www.demowebsite.com ">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fileUploadModal">Выбрать</button>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
+                                                    <label for="txtFirstnameEdit" class="col-lg-2 control-label">Имя:</label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="txtFirstnameEdit" th:value="${employee.firstname}" name="firstname" placeholder="Имя" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtLastnameEdit" class="col-lg-2 control-label">Фамилия:</label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="txtLastnameEdit" th:value="${employee.lastname}" name="lastname" placeholder="Фамилия" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtOthernameEdit" class="col-lg-2 control-label">Отчество:</label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="txtOthernameEdit" th:value="${employee.othername}" name="othername" placeholder="Отчество" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtPassportEdit" class="col-lg-2 control-label">Номер паспорт:</label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="txtPassportEdit" th:value="${employee.passport}" name="passport" placeholder="Номер паспорт" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="ddlGenderEdit" class="col-lg-2 control-label">Пол:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="ddlGenderEdit" name="gender">
+                                                            <option th:if="${employee.gender == 'Муж.'}" value="Муж." selected>Муж.</option>
+                                                            <option th:if="${employee.gender == 'Жен.'}" value="Жен." selected>Жен.</option>
+                                                            <option th:unless="${employee.gender == 'Муж.'}" value="Муж.">Муж.</option>
+                                                            <option th:unless="${employee.gender == 'Жен.'}" value="Жен.">Жен.</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="ddlNationalityEdit" class="col-lg-2 control-label">Гражданство:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="ddlNationalityEdit" name="countryid">
+                                                            <option th:each="country : ${countries}"
+                                                                    th:value="${country.id}"
+                                                                    th:text="${country.description}"
+                                                                    th:selected="${country.id == employee.countryid}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtDateOfBirthEdit" class="col-lg-2 control-label">Дата рождения:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="date" class="form-control" id="txtDateOfBirthEdit" th:value="${#dates.format(employee.dateOfBirth, 'yyyy-MM-dd')}" name="dateOfBirth" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtAddressEdit" class="col-lg-2 control-label">Адрес проживания:</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea style="resize: vertical" class="form-control" id="txtAddressEdit" th:field="*{address}" name="address" placeholder="Адрес проживания" rows="2" required></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="ddlRegionEdit" class="col-lg-2 control-label">Регион/Область:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="ddlRegionEdit" name="regionid">
+                                                            <option th:each="region : ${regions}"
+                                                                    th:value="${region.id}"
+                                                                    th:text="${region.name}"
+                                                                    th:selected="${region.id == employee.regionid}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtCityEdit" class="col-lg-2 control-label">Город:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txtCityEdit" th:value="${employee.city}" name="city" placeholder="Город" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="ddlMaritalStatusEdit" class="col-lg-2 control-label">Семейное положение:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="ddlMaritalStatusEdit" name="maritalStatus">
+                                                            <option th:if="${employee.maritalStatus == 'В браке'}" value="В браке" selected>В браке</option>
+                                                            <option th:if="${employee.maritalStatus == 'Разведен(-а)'}" value="Разведен(-а)" selected>Разведен(-а)</option>
+                                                            <option th:if="${employee.maritalStatus == 'Холост'}" value="Холост" selected>Холост</option>
+                                                            <option th:unless="${employee.maritalStatus == 'В браке'}" value="В браке">В браке</option>
+                                                            <option th:unless="${employee.maritalStatus == 'Разведен(-а)'}" value="Разведен(-а)">Разведен(-а)</option>
+                                                            <option th:unless="${employee.maritalStatus == 'Холост'}" value="Холост">Холост</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtPhoneEdit" class="col-lg-2 control-label">Телефон:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txtPhoneEdit" th:value="${employee.phone}" name="phone" placeholder="Телефон" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtEmailEdit" class="col-lg-2 control-label">Email:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="email" class="form-control" id="txtEmailEdit" th:value="${employee.email}" name="email" placeholder="Email" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtHireDateEdit" class="col-lg-2 control-label">Дата найма:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="date" class="form-control" id="txtHireDateEdit" th:value="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}" name="hireDate" placeholder="Дата найма" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="ddlJobTitleEdit" class="col-lg-2 control-label">Должность:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="ddlJobTitleEdit" name="jobtitleid">
+                                                            <option th:each="jobTitle : ${jobTitles}"
+                                                                    th:value="${jobTitle.id}"
+                                                                    th:text="${jobTitle.description}"
+                                                                    th:selected="${jobTitle.id == employee.jobtitleid}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="ddlEmployeeTypeEdit" class="col-lg-2 control-label">Тип сотрудника:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="ddlEmployeeTypeEdit" name="employeetypeid">
+                                                            <option>-Выбрать-</option>
+                                                            <option th:each="employeeType : ${employeeTypes}"
+                                                                    th:value="${employeeType.id}"
+                                                                    th:text="${employeeType.description}"
+                                                                    th:selected="${employeeType.id == employee.employeetypeid}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <input hidden type="text" id="txtIdEdit" name="id" th:value="${employee.id}">
+                                                <input hidden type="text" id="txtUsernameEdit" name="username" th:value="${employee.username}">
+                                                <input hidden type="text" id="fupPhotoEdit" name="photo" th:value="${employee.photo}" accept="image/*,image/jpeg">
+
+
+<!--                                                <div class="form-group">-->
+<!--                                                    <label class="col-lg-2 control-label">About Me</label>-->
+<!--                                                    <div class="col-lg-10">-->
+<!--                                                        <textarea name="" id="" class="form-control" cols="30" rows="5"></textarea>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+
+                                                <div class="form-group">
                                                     <div class="col-lg-offset-2 col-lg-10">
-                                                        <button type="submit" class="btn btn-primary">Save</button>
-                                                        <button type="button" class="btn btn-danger">Cancel</button>
+                                                        <button type="submit" class="btn btn-primary">Сохранить</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -782,12 +905,45 @@
                     </section>
                 </div>
             </div>
-
             <!-- page end-->
         </section>
     </section>
 </section>
 <!-- container section end -->
+
+<div class="modal" tabindex="-1" role="dialog" id="fileUploadModal">
+    <form th:action="@{/profile/uploadPhoto3}" method="post" enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Загрузить фото</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group row">
+                        <label for="fupPhotoAdd" class="col-sm-4 col-form-label">Выбрать фото: </label>
+                        <div class="col-sm-6">
+                            <input type="file" class="form-control-file" id="fupPhotoAdd" name="file" placeholder="Select File">
+                        </div>
+<!--                        <br>-->
+<!--                        <button type="submit" id="uploadButton" class="btn btn-primary">Загрузить</button>-->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="uploadButton" class="btn btn-primary">Загрузить</button>
+<!--                    <a href="" class="btn btn-primary" id="delRef">Upload</a>-->
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -798,6 +954,7 @@
 <script src="assets/jquery-knob/js/jquery.knob.js"></script>
 <!--custome script for all page-->
 <script src="js/scripts.js"></script>
+<script th:src="@{/js/profile.js}"></script>
 
 <script>
     //knob

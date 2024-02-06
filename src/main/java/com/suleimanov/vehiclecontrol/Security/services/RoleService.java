@@ -1,7 +1,7 @@
 package com.suleimanov.vehiclecontrol.Security.services;
 
-import com.suleimanov.vehiclecontrol.Models.User;
-import com.suleimanov.vehiclecontrol.Repositories.UserRepository;
+import com.suleimanov.vehiclecontrol.Security.models.User;
+import com.suleimanov.vehiclecontrol.Security.repositories.UserRepository;
 import com.suleimanov.vehiclecontrol.Security.exceptions.UserNotFoundException;
 import com.suleimanov.vehiclecontrol.Security.models.Role;
 import com.suleimanov.vehiclecontrol.Security.repositories.RoleRepository;

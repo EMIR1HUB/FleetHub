@@ -3,9 +3,15 @@ package com.suleimanov.vehiclecontrol.Controllers;
 import com.suleimanov.vehiclecontrol.Models.Employee;
 import com.suleimanov.vehiclecontrol.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/employees")
@@ -16,6 +22,9 @@ public class EmployeeController {
   @Autowired private EmployeeTypeService employeeTypeService;
   @Autowired private CountryService countryService;
   @Autowired private RegionService regionService;
+
+  @Value("${upload.path}")
+  private String uploadPhotoPath;
 
   @GetMapping()
   public String getEmployees(Model model) {
@@ -38,25 +47,27 @@ public class EmployeeController {
     employee.setInitials(employee.getLastname() + " " +
             employee.getFirstname().substring(0, 1) + "." +
             employee.getOthername().substring(0, 1) + ".");
-//    if (employee.getPhoto().isEmpty()){
-//      employee.setPhoto("avatar_default.png");
-//    }
+    employee.setPhoto("avatar_default.jpg");
     employeeService.save(employee);
     return "redirect:/employees";
   }
 
   @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
   public String update(Employee employee) {
-//    if (employee.getPhoto().isEmpty()){
-//      employee.setPhoto("avatar_default.png");
-//    }
     employeeService.save(employee);
+//    @RequestParam("file") MultipartFile file
     return "redirect:/employees";
   }
 
   @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String delete(Integer id) {
     employeeService.delete(id);
+    return "redirect:/employees";
+  }
+
+  @PostMapping("/uploadPhoto3")
+  public String uploadFile3(@RequestParam("file") MultipartFile file, Principal principal) throws IOException {
+    file.transferTo(new File(uploadPhotoPath + principal.getName() + ".jpg"));
     return "redirect:/employees";
   }
 
