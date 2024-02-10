@@ -1,5 +1,6 @@
 package com.suleimanov.vehiclecontrol.Services;
 
+import com.suleimanov.vehiclecontrol.Models.CommonObject;
 import com.suleimanov.vehiclecontrol.Models.VehicleMake;
 import com.suleimanov.vehiclecontrol.Repositories.VehicleMakeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,9 @@ public class VehicleMakeService {
 
   public void delete(Integer id) {
     vehicleMakeRepository.deleteById(id);
+  }
+  
+  public String getVehicleMakeDescriptionById(Integer id){
+    return findById(id).map(CommonObject::getDescription).orElse(null);
   }
 }

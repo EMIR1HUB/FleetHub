@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Vehicle {
+public class Vehicle extends Auditable<String>{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,7 @@ public class Vehicle {
   private int id;
 
   private String name;
+  private String photo;
 
   @ManyToOne
   @JoinColumn(name = "vehicletypeid", insertable = false, updatable = false)

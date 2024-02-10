@@ -2,8 +2,8 @@ package com.suleimanov.vehiclecontrol.Services;
 
 import com.suleimanov.vehiclecontrol.Exceptions.EmployeeNotFoundException;
 import com.suleimanov.vehiclecontrol.Models.Employee;
-import com.suleimanov.vehiclecontrol.Security.models.User;
 import com.suleimanov.vehiclecontrol.Repositories.EmployeeRepository;
+import com.suleimanov.vehiclecontrol.Security.models.User;
 import com.suleimanov.vehiclecontrol.Security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,9 +38,16 @@ public class EmployeeService {
   }
 
   // Установить username сотрудника, firstname and lastname которого совпадают
+//  public void assignUsername(Integer id){
+//    Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Сотрудник с id=" + id + "не найден"));
+//    Optional<User> user = userRepository.findByFirstnameAndLastname(employee.getFirstname(), employee.getLastname());
+//    employee.setUsername(user.map(User::getUsername).orElse(null));
+//    employeeRepository.save(employee);
+//  }
+
   public void assignUsername(Integer id){
     Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Сотрудник с id=" + id + "не найден"));
-    Optional<User> user = userRepository.findByFirstnameAndLastname(employee.getFirstname(), employee.getLastname());
+    Optional<User> user = userRepository.findByEmail(employee.getEmail());
     employee.setUsername(user.map(User::getUsername).orElse(null));
     employeeRepository.save(employee);
   }

@@ -1,6 +1,22 @@
 
 $('document').ready(function () {
 
+    $("#ddlCountryAdd").change(function(){
+        var selectedCountryId = $(this).val();
+
+        // Отправка запроса на получение регионов для выбранной страны
+        $.get("/countries/parameters/country/" + selectedCountryId, function(regions){
+            // Обновление раскрывающегося списка регионов
+            var regionDropdown = $("#ddlRegionAdd");
+            regionDropdown.empty();
+
+            // Заполнение раскрывающегося списка регионов новыми значениями
+            $.each(regions, function(index, region){
+                regionDropdown.append($("<option>").text(region.name).val(region.id));
+            });
+        });
+    });
+
     $('.table #editButton').on('click', function (event) {
         event.preventDefault(); // Предотвращает поведение события (переход по ссылки)
 

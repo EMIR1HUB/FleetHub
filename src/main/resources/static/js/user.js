@@ -1,7 +1,7 @@
 $('document').ready(function () {
 
     $('.table #editButton').on('click', function (event) {
-        event.preventDefault(); // Предотвращает поведение события (переход по ссылки)
+        event.preventDefault();
         // /users/getById/?id=1
         var href = $(this).attr('href');
         $.get(href, function (user, status) {
@@ -9,6 +9,7 @@ $('document').ready(function () {
             $('#usernameEdit').val(user.username);
             $('#firstnameEdit').val(user.firstname);
             $('#lastnameEdit').val(user.lastname);
+            $('#emailEdit').val(user.email);
             // $('#passwordEdit').val(user.password);
         });
         $('#editModal').modal();
@@ -22,6 +23,7 @@ $('document').ready(function () {
             $('#usernameDetails').val(user.username);
             $('#firstnameDetails').val(user.firstname);
             $('#lastnameDetails').val(user.lastname);
+            $('#emailDetails').val(user.email);
             // $('#passwordDetails').val(user.password);
             // $('#createdByDetails').val(employee.createdBy);
             // $('#createdDateDetails').val(employee.createdDate.substr(0,19).replace("T", " "));

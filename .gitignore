@@ -34,3 +34,10 @@ build/
 
 application.properties
 application.yaml
+/src/**/AuthService.java
+/src/**/AppError.java
+/src/**/JwtResponse.java
+/src/**/JwtRequest.java
+/src/**/JwtTokenUtils.java
+/src/**/AuthController.java
+/src/**/JwtRequestFilter.java

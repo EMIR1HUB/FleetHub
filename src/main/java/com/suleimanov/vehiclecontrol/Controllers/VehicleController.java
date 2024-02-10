@@ -1,13 +1,22 @@
 package com.suleimanov.vehiclecontrol.Controllers;
 
 import com.suleimanov.vehiclecontrol.Models.Vehicle;
+import com.suleimanov.vehiclecontrol.Models.VehicleMake;
+import com.suleimanov.vehiclecontrol.Models.VehicleModel;
 import com.suleimanov.vehiclecontrol.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/vehicles")
@@ -28,6 +37,10 @@ public class VehicleController {
   @Autowired private VehicleStatusService vehicleStatusService;
   @Autowired private VehicleTypeService vehicleTypeService;
   @Autowired private VehicleModelService vehicleModelService;
+  @Value("${upload.path}")
+  private String uploadPhotoPath;
+
+  private Integer idByUploadPhoto;
 
   @GetMapping()
   public String getVehicle(Model model) {
@@ -49,7 +62,9 @@ public class VehicleController {
 
   @PostMapping("/addNew")
   public String addNew(Vehicle vehicle) {
-    vehicle.setName(vehicle.getVehicleMake() + " " + vehicle.getVehicleModel());
+    vehicle.setName(vehicleMakeService.getVehicleMakeDescriptionById(vehicle.getVehiclemakeid()) + "-" +
+            vehicleModelService.getVehicleModelDescriptionById(vehicle.getVehiclemodelid()));
+    vehicle.setPhoto("default.jpg");
     vehicleService.save(vehicle);
     return "redirect:/vehicles";
   }
@@ -63,6 +78,42 @@ public class VehicleController {
   @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String delete(Integer id) {
     vehicleService.delete(id);
+    return "redirect:/vehicles";
+  }
+
+  @GetMapping("/parameters/make/{id}")
+  @ResponseBody
+  public List<VehicleModel> getRegionsByCountry(@PathVariable Integer id){
+    VehicleMake vehicleMake = vehicleMakeService.findById(id).orElse(null);
+    if (vehicleMake != null) {
+      return vehicleModelService.getVehicleModelByMake(vehicleMake);
+    } else {
+      return Collections.emptyList();
+    }
+  }
+
+  @GetMapping("/parameters/uploadPhoto/{id}")
+  public void getIdByCountry(@PathVariable Integer id){
+    idByUploadPhoto = id;
+  }
+
+  @PostMapping("/uploadPhoto")
+  public String uploadPhoto(@RequestParam("file") MultipartFile file) throws IOException {
+    String uuid = UUID.randomUUID() + ".jpg";
+    file.transferTo(new File(uploadPhotoPath + "vehicles/" + uuid));
+
+    String oldPhoto = vehicleService.findById(idByUploadPhoto).map(Vehicle::getPhoto).orElse("");
+    vehicleService.findById(idByUploadPhoto).ifPresent(vehicle -> {
+      vehicle.setPhoto(uuid);
+      vehicleService.save(vehicle);
+    });
+
+    File fileToDelete = new File(uploadPhotoPath + "vehicles/" + oldPhoto);
+    if (fileToDelete.delete()){
+      System.out.println("Файл успешно удален.");
+    } else {
+      System.err.println("Не удалось удалить файл.");
+    }
     return "redirect:/vehicles";
   }
 }

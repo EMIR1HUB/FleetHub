@@ -1,5 +1,6 @@
 package com.suleimanov.vehiclecontrol.Services;
 
+import com.suleimanov.vehiclecontrol.Models.Country;
 import com.suleimanov.vehiclecontrol.Models.Region;
 import com.suleimanov.vehiclecontrol.Repositories.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,9 @@ public class RegionService {
 
   public void delete(Integer id) {
     regionRepository.deleteById(id);
+  }
+
+  public List<Region> getRegionsByCountry(Country country){
+    return regionRepository.getRegionsByCountry(country);
   }
 }

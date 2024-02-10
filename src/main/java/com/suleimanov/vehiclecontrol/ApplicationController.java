@@ -12,6 +12,11 @@ public class ApplicationController {
     return "index";
   }
 
+  @GetMapping("/index2")
+  public String layout(){
+    return "index2";
+  }
+
   @GetMapping("/login")
   public String login(){
     return "login";
@@ -22,9 +27,9 @@ public class ApplicationController {
     return "login";
   }
 
-  @GetMapping("/register")
+  @GetMapping("/registration")
   public String register(){
-    return "register";
+    return "registration";
   }
 
   @GetMapping("/accessDenied")

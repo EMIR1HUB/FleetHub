@@ -1,6 +1,7 @@
 package com.suleimanov.vehiclecontrol.Controllers;
 
 import com.suleimanov.vehiclecontrol.Models.Country;
+import com.suleimanov.vehiclecontrol.Models.Region;
 import com.suleimanov.vehiclecontrol.Services.CountryService;
 import com.suleimanov.vehiclecontrol.Services.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -51,5 +54,14 @@ public class CountryController {
     return "redirect:/countries";
   }
 
-
+  @GetMapping("/parameters/country/{id}")
+  @ResponseBody
+  public List<Region> getRegionsByCountry(@PathVariable Integer id){
+    Country country = countryService.findById(id).orElse(null);
+    if (country != null) {
+      return regionService.getRegionsByCountry(country);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 }

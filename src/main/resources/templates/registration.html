@@ -28,9 +28,13 @@
 
 <div class="container">
 
-    <form class="login-form register" th:action="@{/users/register}" method="POST">
+    <form class="login-form register" th:action="@{/users/registration}" method="POST">
         <div class="login-wrap">
             <p class="login-img"><i class="icon_lock_alt"></i></p>
+            <div class="input-group">
+                <label for="email" class="input-group-addon"><i class="icon_profile"></i></label>
+                <input type="email" id="email" class="form-control" placeholder="Email" name="email" required>
+            </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_profile"></i></span>
                 <input type="text" class="form-control" placeholder="Имя" name="firstname" autofocus required>

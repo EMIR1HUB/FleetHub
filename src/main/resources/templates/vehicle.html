@@ -418,6 +418,7 @@
                     <table class="table table-advance table-hover">
                         <thead>
                         <tr>
+                            <th>Фото</th>
                             <th><i class="icon_table"></i> Название</th>
                             <th><i class="icon_table"></i> Описание</th>
                             <th><i class="icon_table"></i> Дата приобретения</th>
@@ -426,6 +427,10 @@
                         </thead>
                         <tbody>
                         <tr th:each="vehicle:${vehicles}">
+                            <td><a id="photoButton" th:href="@{'/img/photos/vehicles/' + ${vehicle.photo}}"
+                                   th:attr="onclick='sendGetRequest(\'' + ${vehicle.id} + '\')'">
+                                <img th:src="@{'/img/photos/vehicles/' + ${vehicle.photo}}" width="40" height="40">
+                            </a></td>
                             <td th:text="${vehicle.name}">Название</td>
                             <td th:text="${vehicle.description}">Описание</td>
                             <td th:text="${#dates.format(vehicle.acquisitionDate, 'dd-MM-yyyy')}">Дата приобретения</td>
@@ -498,13 +503,6 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="txtDescriptionAdd" class="col-sm-4 col-form-label">Описание:</label>
-                                    <div class="col-sm-6">
-                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionAdd" name="description" placeholder="Описание" rows="2"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
                                     <label for="txtAcquisitionDateAdd" class="col-sm-4 col-form-label">Дата приобретения:</label>
                                     <div class="col-sm-6">
                                         <input type="date" class="form-control" id="txtAcquisitionDateAdd" name="acquisitionDate" placeholder="Дата приобретения">
@@ -551,6 +549,13 @@
                                 </div>
                             </td>
                             <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="txtDescriptionAdd" class="col-sm-4 col-form-label">Описание:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionAdd" name="description" placeholder="Описание" rows="2"></textarea>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="txtPowerAdd" class="col-sm-4 col-form-label">Питание:</label>
@@ -605,13 +610,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="form-group row">
-                                    <label for="fupImageAdd" class="col-sm-4 col-form-label">Фото:</label>
-                                    <div class="col-sm-6">
-                                        <input type="file" class="form-control-file" id="fupImageAdd" name="photo" accept="image/*" placeholder="Выберите изображение">
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                     </table>
@@ -640,6 +638,13 @@
                     <table width="100%">
                         <tr style="display: flex">
                             <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="idEdit" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="idEdit" name="id" readonly>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="ddlVehicleTypeEdit" class="col-sm-4 col-form-label">Тип транспорта:</label>
@@ -672,13 +677,6 @@
                                     <label for="txtRegistrationDateEdit" class="col-sm-4 col-form-label">Дата регистрации:</label>
                                     <div class="col-sm-6">
                                         <input type="date" class="form-control" id="txtRegistrationDateEdit" name="registrationDate" placeholder="Дата регистрации">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="txtDescriptionEdit" class="col-sm-4 col-form-label">Описание:</label>
-                                    <div class="col-sm-6">
-                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionEdit" name="description" placeholder="Описание" rows="2"></textarea>
                                     </div>
                                 </div>
 
@@ -727,8 +725,16 @@
                                         </select>
                                     </div>
                                 </div>
+
                             </td>
                             <td width="50%">
+
+                                <div class="form-group row">
+                                    <label for="txtDescriptionEdit" class="col-sm-4 col-form-label">Описание:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionEdit" name="description" placeholder="Описание" rows="2"></textarea>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="txtPowerEdit" class="col-sm-4 col-form-label">Питание:</label>
@@ -784,12 +790,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="fupImageEdit" class="col-sm-4 col-form-label">Фото:</label>
-                                    <div class="col-sm-6">
-                                        <input type="file" class="form-control-file" id="fupImageEdit" name="photo" accept="image/*" placeholder="Выберите изображение">
-                                    </div>
-                                </div>
+                                <input hidden type="text" id="txtImageEdit" name="photo" placeholder="Выберите изображение">
                             </td>
                         </tr>
                     </table>
@@ -860,13 +861,6 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="txtDescriptionDetails" class="col-sm-4 col-form-label">Описание:</label>
-                                <div class="col-sm-6">
-                                    <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionDetails" name="description" readonly rows="2"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="txtAcquisitionDateDetails" class="col-sm-4 col-form-label">Дата приобретения:</label>
                                 <div class="col-sm-6">
                                     <input type="date" class="form-control" id="txtAcquisitionDateDetails" name="acquisitionDate" readonly>
@@ -900,6 +894,13 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="txtDescriptionDetails" class="col-sm-4 col-form-label">Описание:</label>
+                                <div class="col-sm-6">
+                                    <textarea style="resize: vertical" type="text" class="form-control" id="txtDescriptionDetails" name="description" readonly rows="2"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="ddlCurrentLocationDetails" class="col-sm-4 col-form-label">Текущее местоположение:</label>
                                 <div class="col-sm-6">
                                     <select class="form-control" id="ddlCurrentLocationDetails" name="locationid" readonly>
@@ -911,6 +912,7 @@
                                     </select>
                                 </div>
                             </div>
+
                         </td>
                         <td width="50%">
 
@@ -969,11 +971,33 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="fupImageDetails" class="col-sm-4 col-form-label">Фото:</label>
+                                <label for="createdByDetails" class="col-sm-4 col-form-label">Добавлен:</label>
                                 <div class="col-sm-6">
-                                    <input type="file" class="form-control-file" id="fupImageDetails" name="photo" readonly>
+                                    <input type="text" class="form-control" id="createdByDetails" name="createdBy" readonly>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label for="createdDateDetails" class="col-sm-4 col-form-label">Дата добавления:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="createdDateDetails" name="createdDate" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastModifiedByDetails" class="col-sm-4 col-form-label">Последнее обновление от:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="lastModifiedByDetails" name="lastModifiedByDetails" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastModifiedDateDetails" class="col-sm-4 col-form-label">Последнее обновление:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="lastModifiedDateDetails" name="lastModifiedDateDetails" readonly>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                 </table>
@@ -1006,6 +1030,36 @@
     </div>
 </div>
 
+<!-- Modal Photo -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog">
+    <form th:action="@{/vehicles/uploadPhoto}" method="POST" enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Фото</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="employeePhoto" src="" width="95%" height="95%">
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="file" class="form-control-file" id="fupPhotoAdd" name="file" placeholder="Select Photo">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="uploadButton" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 <!-- javascripts -->
 <script src="js/jquery.js"></script>
@@ -1016,6 +1070,21 @@
 <!--custome script for all page-->
 <script src="js/scripts.js"></script>
 <script src="js/vehicle.js"></script>
+
+<script>
+    function sendGetRequest(vehicleId) {
+        // Создаем новый объект XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        var url = '/vehicles/parameters/uploadPhoto/' + vehicleId;  // Формируем URL с параметром id
+        xhr.open('GET', url, true); // Открываем GET-запрос
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('GET-запрос успешно выполнен');
+            }
+        };
+        xhr.send();         // Отправляем GET-запрос
+    }
+</script>
 
 </body>
 

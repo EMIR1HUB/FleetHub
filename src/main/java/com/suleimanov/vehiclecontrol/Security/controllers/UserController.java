@@ -2,7 +2,6 @@ package com.suleimanov.vehiclecontrol.Security.controllers;
 
 import com.suleimanov.vehiclecontrol.Security.models.User;
 import com.suleimanov.vehiclecontrol.Security.services.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +16,8 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  private User userById;
+
   @GetMapping()
   public String getUser(Model model) {
     model.addAttribute("users", userService.getUsers());
@@ -26,11 +27,12 @@ public class UserController {
   @RequestMapping("/findById")
   @ResponseBody
   public User findById(Long id) {
-    return userService.findById(id).orElse(null);
+    userById = userService.findById(id).orElse(null);
+    return userById;
   }
 
-  @PostMapping("/register")
-  public RedirectView addNew(User user, RedirectAttributes redir, HttpSession session) {
+  @PostMapping("/registration")
+  public RedirectView addNew(User user, RedirectAttributes redir) {
     userService.save(user);
     // после регистрации перенаправляет user на страницу /login
     redir.addFlashAttribute("username", user.getUsername());
@@ -46,6 +48,7 @@ public class UserController {
 
   @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
   public String update(User user) {
+    user.setRoles(userById.getRoles());
     userService.save(user);
     return "redirect:/users";
   }

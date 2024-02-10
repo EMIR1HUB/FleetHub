@@ -24,41 +24,42 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class ApplicationSecurityConfig {
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                    .requestMatchers("/login", "/register", "/resources/**", "/css/**", "/fonts/**", "/img/**", "/js/**").permitAll()
-                    .requestMatchers("/users/register").permitAll()
-                    .requestMatchers("/roles/user/edit/**").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
-                    .requestMatchers("/authenticate").permitAll()
+                    .requestMatchers("/login", "/registration", "/resources/**", "/css/**", "/fonts/**", "/img/**", "/js/**").permitAll()
+                    .requestMatchers("/users/registration").permitAll()
+                    .requestMatchers("/roles/user/edit/**", "/users/**").hasAnyAuthority("SUPER_ADMIN", "ADMIN")
                     .anyRequest().authenticated())
-//            .formLogin(login -> login
-//                    .loginPage("/login")
-//                    .defaultSuccessUrl("/index", true)  // Перенаправление на /index после успешной авторизации
-//                    .permitAll())
-//            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider())
+            .formLogin(login -> login
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/index", true)  // Перенаправление на /index после успешной авторизации
+                    .permitAll())
             .exceptionHandling(except -> except.accessDeniedPage("/accessDenied"))
             .logout(logout -> logout
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/login").permitAll())
+//            .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+//            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
   }
 
   @Bean
-  public UserDetailsService userDetailsService(){
+  public UserDetailsService userDetailsService() {
     return new MyUserDetailsService();
   }
 
   @Bean
-  public BCryptPasswordEncoder passwordEncoder(){
+  public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
   // AuthenticationProvider используется для подтверждения личности пользователя (кто ты?), возвращает провайдера
   @Bean
-  public AuthenticationProvider authenticationProvider(){
+  public AuthenticationProvider authenticationProvider() {
     // реализация провайдера, который реализует userDetailsService и passwordEncoder
     // для аутентификации имя пользователя и пароля
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

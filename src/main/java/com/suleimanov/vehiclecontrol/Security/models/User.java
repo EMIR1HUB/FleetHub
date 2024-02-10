@@ -1,6 +1,5 @@
 package com.suleimanov.vehiclecontrol.Security.models;
 
-import com.suleimanov.vehiclecontrol.Security.models.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +25,9 @@ public class User {
   // @Column(name = "id", updatable = false, nullable = false)
   private String firstname;
   private String lastname;
+
+  @Column(unique = true)
+  private String email;
 
   @Column(unique = true)
   private String username;

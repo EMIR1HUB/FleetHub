@@ -29,4 +29,6 @@ public class VehicleService {
   public void delete(Integer id) {
     vehicleRepository.deleteById(id);
   }
+
+
 }

@@ -1,6 +1,36 @@
 
 $('document').ready(function () {
 
+    $("#ddlVehicleMakeAdd").change(function(){
+        var selectedVehicleMakeId = $(this).val();
+
+        // Отправка запроса на получение регионов для выбранной страны
+        $.get("/vehicles/parameters/make/" + selectedVehicleMakeId, function(vehicleModels){
+            // Обновление раскрывающегося списка регионов
+            var vehicleModelDropdown = $("#ddlVehicleModelAdd");
+            vehicleModelDropdown.empty();
+
+            // Заполнение раскрывающегося списка регионов новыми значениями
+            $.each(vehicleModels, function(index, vehicleModel){
+                vehicleModelDropdown.append($("<option>").text(vehicleModel.description).val(vehicleModel.id));
+            });
+        });
+    });
+
+    $("#ddlVehicleMakeEdit").change(function(){
+        var selectedVehicleMakeId = $(this).val();
+
+        $.get("/vehicles/parameters/make/" + selectedVehicleMakeId, function(vehicleModels){
+            // Обновление раскрывающегося списка регионов
+            var vehicleModelDropdown = $("#ddlVehicleModelEdit");
+            vehicleModelDropdown.empty();
+
+            $.each(vehicleModels, function(index, vehicleModel){
+                vehicleModelDropdown.append($("<option>").text(vehicleModel.description).val(vehicleModel.id));
+            });
+        });
+    });
+
     $('.table #editButton').on('click', function (event) {
         event.preventDefault(); // Предотвращает поведение события (переход по ссылки)
         // /vehicles/getById/?id=1
@@ -22,6 +52,7 @@ $('document').ready(function () {
             $('#txtRemarksEdit').val(vehicle.remarks);
             $('#ddlEmployeeEdit').val(vehicle.employeeid);
             $('#ddlCurrentStatusEdit').val(vehicle.vehiclestatusid);
+            $('#txtImageEdit').val(vehicle.photo);
         });
         $('#editModal').modal();
     });
@@ -29,7 +60,7 @@ $('document').ready(function () {
     $('.table #detailsButton').on('click', function (event) {
         event.preventDefault();
         var href = $(this).attr('href');      // Получаем значение "href" (URL), текущего элемента, на котором произошло событие
-        $.get(href, function (vehicleHire, status) {
+        $.get(href, function (vehicle, status) {
             $('#idDetails').val(vehicle.id);
             $('#ddlVehicleTypeDetails').val(vehicle.vehicletypeid);
             $('#txtVehicleNameDetails').val(vehicle.name);
@@ -46,8 +77,10 @@ $('document').ready(function () {
             $('#txtRemarksDetails').val(vehicle.remarks);
             $('#ddlEmployeeDetails').val(vehicle.employeeid);
             $('#ddlCurrentStatusDetails').val(vehicle.vehiclestatusid);
-            // $('#lastModifiedByDetails').val(vehicleMaintenance.lastModifiedBy);
-            // $('#lastModifiedDateDetails').val(vehicleMaintenance.lastModifiedDate.substr(0, 19).replace("T", " "))
+            $('#createdByDetails').val(vehicle.createdBy);
+            $('#createdDateDetails').val(vehicle.createdDate.substr(0,19).replace("T", " "));
+            $('#lastModifiedByDetails').val(vehicle.lastModifiedBy);
+            $('#lastModifiedDateDetails').val(vehicle.lastModifiedDate.substr(0, 19).replace("T", " "));
         });
         $('#detailsModal').modal(); // запуск модального окна
     });
@@ -60,5 +93,13 @@ $('document').ready(function () {
         $('#vehicleNameSpan').text(vehicleName);
         $('#confirmDeleteButton').attr('href', href);
         $('#deleteModal').modal();  // запуск модального окна
+    });
+
+    $('.table #photoButton').on('click',function(event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+
+        $('#employeePhoto').attr('src', href);
+        $('#photoModal').modal();
     });
 });
