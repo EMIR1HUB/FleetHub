@@ -1,6 +1,6 @@
 package com.suleimanov.vehiclecontrol;
 
-import com.suleimanov.vehiclecontrol.Security.SecurityAuditorAwareImpl;
+import com.suleimanov.vehiclecontrol.security.SecurityAuditorAwareImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

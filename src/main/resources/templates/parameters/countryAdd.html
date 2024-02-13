@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Добавление страны</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i> Параметры</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/parameters">Параметры</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/parameters/countries">Страны</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center" >
+            <div class="col-lg-12">
+                <form th:action="@{/parameters/countries}" method="POST" id="cform" class="form-horizontal">
+                    <section class="panel">
+                        <header class="panel-heading">Добавить новую запись страны</header>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Страна:</label>
+                                <div class="col-sm-6">
+                                    <input name="description" type="text" size="16" class="form-control" placeholder="Страна" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Столица:</label>
+                                <div class="col-sm-6">
+                                    <input name="capital" class="form-control" size="16" type="text" placeholder="Столица" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Континент:</label>
+                                <div class="col-sm-6">
+                                    <input name="continent" type="text" class="form-control" placeholder="Континент" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Код:</label>
+                                <div class="col-sm-6">
+                                    <input name="code" type="text"  class="form-control" placeholder="Код" required>
+                                </div>
+                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <label class="control-label col-sm-4">Нация:</label>-->
+<!--                                <div class="col-sm-6">-->
+<!--                                    <input name="nationality" type="text" class=" form-control" placeholder="Нация" required>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                                <a href="/parameters/countries" class="btn btn-danger">Выйти</a>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

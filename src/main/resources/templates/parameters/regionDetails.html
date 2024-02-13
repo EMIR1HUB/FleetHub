@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Детали записи</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i> Детали запись</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/parameters">Параметры</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/parameters/regions">Регионы</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form id="cform" class="form-horizontal">
+                    <section class="panel">
+                        <header class="panel-heading">Детали запись региона</header>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Id:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.id}" name="id" size="16" class="form-control"
+                                           disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Страна:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.country.description}" name="countryid" size="16" class="form-control"
+                                           disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Регион:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.name}" name="name" size="16"
+                                           class="form-control"
+                                           disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Столица:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.capital}" name="capital" class="form-control"
+                                           size="16"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Код:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.code}" name="code" class="form-control"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Детали:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.details}" class="form-control" name="details" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Добавлен:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.createdBy}" class="form-control"
+                                           name="createdBy"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Дата добавления:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${#dates.format(region.createdDate, 'dd-MM-yyyy HH:mm:ss')}" class="form-control"
+                                           name="createdDate"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Последнее обновление от:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${region.lastModifiedBy}" class="form-control"
+                                           name="lastModifiedByDetails"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Дата обновления:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${#dates.format(region.lastModifiedDate, 'dd-MM-yyyy HH:mm:ss')}"
+                                           class="form-control" name="lastModifiedDateDetails"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a href="/parameters/regions" class="btn btn-danger">Выйти</a>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

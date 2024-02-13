@@ -8,41 +8,47 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" th:href="@{/img/logo-big.png}">
 
     <title>VehicleHub - Приборная панель</title>
 
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-theme.css}" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="css/elegant-icons-style.css" rel="stylesheet"/>
-    <link href="css/font-awesome.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/elegant-icons-style.css}" rel="stylesheet"/>
+    <!--  <link th:href="@{css/font-awesome.min.css}" rel="stylesheet" />-->
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+
+    <!-- Load font awesome icons -->
+    <!--
+    x<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">-->
+
     <!-- full calendar css-->
-    <link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet"/>
-    <link href="assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet"/>
+    <link th:href="@{/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/fullcalendar/fullcalendar/fullcalendar.css}" rel="stylesheet"/>
     <!-- easy pie chart-->
-    <link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css"
+    <link th:href="@{/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css}" rel="stylesheet" type="text/css"
           media="screen"/>
     <!-- owl carousel -->
-    <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
-    <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}" type="text/css">
+    <link th:href="@{/css/jquery-jvectormap-1.2.2.css}" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="css/fullcalendar.css">
-    <link href="css/widgets.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/style-responsive.css" rel="stylesheet"/>
-    <link href="css/xcharts.min.css" rel=" stylesheet">
-    <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/fullcalendar.css}">
+    <link th:href="@{/css/widgets.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/style-responsive.css}" rel="stylesheet"/>
+    <link th:href="@{/css/xcharts.min.css}" rel=" stylesheet">
+    <link th:href="@{/css/jquery-ui-1.10.4.min.css}" rel="stylesheet">
 </head>
 
 <body>
 <!-- container section start -->
 <section id="container" class="">
 
-
+    <!--header start-->
     <header class="header dark-bg">
         <div class="toggle-nav">
             <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i
@@ -50,7 +56,7 @@
         </div>
 
         <!--logo start-->
-        <a th:href="@{/index}" class="logo">Vehicle<span class="lite">Hub</span></a>
+        <a href="/index" class="logo">Vehicle<span class="lite">Hub</span></a>
         <!--logo end-->
 
         <div class="nav search-row" id="top_menu">
@@ -172,7 +178,7 @@
                         </li>
                         <li>
                             <a href="#">
-                                <span class="photo"><img alt="avatar" src="./img/avatar-mini.jpg"></span>
+                                <span class="photo"><img alt="avatar" th:src="@{/img/avatar-mini.jpg}"></span>
                                 <span class="subject">
                                     <span class="from">Greg  Martin</span>
                                     <span class="time">1 min</span>
@@ -184,7 +190,7 @@
                         </li>
                         <li>
                             <a href="#">
-                                <span class="photo"><img alt="avatar" src="./img/avatar-mini2.jpg"></span>
+                                <span class="photo"><img alt="avatar" th:src="@{/img/avatar-mini2.jpg}"></span>
                                 <span class="subject">
                                     <span class="from">Bob   Mckenzie</span>
                                     <span class="time">5 mins</span>
@@ -196,7 +202,7 @@
                         </li>
                         <li>
                             <a href="#">
-                                <span class="photo"><img alt="avatar" src="./img/avatar-mini3.jpg"></span>
+                                <span class="photo"><img alt="avatar" th:src="@{/img/avatar-mini3.jpg}"></span>
                                 <span class="subject">
                                     <span class="from">Phillip   Park</span>
                                     <span class="time">2 hrs</span>
@@ -208,7 +214,7 @@
                         </li>
                         <li>
                             <a href="#">
-                                <span class="photo"><img alt="avatar" src="./img/avatar-mini4.jpg"></span>
+                                <span class="photo"><img alt="avatar" th:src="@{/img/avatar-mini4.jpg}"></span>
                                 <span class="subject">
                                     <span class="from">Ray   Munoz</span>
                                     <span class="time">1 day</span>
@@ -319,144 +325,141 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu">
                 <li class="active">
-                    <a class="" th:href="@{/index}">
+                    <a class="" href="/index">
                         <i class="icon_house_alt"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;" class="">
-                        <i class="icon_document_alt"></i>
+                        <i class="fa fa-truck"></i>
                         <span>Транспорт</span>
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/vehicles}">Данные о транспорте</a></li>
-                        <li><a class="" th:href="@{/vehicles_maintenances}">Техобслуживание</a></li>
-                        <li><a class="" th:href="@{/vehicles_movements}">Передвижение</a></li>
-                        <li><a class="" th:href="@{/vehicles_hires}">Аренда</a></li>
+                        <li><a class="" href="/vehicles">Транспорт</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;" class="">
-                        <i class="icon_desktop"></i>
-                        <span>Параметры</span>
+                        <i class="fa fa-users"></i>
+                        <span>HR</span>
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/vehicles_makes}">Марки траспнортов</a></li>
-                        <li><a class="" th:href="@{/vehicles_types}">Типы транспортов</a></li>
-                        <li><a class="" th:href="@{/vehicles_models}">Модели транспортов</a></li>
-                        <li><a class="" th:href="@{/vehicles_statuses}">Состояние</a></li>
+                        <li><a class="" href="/hr">HR параметры</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;" class="">
-                        <i class="icon_contacts_alt"></i>
-                        <span>Люди</span>
-                        <span class="menu-arrow arrow_carrot-right"></span>
-                    </a>
-                    <ul class="sub">
-                        <li><a class="" th:href="@{/employees}">Сотрудники</a></li>
-                        <li><a class="" th:href="@{/clients}">Клиенты</a></li>
-                        <li><a class="" th:href="@{/suppliers}">Поставщики</a></li>
-                        <li><a class="" th:href="@{/contacts}">Контакты</a></li>
-                        <li><a class="" th:href="@{/users}">Пользователи</a></li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="javascript:;" class="">
-                        <i class="icon_piechart"></i>
-                        <span>HR параметры</span>
-                        <span class="menu-arrow arrow_carrot-right"></span>
-                    </a>
-                    <ul class="sub">
-                        <li><a class="" th:href="@{/job_titles}">Должности</a></li>
-                        <li><a class="" th:href="@{/employees_types}">Типы сотрудников</a></li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="javascript:;" class="">
-                        <i class="icon_table"></i>
+                        <i class="fa fa-usd"></i>
                         <span>Счета</span>
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/invoices}">Счета-фактура</a></li>
-                        <li><a class="" th:href="@{/invoices_statuses}">Статусы счетов</a></li>
+                        <li><a class="" href="/accounts">Счета-фактуры</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;" class="">
-                        <i class="icon_globe"></i>
-                        <span>Локации</span>
+                        <i class="fa fa-usd"></i>
+                        <span>Начисление</span>
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" th:href="@{/countries}">Страны</a></li>
-                        <li><a class="" th:href="@{/regions}">Регионы</a></li>
-                        <li><a class="" th:href="@{/locations}">Местоположения</a></li>
+                        <li><a class="" href="/payroll">Расчетная ведомость</a></li>
                     </ul>
                 </li>
-
+                <li class="sub-menu">
+                    <a href="javascript:;" class="">
+                        <i class="fa fa-question"></i>
+                        <span>Справочная</span>
+                        <span class="menu-arrow arrow_carrot-right"></span>
+                    </a>
+                    <ul class="sub">
+                        <li><a class="" href="/helpdesk">Служба поддержки</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;" class="">
+                        <i class="fa fa-gear"></i>
+                        <span>Параметры</span>
+                        <span class="menu-arrow arrow_carrot-right"></span>
+                    </a>
+                    <ul class="sub">
+                        <li><a class="" href="/parameters">Параметры</a></li>
+                    </ul>
+                </li>
             </ul>
             <!-- sidebar menu end-->
         </div>
     </aside>
     <!--sidebar end-->
 
+
     <!--main content start-->
     <section id="main-content">
-        <div layout:fragment="content">
-            <p>Changing contents</p>
-        </div>
+        <section class="wrapper">
+            <!--            <div class="row">-->
+            <!--                <div class="col-lg-12">-->
+            <!--                    <h3 class="page-header"><i class="fa fa fa-bars"></i>Dashboard</h3>-->
+            <!--                    <ol class="breadcrumb">-->
+            <!--                        <li><i class="fa fa-home"></i><a th:href="@{index}">Главная</a></li>-->
+            <!--                        <li><i class="fa fa-bars"></i>Параметры</li>-->
+            <!--                        <li><i class="fa fa-square-o"></i>Страны</li>-->
+            <!--                    </ol>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <div layout:fragment="content">
+
+            </div>
+        </section>
     </section>
     <!--main content end-->
 </section>
 <!-- container section start -->
 
 <!-- javascripts -->
-<script src="js/jquery.js"></script>
-<script src="js/jquery-ui-1.10.4.min.js"></script>
-<script src="js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/js/jquery-1.8.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui-1.9.2.custom.min.js}"></script>
 <!-- bootstrap -->
-<script src="js/bootstrap.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script th:src="@{/js/jquery.scrollTo.min.js}"></script>
+<script th:src="@{/js/jquery.nicescroll.js}" type="text/javascript"></script>
 <!-- charts scripts -->
-<script src="assets/jquery-knob/js/jquery.knob.js"></script>
-<script src="js/jquery.sparkline.js" type="text/javascript"></script>
-<script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="js/owl.carousel.js"></script>
+<script th:src="@{/assets/jquery-knob/js/jquery.knob.js}"></script>
+<script th:src="@{/js/jquery.sparkline.js}" type="text/javascript}"></script>
+<script th:src="@{/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js}"></script>
+<script th:src="@{/js/owl.carousel.js}"></script>
 <!-- jQuery full calendar -->
-<
-<script src="js/fullcalendar.min.js"></script>
+<script th:src="@{/js/fullcalendar.min.js}"></script>
 <!-- Full Google Calendar - Calendar -->
-<script src="assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+<script th:src="@{/assets/fullcalendar/fullcalendar/fullcalendar.js}"></script>
 <!--script for this page only-->
-<script src="js/calendar-custom.js"></script>
-<script src="js/jquery.rateit.min.js"></script>
+<script th:src="@{/js/calendar-custom.js}"></script>
+<script th:src="@{/js/jquery.rateit.min.js}"></script>
 <!-- custom select -->
-<script src="js/jquery.customSelect.min.js"></script>
-<script src="assets/chart-master/Chart.js"></script>
+<script th:src="@{/js/jquery.customSelect.min.js}"></script>
+<script th:src="@{/assets/chart-master/Chart.js}"></script>
 
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script th:src="@{/js/scripts.js}"></script>
 <!-- custom script for this page-->
-<script src="js/sparkline-chart.js"></script>
-<script src="js/easy-pie-chart.js"></script>
-<script src="js/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="js/jquery-jvectormap-world-mill-en.js"></script>
-<script src="js/xcharts.min.js"></script>
-<script src="js/jquery.autosize.min.js"></script>
-<script src="js/jquery.placeholder.min.js"></script>
-<script src="js/gdp-data.js"></script>
-<script src="js/morris.min.js"></script>
-<script src="js/sparklines.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/jquery.slimscroll.min.js"></script>
+<script th:src="@{/js/sparkline-chart.js}"></script>
+<script th:src="@{/js/easy-pie-chart.js}"></script>
+<script th:src="@{/js/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{/js/jquery-jvectormap-world-mill-en.js}"></script>
+<script th:src="@{/js/xcharts.min.js}"></script>
+<script th:src="@{/js/jquery.autosize.min.js}"></script>
+<script th:src="@{/js/jquery.placeholder.min.js}"></script>
+<script th:src="@{/js/gdp-data.js}"></script>
+<script th:src="@{/js/morris.min.js}"></script>
+<script th:src="@{/js/sparklines.js}"></script>
+<script th:src="@{/js/charts.js}"></script>
+<script th:src="@{/js/jquery.slimscroll.min.js}"></script>
 <script>
     //knob
     $(function () {
@@ -502,6 +505,7 @@
         });
     });
 </script>
+<th:block layout:fragment="script"></th:block>
 
 </body>
 

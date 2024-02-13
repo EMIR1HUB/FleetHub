@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Обновление данных местоположения</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i> Обнолвние данных</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/parameters">Параметры</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/parameters/locations">Местоположения</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/parameters/locations}" method="POST" id="cform" class="form-horizontal"
+                      onsubmit="return confirm('Вы уверены, что хотите обновить данные?')">
+                    <section class="panel">
+                        <header class="panel-heading">Обновление данных местоположения</header>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Id:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${location.id}" size="16" name="id" class="form-control" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Название:</label>
+                                <div class="col-sm-6">
+                                    <input type="text"  th:value="${location.description}" class="form-control" size="16" name="description" placeholder="Название" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Страна:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlCountryAdd" name="countryid">
+                                        <option th:value="${null}">-Выбрать-</option>
+                                        <option th:each="country : ${countries}"
+                                                th:value="${country.id}"
+                                                th:selected="${country.id} == ${location.countryid}? true: false"
+                                                th:text="${country.description}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Регион:</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="ddlRegionAdd" name="regionid">
+                                        <option th:value="${null}">-Выбрать-</option>
+                                        <option th:each="region : ${regions}"
+                                                th:value="${region.id}"
+                                                th:selected="${region.id} == ${location.regionid}? true: false"
+                                                th:text="${region.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Город:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${location.city}" class="form-control" size="16" name="city" placeholder="Город" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Адрес:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${location.address}" class="form-control" size="16" name="address" placeholder="Адрес" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Детали:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${location.details}" class="form-control" name="details" placeholder="Детали">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                                <a href="/parameters/locations" class="btn btn-danger">Выйти</a>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script defer="defer">
+        $('document').ready(function () {
+            $("#ddlCountryAdd").on('change', function () {
+                $("#ddlRegionAdd").empty().append('<option value="null">-Выбрать-</option>')
+                var countryId = $(this).val();
+
+                // Отправка запроса на получение регионов для выбранной страны
+                $.get("/parameters/countries/" + countryId, function (country, status) {
+                    // Обновление раскрывающегося списка регионов
+                    var regions = country.regions;
+
+                    // Заполнение раскрывающегося списка регионов новыми значениями
+                    $.each(regions, function (index, region) {
+                        $("#ddlRegionAdd").append($("<option>").text(region.name).val(region.id));
+                    });
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

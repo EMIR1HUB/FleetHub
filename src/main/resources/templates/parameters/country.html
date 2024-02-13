@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<head>
+    <title>Управление странами</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Список стран</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/parameters">Параметры</a></li>
+                <li><i class="fa fa-square-o"></i>Страны</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- page start-->
+    <div class="row">
+        <div class="col-lg-12">
+            <a class="btn btn-primary" th:href="@{countries/addNew}">Добавить</a>
+            <table class="table table-advance table-hover">
+                <thead>
+                <tr>
+                    <th><i class="icon_table"></i> Страна</th>
+                    <th><i class="icon_table"></i> Столица</th>
+                    <th><i class="icon_table"></i> Код</th>
+                    <th><i class="icon_table"></i> Континет</th>
+                    <th><i class="icon_cogs"></i> Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="country:${countries}">
+                    <td th:text="${country.description}">#</td>
+                    <td th:text="${country.capital}">#</td>
+                    <td th:text="${country.code}">#</td>
+                    <td th:text="${country.continent}">#</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-primary" id="editButton"
+                               th:href="@{/parameters/countries/edit/{id}(id=${country.id})}"><i class="icon_pencil-edit"></i></a>
+                            <a class="btn btn-success" id="detailsButton"
+                               th:href="@{/parameters/countries/details/{id}(id=${country.id})}"><i class="icon_document_alt"></i></a>
+                            <a class="btn btn-danger"
+                               onclick="return confirm('Вы уверены, что хотите удалить данные страны')"
+                               th:href="@{/parameters/countries/delete/{id}(id=${country.id})}"><i class="icon_close_alt2"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
