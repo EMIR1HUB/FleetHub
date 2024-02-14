@@ -26,8 +26,7 @@ public class ContactController {
   }
 
   @GetMapping("/addNew")
-  public String getAddNew(Model model){
-    model.addAttribute("contacts", contactService.getContacts());
+  public String getAddNew(){
     return "/parameters/contactAdd";
   }
 
