@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/parameters/regions")
 public class RegionController {
 
-  @Autowired private RegionService regionService;
-  @Autowired private CountryService countryService;
+  @Autowired
+  private RegionService regionService;
+  @Autowired
+  private CountryService countryService;
 
-  public void addModelAttribute(Model model){
+  public void addModelAttribute(Model model) {
     model.addAttribute("regions", regionService.getRegions());
     model.addAttribute("countries", countryService.getCountries());
   }
@@ -27,7 +29,7 @@ public class RegionController {
   }
 
   @GetMapping("/addNew")
-  public String getAddNew(Model model){
+  public String getAddNew(Model model) {
     addModelAttribute(model);
     return "/parameters/regionAdd";
   }
@@ -39,7 +41,7 @@ public class RegionController {
   }
 
   @GetMapping("/{op}/{id}")
-  public String getEdit(@PathVariable String op, @PathVariable Integer id, Model model){
+  public String getEdit(@PathVariable String op, @PathVariable Integer id, Model model) {
     addModelAttribute(model);
     model.addAttribute("region", regionService.getById(id));
     return "/parameters/region" + op;

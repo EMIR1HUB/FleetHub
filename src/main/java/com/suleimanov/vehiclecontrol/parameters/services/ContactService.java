@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ContactService {
@@ -22,8 +21,8 @@ public class ContactService {
     contactRepository.save(contact);
   }
 
-  public Optional<Contact> findById(Integer id){
-    return contactRepository.findById(id);
+  public Contact getById(Integer id){
+    return contactRepository.findById(id).orElse(null);
   }
 
   public void delete(Integer id) {

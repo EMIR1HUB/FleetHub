@@ -7,10 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Controller
-@RequestMapping("/contacts")
+@RequestMapping("/parameters/contacts")
 public class ContactController {
 
   @Autowired private ContactService contactService;
@@ -18,31 +16,36 @@ public class ContactController {
   @GetMapping()
   public String getContacts(Model model) {
     model.addAttribute("contacts", contactService.getContacts());
-    return "contact";
+    return "/parameters/contacts";
   }
 
-
-  @GetMapping("/findById")
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<Contact> findById(Integer id) {
-    return contactService.findById(id);
+  public Contact getContact(@PathVariable Integer id) {
+    return contactService.getById(id);
   }
 
-  @PostMapping("/addNew")
+  @GetMapping("/addNew")
+  public String getAddNew(Model model){
+    model.addAttribute("contacts", contactService.getContacts());
+    return "/parameters/contactAdd";
+  }
+
+  @PostMapping()
   public String addNew(Contact contact) {
     contactService.save(contact);
-    return "redirect:/contacts";
+    return "redirect:/parameters/contacts";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(Contact contact) {
-    contactService.save(contact);
-    return "redirect:/contacts";
+  @GetMapping("/{op}/{id}")
+  public String getEdit(@PathVariable String op, @PathVariable Integer id, Model model) {
+    model.addAttribute("contact", contactService.getById(id));
+    return "/parameters/contact" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Integer id) {
     contactService.delete(id);
-    return "redirect:/contacts";
+    return "redirect:/parameters/contacts";
   }
 }

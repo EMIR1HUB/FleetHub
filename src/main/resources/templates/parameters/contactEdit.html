@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Обновление данных контакта</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i> Обнолвние данных</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/parameters">Параметры</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/parameters/contacts">Контакты</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/parameters/contacts}" method="POST" id="cform" class="form-horizontal"
+                      onsubmit="return confirm('Вы уверены, что хотите обновить данные?')">
+                    <section class="panel">
+                        <header class="panel-heading">Обновление данных контакта</header>
+                        <div class="panel-body">
+                            <div class="form-group row">
+                                <label class="control-label col-sm-4">Id:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.id}" size="16" name="id" class="form-control" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtFirstnameAdd" class="col-form-label col-sm-4">Имя:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.firstname}" class="form-control" id="txtFirstnameAdd" name="firstname" placeholder="Имя" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtLastNameAdd" class="col-form-label col-sm-4">Фамилия:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.lastname}" class="form-control" id="txtLastNameAdd" name="lastname" placeholder="Фамилия">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtEmailAdd" class="col-form-label col-sm-4">Email:</label>
+                                <div class="col-sm-6">
+                                    <input type="email" th:value="${contact.email}" class="form-control" id="txtEmailAdd" name="email" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtMobileAdd" class="col-form-label col-sm-4">Телефон:</label>
+                                <div class="col-sm-6">
+                                    <input type="tel" th:value="${contact.phone}" class="form-control" id="txtMobileAdd" name="phone" placeholder="+7 999 555 8822" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtRemarksAdd" class="col-form-label col-sm-4">Комментарий:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.remarks}" class="form-control" id="txtRemarksAdd" name="remarks" placeholder="Комментарий">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                                <a href="/parameters/contacts" class="btn btn-danger">Выйти</a>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script defer="defer">
+        $('document').ready(function () {
+            $("#ddlCountryAdd").on('change', function () {
+                $("#ddlRegionAdd").empty().append('<option value="null">-Выбрать-</option>')
+                var countryId = $(this).val();
+
+                // Отправка запроса на получение регионов для выбранной страны
+                $.get("/parameters/countries/" + countryId, function (country, status) {
+                    // Обновление раскрывающегося списка регионов
+                    var regions = country.regions;
+
+                    // Заполнение раскрывающегося списка регионов новыми значениями
+                    $.each(regions, function (index, region) {
+                        $("#ddlRegionAdd").append($("<option>").text(region.name).val(region.id));
+                    });
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

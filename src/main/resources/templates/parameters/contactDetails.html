@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Детали записи</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i> Детали запись</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/parameters">Параметры</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/parameters/contacts">Контакты</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form id="cform" class="form-horizontal">
+                    <section class="panel">
+                        <header class="panel-heading">Детали контакта</header>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Id:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.id}" class="form-control" size="16" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtFirstnameAdd" class="control-label col-sm-4">Имя:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.firstname}"  class="form-control" id="txtFirstnameAdd" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtLastNameAdd" class="control-label col-sm-4">Фамилия:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.lastname}"  class="form-control" id="txtLastNameAdd" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtEmailAdd" class="control-label col-sm-4">Email:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.email}"  class="form-control" id="txtEmailAdd" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="txtPhoneAdd" class="control-label col-sm-4">Телефон:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.phone}"  class="form-control" id="txtPhoneAdd" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="txtRemarksAdd" class="control-label col-sm-4">Комментарий:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.remarks}"  class="form-control" id="txtRemarksAdd" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Добавлен:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.createdBy}" class="form-control" name="createdBy"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Дата добавления:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${#dates.format(contact.createdDate, 'dd-MM-yyyy HH:mm:ss')}" class="form-control"
+                                           name="createdDate"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Последнее обновление от:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${contact.lastModifiedBy}" class="form-control"
+                                           name="lastModifiedByDetails"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Дата обновления:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:value="${#dates.format(contact.lastModifiedDate, 'dd-MM-yyyy HH:mm:ss')}"
+                                           class="form-control" name="lastModifiedDateDetails"
+                                           disabled>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <a href="/parameters/contacts" class="btn btn-danger">Выйти</a>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
