@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SupplierService {
@@ -22,8 +21,8 @@ public class SupplierService {
     supplierRepository.save(supplier);
   }
 
-  public Optional<Supplier> findById(Integer id){
-    return supplierRepository.findById(id);
+  public Supplier getById(Integer id){
+    return supplierRepository.findById(id).orElse(null);
   }
 
   public void delete(Integer id) {

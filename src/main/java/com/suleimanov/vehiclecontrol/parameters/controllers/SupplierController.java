@@ -1,18 +1,16 @@
 package com.suleimanov.vehiclecontrol.parameters.controllers;
 
-import com.suleimanov.vehiclecontrol.parameters.services.RegionService;
-import com.suleimanov.vehiclecontrol.parameters.services.SupplierService;
 import com.suleimanov.vehiclecontrol.parameters.models.Supplier;
 import com.suleimanov.vehiclecontrol.parameters.services.CountryService;
+import com.suleimanov.vehiclecontrol.parameters.services.RegionService;
+import com.suleimanov.vehiclecontrol.parameters.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Controller
-@RequestMapping("/suppliers")
+@RequestMapping("/parameters/suppliers")
 public class SupplierController {
 
   @Autowired private SupplierService supplierService;
@@ -20,34 +18,36 @@ public class SupplierController {
   @Autowired private CountryService countryService;
 
   @GetMapping()
-  public String getSupplier(Model model) {
+  public String getAll(Model model) {
     model.addAttribute("suppliers", supplierService.getSuppliers());
     model.addAttribute("countries", countryService.getCountries());
     model.addAttribute("regions", regionService.getRegions());
-    return "supplier";
+    return "/parameters/suppliers";
   }
 
-  @GetMapping("/findById")
-  @ResponseBody
-  public Optional<Supplier> findById(Integer id) {
-    return supplierService.findById(id);
+  @GetMapping("/addNew")
+  public String getAddNew(Model model){
+    model.addAttribute("countries", countryService.getCountries());
+   return "/parameters/supplierAdd";
   }
 
-  @PostMapping("/addNew")
+  @PostMapping()
   public String addNew(Supplier supplier) {
     supplierService.save(supplier);
-    return "redirect:/suppliers";
+    return "redirect:/parameters/suppliers";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(Supplier supplier) {
-    supplierService.save(supplier);
-    return "redirect:/suppliers";
+  @RequestMapping(value = "/{op}/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+  public String edit(@PathVariable String op, @PathVariable Integer id, Model model) {
+    model.addAttribute("countries", countryService.getCountries());
+    model.addAttribute("regions", regionService.getRegions());
+    model.addAttribute("supplier", supplierService.getById(id));
+    return "/parameters/supplier" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Integer id) {
     supplierService.delete(id);
-    return "redirect:/suppliers";
+    return "redirect:/parameters/suppliers";
   }
 }
