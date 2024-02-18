@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Страна:</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" id="ddlCountryAdd" name="countryid">
+                                    <select class="form-control" id="ddlCountryAdd" name="countryid" required>
                                         <option th:value="${null}">-Выбрать-</option>
                                         <option th:each="country : ${countries}"
                                                 th:value="${country.id}"
@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Регион:</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" id="ddlRegionAdd" name="regionid">
+                                    <select class="form-control" id="ddlRegionAdd" name="regionid" required>
                                         <option th:value="${null}">-Выбрать-</option>
                                         <option th:each="region : ${regions}"
                                                 th:value="${region.id}"

@@ -7,45 +7,41 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @Controller
-@RequestMapping("/vehicles_types")
+@RequestMapping("/vehicles/vehicle-types")
 public class VehicleTypeController {
 
   @Autowired
   private VehicleTypeService vehicleTypeService;
 
   @GetMapping()
-  public String getVehicleType(Model model) {
-    List<VehicleType> vehicleTypeList = vehicleTypeService.getVehiclesTypes();
-
-    model.addAttribute("vehicleTypes", vehicleTypeList);
-    return "vehicle_type";
+  public String getVehicleTypes(Model model) {
+    model.addAttribute("vehicleTypes", vehicleTypeService.getVehiclesTypes());
+    model.addAttribute("count", vehicleTypeService.getCount());
+    return "/vehicles/vehicle-types";
   }
 
-  @GetMapping("/findById")
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<VehicleType> findById(Integer id) {
-    return vehicleTypeService.findById(id);
+  public VehicleType getVehicleType(@PathVariable Integer id) {
+    return vehicleTypeService.getById(id);
   }
 
-  @PostMapping("/addNew")
-  public String addNew(VehicleType vehicleType) {
+  @PostMapping()
+  public String add(VehicleType vehicleType) {
     vehicleTypeService.save(vehicleType);
-    return "redirect:/vehicles_types";
+    return "redirect:/vehicles/vehicle-types";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(VehicleType vehicleType) {
-    vehicleTypeService.save(vehicleType);
-    return "redirect:/vehicles_types";
+  @GetMapping("/{op}/{id}")
+  public String edit(@PathVariable String op, @PathVariable Integer id, Model model) {
+    model.addAttribute("vehicleType", vehicleTypeService.getById(id));
+    return "/vehicles/vehicle-type-" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Integer id) {
     vehicleTypeService.delete(id);
-    return "redirect:/vehicles_types";
+    return "redirect:/vehicles/vehicle-types";
   }
 }

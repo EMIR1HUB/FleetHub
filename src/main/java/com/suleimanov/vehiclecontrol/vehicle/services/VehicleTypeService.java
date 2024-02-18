@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VehicleTypeService {
@@ -22,11 +21,15 @@ public class VehicleTypeService {
     vehicleTypeRepository.save(vehicleType);
   }
 
-  public Optional<VehicleType> findById(Integer id){
-    return vehicleTypeRepository.findById(id);
+  public VehicleType getById(Integer id){
+    return vehicleTypeRepository.findById(id).orElse(null);
   }
 
   public void delete(Integer id) {
     vehicleTypeRepository.deleteById(id);
+  }
+
+  public Long getCount(){
+    return vehicleTypeRepository.count();
   }
 }

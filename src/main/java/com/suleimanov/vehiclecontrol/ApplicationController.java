@@ -17,7 +17,7 @@ public class ApplicationController {
   }
   @GetMapping("/vehicles")
   public String vehicle(){
-    return "vehicle/index";
+    return "vehicles/index";
   }
   @GetMapping("/payroll")
   public String payroll(){
