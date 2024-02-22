@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VehicleHireService {
@@ -18,12 +17,16 @@ public class VehicleHireService {
     return vehicleHireRepository.findAll();
   }
 
+  public List<VehicleHire> getByKeyword(String keyword){
+    return vehicleHireRepository.findByKeyword(keyword);
+  }
+
   public void save(VehicleHire vehicleHire){
     vehicleHireRepository.save(vehicleHire);
   }
 
-  public Optional<VehicleHire> findById(Integer id){
-    return vehicleHireRepository.findById(id);
+  public VehicleHire getById(Integer id){
+    return vehicleHireRepository.findById(id).orElse(null);
   }
 
   public void delete(Integer id) {

@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/vehicles/vehicle")
+@RequestMapping("//vehicles/vehicle")
 public class VehicleController {
 
   // Vehicles

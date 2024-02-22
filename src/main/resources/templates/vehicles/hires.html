@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<head>
+    <title>Управление аренды транспортов</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Список аренды транспортов</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/vehicles/vehicle-hires">Аренды</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- page start-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-3">
+                    <a class="btn btn-primary" th:href="@{/vehicles/vehicle-hires/addNew}">Добавить</a>
+                </div>
+                <form th:action="@{/vehicles/vehicle-hires/page}">
+                    <div class="col-lg-2 navbar-form">
+                        <input type="text" name="keyword" class="form-control" placeholder="Поиск">
+                    </div>
+                    <div class="col-lg-1">
+                        <input type="submit" class="btn-success form-control" value="Найти">
+                    </div>
+                </form>
+            </div>
+            <table class="table table-advance table-hover">
+                <thead>
+                <tr>
+                    <th><i class="icon_table"></i> Id</th>
+                    <th><i class="icon_table"></i> Транспорт</th>
+                    <th><i class="icon_table"></i> Клиент</th>
+                    <th><i class="icon_table"></i> Дата выдачи</th>
+                    <th><i class="icon_table"></i> Дата получения</th>
+                    <th><i class="icon_cogs"></i> Действия</th>
+                </tr>
+                <tr th:each="hire:${hires}">
+                    <td th:text="${hire.id}">id</td>
+                    <td>Транспорт</td>
+<!--                    <td th:text="${hire.vehicle.name}">Транспорт</td>-->
+                    <td th:text="${hire.client.name}">Клиент</td>
+                    <td th:text="${#dates.format(hire.dateOut, 'dd-MM-yyyy')} + ' /' + ${hire.timeOut}">Дата выдачи</td>
+                    <td th:text="${#dates.format(hire.dateIn, 'dd-MM-yyyy')} + ' /' + ${hire.timeIn}">Дата получения</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-primary" id="editButton"
+                               th:href="@{/vehicles/vehicle-hires/Edit/{id}(id=${hire.id})}"><i
+                                    class="icon_pencil-edit"></i></a>
+                            <a class="btn btn-success" id="detailsButton"
+                               th:href="@{/vehicles/vehicle-hires/Details/{id}(id=${hire.id})}"><i
+                                    class="icon_document_alt"></i></a>
+                            <a class="btn btn-danger"
+                               onclick="return confirm('Вы уверены, что хотите удалить данные')"
+                               th:href="@{/vehicles/vehicle-hires/delete/{id}(id=${hire.id})}"><i
+                                    class="icon_close_alt2"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+            <footer class="panel-footer text-center">
+                <div class="row-footer align-items-center">
+                    <div class="col">
+                        Количество записей: [[${hires.size()}]]
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

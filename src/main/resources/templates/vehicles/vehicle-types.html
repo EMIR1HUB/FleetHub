@@ -23,6 +23,14 @@
     <div class="container">
         <div class="row">
             <div class="panel-heading" style="padding: 10px">
+                <form class="form-inline" th:action="@{/vehicles/vehicle-types}" style="margin-bottom: 10px">
+                    <div class="form-group navbar-form">
+                        <input type="text" name="keyword" class="form-control" placeholder="Поиск">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn-success form-control" value="Найти">
+                    </div>
+                </form>
                 <form class="form-inline" role="form" th:action="@{/vehicles/vehicle-types}" method="POST">
                     <div class="form-group">
                         <label class="sr-only">Id</label>
@@ -44,8 +52,10 @@
                 <table class="table table-advance table-hover">
                     <thead>
                     <tr>
-                        <th><i class="icon_table"></i> Название</th>
-                        <th><i class="icon_table"></i> Детали</th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-types/page/description?sortDir=' + ${reverseSortDir}}">Название</a></th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-types/page/details?sortDir=' + ${reverseSortDir}}">Детали</a></th>
                         <th><i class="icon_cogs"></i> Действия</th>
                     </tr>
                     <tr th:each="vehicleType:${vehicleTypes}">
@@ -66,7 +76,7 @@
                     </thead>
                 </table>
             </div>
-            <div class="panel-footer" style="padding: 10px" th:text="'Количество записей: ' + ${count}"></div>
+            <div class="panel-footer" style="padding: 10px" th:text="'Количество записей: ' + ${vehicleTypes.size()}"></div>
         </div>
     </div>
 </div>

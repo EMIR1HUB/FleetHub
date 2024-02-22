@@ -22,10 +22,12 @@ public class Country extends Auditable<String> {
   @SequenceGenerator(name = "country_seq_generator", sequenceName = "country_seq", initialValue = 10)
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
-  private String code;
-  private String capital;
+
+  @Column(unique = true)
   private String description;
-//  private String nationality;
+
+  private String capital;
+  private String code;
   private String continent;
 
   @OneToMany(mappedBy = "country")

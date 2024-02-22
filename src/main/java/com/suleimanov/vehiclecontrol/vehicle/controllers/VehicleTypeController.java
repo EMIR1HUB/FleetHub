@@ -2,10 +2,13 @@ package com.suleimanov.vehiclecontrol.vehicle.controllers;
 
 import com.suleimanov.vehiclecontrol.vehicle.models.VehicleType;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleTypeService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/vehicles/vehicle-types")
@@ -15,9 +18,20 @@ public class VehicleTypeController {
   private VehicleTypeService vehicleTypeService;
 
   @GetMapping()
-  public String getVehicleTypes(Model model) {
-    model.addAttribute("vehicleTypes", vehicleTypeService.getVehiclesTypes());
-    model.addAttribute("count", vehicleTypeService.getCount());
+  public String getAll(Model model, String keyword) {
+    List<VehicleType> vehicleTypes = (keyword == null)
+            ? vehicleTypeService.getVehiclesTypes()
+            : vehicleTypeService.getByKeyword(keyword);
+
+    model.addAttribute("vehicleTypes", vehicleTypes);
+    return "/vehicles/vehicle-types";
+  }
+
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(Model model, @PathVariable("field") String field,
+                               @PathParam("sortDir") String sortDir){
+    model.addAttribute("vehicleTypes", vehicleTypeService.getVehicleTypesWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
     return "/vehicles/vehicle-types";
   }
 

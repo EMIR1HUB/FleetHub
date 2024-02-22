@@ -24,7 +24,7 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-3">
-                    <a class="btn btn-primary" th:href="@{countries/addNew}">Добавить</a>
+                    <a class="btn btn-primary" th:href="@{/parameters/countries/addNew}">Добавить</a>
                 </div>
                 <form th:action="@{/parameters/countries}" >
                     <div class="col-lg-2 navbar-form">
@@ -39,13 +39,13 @@
                 <thead>
                 <tr>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{/parameters/countries/page/description(sortDir=${reverseSortDir})}">Страна</a></th>
+                            th:href="@{'/parameters/countries/page/' + ${currentPage} + '/description?sortDir=' + ${reverseSortDir}}">Страна</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{/parameters/countries/page/capital(sortDir=${reverseSortDir})}">Столица</a></th>
+                            th:href="@{'/parameters/countries/page/' + ${currentPage} + '/capital?sortDir=' + ${reverseSortDir}}">Столица</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{/parameters/countries/page/code(sortDir=${reverseSortDir})}">Код</a></th>
+                            th:href="@{'/parameters/countries/page/' + ${currentPage} + '/code?sortDir=' + ${reverseSortDir}}">Код</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{/parameters/countries/page/continent(sortDir=${reverseSortDir})}">Континет</a></th>
+                            th:href="@{'/parameters/countries/page/' + ${currentPage} + '/continent?sortDir=' + ${reverseSortDir}}">Континет</a></th>
                     <th><i class="icon_cogs"></i> Действия</th>
                 </tr>
                 </thead>
@@ -69,8 +69,43 @@
                 </tr>
                 </tbody>
             </table>
+            <footer class="panel-footer text-center">
+                <div class="row-footer align-items-center">
+                    <div class="col">
+                        Количество записей [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+                    </div>
+                    <div class="col">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a  class="page-link" th:if="${currentPage > 1}" th:href="@{/parameters/countries/page/1}">&laquo;</a>
+                                <span th:unless="${currentPage > 1}">&laquo;</span>
+                            </li>
+
+                            <li class="page-item">
+                                <a th:if="${currentPage > 1}" th:href="@{'/parameters/countries/page/' + ${currentPage - 1}}">&#8249;</a>
+                                <span th:unless="${currentPage > 1}">&#8249;</span>
+                            </li>
+
+                            <li class="page-item">
+                                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                    <a th:href="@{'/parameters/countries/page/' + ${i}}">[[${i}]]</a>
+                                </span>
+                            </li>
+
+                            <li class="page-item">
+                                <a th:if="${currentPage < totalPages}" th:href="@{'/parameters/countries/page/' + ${currentPage + 1}}">&#8250;</a>
+                                <span th:unless="${currentPage < totalPages}">&#8250;</span>
+                            </li>
+
+                            <li class="page-item">
+                                <a th:if="${currentPage < totalPages}" th:href="@{'/parameters/countries/page/' + ${totalPages}}">&raquo;</a>
+                                <span th:unless="${currentPage < totalPages}">&raquo;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <div class="panel-footer" style="padding: 10px" th:text="'Количество записей: ' + ${count}"></div>
     </div>
 </div>
 </body>

@@ -41,3 +41,5 @@ application.yaml
 /src/**/JwtTokenUtils.java
 /src/**/AuthController.java
 /src/**/JwtRequestFilter.java
+/mvnw
+/mvnw.cmd
