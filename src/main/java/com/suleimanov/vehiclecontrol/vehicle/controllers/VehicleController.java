@@ -86,7 +86,7 @@ public class VehicleController {
   @GetMapping("/parameters/make/{id}")
   @ResponseBody
   public List<VehicleModel> getRegionsByCountry(@PathVariable Integer id){
-    VehicleMake vehicleMake = vehicleMakeService.findById(id).orElse(null);
+    VehicleMake vehicleMake = vehicleMakeService.getById(id);
     if (vehicleMake != null) {
       return vehicleModelService.getVehicleModelByMake(vehicleMake);
     } else {

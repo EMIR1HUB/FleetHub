@@ -2,50 +2,60 @@ package com.suleimanov.vehiclecontrol.vehicle.controllers;
 
 import com.suleimanov.vehiclecontrol.vehicle.models.VehicleMake;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleMakeService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-@RequestMapping("/vehicles_makes")
+@RequestMapping("/vehicles/vehicle-makes")
 public class VehicleMakeController {
 
   @Autowired
   private VehicleMakeService vehicleMakeService;
 
   @GetMapping()
-  public String getVehicleMake(Model model) {
-    List<VehicleMake> vehicleMakeList = vehicleMakeService.getVehiclesMakes();
+  public String getAll(Model model, String keyword) {
+    List<VehicleMake> vehicleMakes = (keyword == null)
+            ? vehicleMakeService.getVehiclesMakes()
+            : vehicleMakeService.getByKeyword(keyword);
 
-    model.addAttribute("vehicleMakes", vehicleMakeList);
-    return "vehicle_make";
+    model.addAttribute("makes", vehicleMakes);
+    return "/vehicles/makes";
   }
 
-  @GetMapping("/findById")
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(@PathVariable("field") String field, @PathParam("sortDir") String sortDir,
+                               Model model){
+    model.addAttribute("makes", vehicleMakeService.getVehicleMakesWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    return "/vehicles/makes";
+  }
+
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<VehicleMake> findById(Integer id) {
-    return vehicleMakeService.findById(id);
+  public VehicleMake getVehicleMake(@PathVariable Integer id) {
+    return vehicleMakeService.getById(id);
   }
 
-  @PostMapping("/addNew")
-  public String addNew(VehicleMake vehicleMake) {
+  @PostMapping()
+  public String add(VehicleMake vehicleMake) {
     vehicleMakeService.save(vehicleMake);
-    return "redirect:/vehicles_makes";
+    return "redirect:/vehicles/vehicle-makes";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(VehicleMake vehicleMake) {
-    vehicleMakeService.save(vehicleMake);
-    return "redirect:/vehicles_makes";
+  @GetMapping("/{op}/{id}")
+  public String edit(@PathVariable String op, @PathVariable Integer id, Model model) {
+    model.addAttribute("vehicleMake", vehicleMakeService.getById(id));
+    return "/vehicles/make" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Integer id) {
     vehicleMakeService.delete(id);
-    return "redirect:/vehicles_makes";
+    return "redirect:/vehicles/vehicle-makes";
   }
 }

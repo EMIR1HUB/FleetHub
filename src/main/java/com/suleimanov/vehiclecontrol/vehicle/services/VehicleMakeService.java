@@ -4,10 +4,10 @@ import com.suleimanov.vehiclecontrol.parameters.models.CommonObject;
 import com.suleimanov.vehiclecontrol.vehicle.models.VehicleMake;
 import com.suleimanov.vehiclecontrol.vehicle.repositories.VehicleMakeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VehicleMakeService {
@@ -19,12 +19,16 @@ public class VehicleMakeService {
     return vehicleMakeRepository.findAll();
   }
 
+  public List<VehicleMake> getByKeyword(String keyword){
+    return vehicleMakeRepository.findByKeyword(keyword);
+  }
+
   public void save(VehicleMake vehicleMake){
     vehicleMakeRepository.save(vehicleMake);
   }
 
-  public Optional<VehicleMake> findById(Integer id){
-    return vehicleMakeRepository.findById(id);
+  public VehicleMake getById(Integer id){
+    return vehicleMakeRepository.findById(id).orElse(null);
   }
 
   public void delete(Integer id) {
@@ -32,6 +36,13 @@ public class VehicleMakeService {
   }
   
   public String getVehicleMakeDescriptionById(Integer id){
-    return findById(id).map(CommonObject::getDescription).orElse(null);
+    return vehicleMakeRepository.findById(id).map(CommonObject::getDescription).orElse(null);
+  }
+
+  public List<VehicleMake> getVehicleMakesWithSort(String field, String direction){
+    // asc or desc
+    Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name())
+            ? Sort.by(field).ascending() : Sort.by(field).descending();
+    return vehicleMakeRepository.findAll(sort);
   }
 }
