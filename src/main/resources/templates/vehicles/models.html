@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<head>
+    <title>Управление моделями транспортов</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Список моделей транспортов</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                <li><i class="fa fa-square-o"></i>Модели</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- page start-->
+    <div class="container">
+        <div class="row">
+            <div class="panel-heading" style="padding: 10px">
+                <form class="form-inline" th:action="@{/vehicles/vehicle-models}" style="margin-bottom: 10px">
+                    <div class="form-group navbar-form">
+                        <input type="text" name="keyword" class="form-control" placeholder="Поиск">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn-success form-control" value="Найти">
+                    </div>
+                </form>
+                <form class="form-inline" role="form" th:action="@{/vehicles/vehicle-models}" method="POST">
+                    <div class="form-group">
+                        <label class="sr-only">Id</label>
+                        <input type="text" id="txtId" name="id" size="2" readonly class="form-control" placeholder="id">
+                    </div>
+                    <div class="form-group">
+                        <label for="ddlVehicleMakesAdd" class="sr-only">Марка:</label>
+                        <select class="form-control" id="ddlVehicleMakesAdd" name="vehiclemakeid" required>
+                            <option th:value="${null}">-Марка-</option>
+                            <option th:each="make : ${makes}"
+                                    th:value="${make.id}"
+                                    th:text="${make.description}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only">Модель</label>
+                        <input type="text" id="txtDescription" name="description" class="form-control" placeholder="Модель" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only">Детали</label>
+                        <input type="text" id="txtDetails" name="details" size="50" class="form-control" placeholder="Детали">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="reset" class="btn btn-default">Очистить</button>
+                </form>
+            </div>
+            <div class="col-lg-12" style="padding-left: 0;">
+                <table class="table table-advance table-hover">
+                    <thead>
+                    <tr>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-models/page/description?sortDir=' + ${reverseSortDir}}">Модель</a></th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-models/page/vehiclemake?sortDir=' + ${reverseSortDir}}">Марка</a></th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-models/page/details?sortDir=' + ${reverseSortDir}}">Детали</a></th>
+                        <th><i class="icon_cogs"></i> Действия</th>
+                    </tr>
+                    <tr th:each="model:${models}">
+                        <td th:text="${model.description}"></td>
+                        <td th:text="${model.vehiclemake.description}"></td>
+                        <td th:text="${model.details}"></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" id="editButton"
+                                   th:href="@{/vehicles/vehicle-models/{id}(id=${model.id})}"><i class="icon_pencil-edit"></i></a>
+                                <a class="btn btn-success" id="detailsButton"
+                                   th:href="@{/vehicles/vehicle-models/Details/{id}(id=${model.id})}"><i class="icon_document_alt"></i></a>
+                                <a class="btn btn-danger"
+                                   onclick="return confirm('Вы уверены, что хотите удалить данные')"
+                                   th:href="@{/vehicles/vehicle-models/delete/{id}(id=${model.id})}"><i class="icon_close_alt2"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="panel-footer" style="padding: 10px" th:text="'Количество записей: ' + ${models.size()}"></div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script defer="defer">
+        $('document').ready(function () {
+            $('.table #editButton').on('click', function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                $.get(href, function (vehicleModel, status) {
+                    $('#txtId').val(vehicleModel.id);
+                    $('#txtDescription').val(vehicleModel.description);
+                    $('#ddlVehicleMakesAdd').val(vehicleModel.vehiclemakeid);
+                    $('#txtDetails').val(vehicleModel.details);
+                })
+            })
+        })
+    </script>
+</th:block>
+
+</body>
+</html>

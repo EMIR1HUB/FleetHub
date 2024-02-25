@@ -21,5 +21,5 @@ import java.util.List;
 public class VehicleMake extends CommonObject {
 
   @OneToMany(mappedBy = "vehiclemake")
-  private List<VehicleModel> vehicleModelList;
+  private List<VehicleModel> vehicleModels;
 }

@@ -22,6 +22,5 @@ public class VehicleModel extends CommonObject {
   @JoinColumn(name = "vehiclemakeid", insertable = false, updatable = false)
   @JsonIgnore
   private VehicleMake vehiclemake;
-
-  private Integer vehiclemakeid;
+  private Long vehiclemakeid;
 }
