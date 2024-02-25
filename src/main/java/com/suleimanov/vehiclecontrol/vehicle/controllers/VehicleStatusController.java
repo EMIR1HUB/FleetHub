@@ -2,50 +2,60 @@ package com.suleimanov.vehiclecontrol.vehicle.controllers;
 
 import com.suleimanov.vehiclecontrol.vehicle.models.VehicleStatus;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleStatusService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-@RequestMapping("/vehicles_statuses")
+@RequestMapping("/vehicles/vehicle-statuses")
 public class VehicleStatusController {
 
   @Autowired
   private VehicleStatusService vehicleStatusService;
 
   @GetMapping()
-  public String getVehicleStatuses(Model model) {
-    List<VehicleStatus> vehicleStatuses = vehicleStatusService.getVehiclesStatus();
-
-    model.addAttribute("vehicleStatuses", vehicleStatuses);
-    return "vehicle_status";
+  public String getAll(Model model, String keyword) {
+    List<VehicleStatus> vehicleStatuses = (keyword == null)
+            ? vehicleStatusService.getVehiclesStatus()
+            : vehicleStatusService.getByKeyword(keyword);
+    model.addAttribute("statuses", vehicleStatuses);
+    return "/vehicles/statuses";
   }
 
-  @GetMapping("/findById")
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(@PathVariable String field,
+                               @PathParam("sortDir") String sortDir, Model model) {
+    model.addAttribute("statuses", vehicleStatusService.getVehiclesStatusWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    return "/vehicles/statuses";
+  }
+
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<VehicleStatus> findById(Integer id) {
-    return vehicleStatusService.findById(id);
+  public VehicleStatus getVehicleStatus(@PathVariable Integer id) {
+    return vehicleStatusService.getById(id);
   }
 
-  @PostMapping("/addNew")
-  public String addNew(VehicleStatus vehicleStatus) {
+  @PostMapping()
+  public String add(VehicleStatus vehicleStatus) {
     vehicleStatusService.save(vehicleStatus);
-    return "redirect:/vehicles_statuses";
+    return "redirect:/vehicles/vehicle-statuses";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(VehicleStatus vehicleStatus) {
-    vehicleStatusService.save(vehicleStatus);
-    return "redirect:/vehicles_statuses";
+  @GetMapping("/{op}/{id}")
+  public String getDetails(@PathVariable String op, @PathVariable Integer id, Model model){
+    model.addAttribute("status", vehicleStatusService.getById(id));
+    return "/vehicles/status"+op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Integer id) {
     vehicleStatusService.delete(id);
-    return "redirect:/vehicles_statuses";
+    return "redirect:/vehicles/vehicle-statuses";
   }
 }

@@ -28,8 +28,8 @@ public class VehicleMakeController {
   }
 
   @GetMapping("/page/{field}")
-  public String getAllWithSort(@PathVariable("field") String field, @PathParam("sortDir") String sortDir,
-                               Model model){
+  public String getAllWithSort(@PathVariable("field") String field,
+                               @PathParam("sortDir") String sortDir, Model model){
     model.addAttribute("makes", vehicleMakeService.getVehicleMakesWithSort(field, sortDir));
     model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
     return "/vehicles/makes";
