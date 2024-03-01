@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Обновление данных транспортов</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Обновление данных</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/vehicles/vehicle">Данные о транспортах</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/vehicles/vehicle}" method="POST" id="cform" class="form-horizontal"
+                      onsubmit="return confirm('Вы уверены, что хотите обновить данные?')">
+                    <section class="panel">
+                        <header class="panel-heading">Обновление данных транспорта</header>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="idEdit" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.id}" class="form-control" id="idEdit" name="id" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleTypeEdit" class="col-sm-4 col-form-label">Тип транспорта:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleTypeEdit" name="vehicletypeid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="type : ${types}"
+                                                    th:selected="${type.id}==${vehicle.vehicletypeid}? true : false"
+                                                    th:value="${type.id}"
+                                                    th:text="${type.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNameEdit" class="col-sm-4 col-form-label">Название:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.name}" class="form-control" id="txtVehicleNameEdit" name="name" placeholder="Название транспорта" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNumberEdit" class="col-sm-4 col-form-label">Номер:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.vehicleNumber}" class="form-control" id="txtVehicleNumberEdit" name="vehicleNumber" placeholder="Номер транспорта" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRegistrationDateEdit" class="col-sm-4 col-form-label">Дата регистрации:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${vehicle.registrationDate}" class="form-control" id="txtRegistrationDateEdit" name="registrationDate" placeholder="Дата регистрации" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAcquisitionDateEdit" class="col-sm-4 col-form-label">Дата приобретения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${vehicle.acquisitionDate}" class="form-control" id="txtAcquisitionDateEdit" name="acquisitionDate" placeholder="Дата приобретения" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleMakeEdit" class="col-sm-4 col-form-label">Марка:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleMakeEdit" name="vehiclemakeid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="make : ${makes}"
+                                                    th:selected="${make.id}==${vehicle.vehiclemakeid}?true:false"
+                                                    th:value="${make.id}"
+                                                    th:text="${make.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleModelEdit" class="col-sm-4 col-form-label">Модель:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleModelEdit" name="vehiclemodelid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:selected="${vehicle.vehiclemodelid}"
+                                                    th:value="${vehicle.vehiclemodelid}"
+                                                    th:text="${vehicle.vehicleModel.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentLocationEdit" class="col-sm-4 col-form-label">Текущее местоположение:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCurrentLocationEdit" name="locationid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="location : ${locations}"
+                                                    th:selected="${location.id}==${vehicle.locationid}?true:false"
+                                                    th:value="${location.id}"
+                                                    th:text="${location.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="txtDescriptionEdit" class="col-sm-4 col-form-label">Описание:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" th:field="${vehicle.description}" class="form-control" id="txtDescriptionEdit" name="description" placeholder="Описание" rows="2" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlPowerEdit" class="col-sm-4 col-form-label">Топливо:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlPowerEdit" name="power" required>
+                                            <option value="Бензин" th:selected="${vehicle.power == 'Бензин'}">Бензин</option>
+                                            <option value="Дизельное" th:selected="${vehicle.power == 'Дизельное'}">Дизельное</option>
+                                            <option value="Электричество" th:selected="${vehicle.power == 'Электричество'}">Электричество</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFuelCapacityEdit" class="col-sm-4 col-form-label">Объем:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" th:value="${vehicle.fuelCapacity}" min="0" class="form-control" id="txtFuelCapacityEdit" name="fuelCapacity" placeholder="Объем топливного бака" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtNetWeightEdit" class="col-sm-4 col-form-label">Вес:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" th:value="${vehicle.netWeight}" min="0" class="form-control" id="txtNetWeightEdit" name="netWeight" placeholder="Вес нетто">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRemarksEdit" class="col-sm-4 col-form-label">Комментарий:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" th:field="${vehicle.remarks}" class="form-control" id="txtRemarksEdit" name="remarks" placeholder="Комментарий" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+<!--                                <div class="form-group row">-->
+<!--                                    <label for="ddlEmployeeEdit" class="col-sm-4 col-form-label">Ответственный:</label>-->
+<!--                                    <div class="col-sm-6">-->
+<!--                                        <select class="form-control" id="ddlEmployeeEdit" name="employeeid">-->
+<!--                                            <option th:value="${null}">-Выбрать-</option>-->
+<!--                                            <option th:each="employee:${employees}"-->
+<!--                                                    th:selected="${employee.id}==${vehicle.employeeid}?true:false"-->
+<!--                                                    th:value="${employee.id}"-->
+<!--                                                    th:text="${employee.firstname}">-->
+<!--                                            </option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentStatusEdit" class="col-sm-4 col-form-label">Текущий статус:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlCurrentStatusEdit" name="vehiclestatusid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="status : ${statuses}"
+                                                    th:selected="${status.id}==${vehicle.vehiclestatusid}?true:false"
+                                                    th:value="${status.id}"
+                                                    th:text="${status.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input hidden type="text" th:value="${vehicle.photo}" id="txtImageEdit" name="photo" placeholder="Выберите изображение">
+                            </div>
+                        </div>
+                    </section>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="/vehicles/vehicle" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script defer="defer">
+        $('document').ready(function () {
+            $("#ddlVehicleMakeEdit").on('change', function () {
+                $("#ddlVehicleModelEdit").empty().append('<option value="null">-Выбрать-</option>')
+                var makeId = $(this).val();
+
+                // Отправка запроса на получение регионов для выбранной страны
+                $.get("/vehicles/vehicle-makes/" + makeId, function (make, status) {
+                    // Обновление раскрывающегося списка регионов
+                    var models = make.vehicleModels;
+
+                    // Заполнение раскрывающегося списка регионов новыми значениями
+                    $.each(models, function (index, model) {
+                        $("#ddlVehicleModelEdit").append($("<option>").text(model.description).val(model.id));
+                    });
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

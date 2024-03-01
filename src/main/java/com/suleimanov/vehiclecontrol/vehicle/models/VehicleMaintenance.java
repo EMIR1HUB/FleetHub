@@ -20,8 +20,9 @@ import java.util.Date;
 public class VehicleMaintenance extends Auditable<String> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehicle_maintenance_seq_generator")
+  @SequenceGenerator(name = "vehicle_maintenance_seq_generator", sequenceName = "vehicle_maintenance_seq", initialValue = 10)
+  @Column(name = "id", updatable = false, nullable = false)
   private int id;
 
   @ManyToOne

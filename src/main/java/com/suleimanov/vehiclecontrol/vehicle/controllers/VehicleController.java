@@ -1,11 +1,10 @@
 package com.suleimanov.vehiclecontrol.vehicle.controllers;
 
 import com.suleimanov.vehiclecontrol.hr.services.EmployeeService;
-import com.suleimanov.vehiclecontrol.vehicle.models.Vehicle;
-import com.suleimanov.vehiclecontrol.vehicle.models.VehicleMake;
-import com.suleimanov.vehiclecontrol.vehicle.models.VehicleModel;
 import com.suleimanov.vehiclecontrol.parameters.services.LocationService;
+import com.suleimanov.vehiclecontrol.vehicle.models.Vehicle;
 import com.suleimanov.vehiclecontrol.vehicle.services.*;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -13,15 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("//vehicles/vehicle")
+@RequestMapping("/vehicles/vehicle")
 public class VehicleController {
 
   // Vehicles
@@ -32,90 +31,131 @@ public class VehicleController {
   // Vehicle Type
   // Vehicle Model
 
-  @Autowired private VehicleService vehicleService;
-  @Autowired private LocationService locationService;
-  @Autowired private EmployeeService employeeService;
-  @Autowired private VehicleMakeService vehicleMakeService;
-  @Autowired private VehicleStatusService vehicleStatusService;
-  @Autowired private VehicleTypeService vehicleTypeService;
-  @Autowired private VehicleModelService vehicleModelService;
+  @Autowired
+  private VehicleService vehicleService;
+  @Autowired
+  private LocationService locationService;
+  @Autowired
+  private EmployeeService employeeService;
+  @Autowired
+  private VehicleMakeService vehicleMakeService;
+  @Autowired
+  private VehicleStatusService vehicleStatusService;
+  @Autowired
+  private VehicleTypeService vehicleTypeService;
+  @Autowired
+  private VehicleModelService vehicleModelService;
   @Value("${upload.path}")
   private String uploadPhotoPath;
 
   private Integer idByUploadPhoto;
 
-  @GetMapping()
-  public String getVehicle(Model model) {
-    model.addAttribute("vehicles", vehicleService.getVehicles());
+  private void addModelAttributes(Model model) {
+    model.addAttribute("types", vehicleTypeService.getVehiclesTypes());
+    model.addAttribute("makes", vehicleMakeService.getVehiclesMakes());
     model.addAttribute("locations", locationService.getLocations());
     model.addAttribute("employees", employeeService.getEmployees());
-    model.addAttribute("vehicleMakes", vehicleMakeService.getVehiclesMakes());
-    model.addAttribute("vehicleStatuses", vehicleStatusService.getVehiclesStatus());
-    model.addAttribute("vehicleTypes", vehicleTypeService.getVehiclesTypes());
-    model.addAttribute("vehicleModels", vehicleModelService.getVehiclesModels());
-    return "vehicle";
+    model.addAttribute("statuses", vehicleStatusService.getVehiclesStatus());
   }
 
-  @GetMapping("/findById")
+  @GetMapping()
+  public String getAll(Model model, String keyword) {
+    List<Vehicle> vehicles = (keyword == null)
+            ? vehicleService.getVehicles()
+            : vehicleService.getByKeyword(keyword);
+
+    model.addAttribute("vehicles", vehicles);
+    return "/vehicles/vehicles";
+  }
+
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(@PathVariable("field") String field,
+                               @PathParam("sortDir") String sortDir, Model model) {
+    model.addAttribute("vehicles", vehicleService.getVehicleWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    return "/vehicles/vehicles";
+  }
+
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<Vehicle> findById(Integer id) {
-    return vehicleService.findById(id);
+  public Vehicle getVehicle(@PathVariable Integer id) {
+    return vehicleService.getById(id).orElse(null);
   }
 
-  @PostMapping("/addNew")
-  public String addNew(Vehicle vehicle) {
+  @GetMapping("/addNew")
+  public String getAddNew(Model model) {
+    addModelAttributes(model);
+    return "/vehicles/vehicleAdd";
+  }
+
+  @PostMapping()
+  public String add(Vehicle vehicle, @RequestParam(value = "file", required = false) MultipartFile file) {
+    // Установка названия
     vehicle.setName(vehicleMakeService.getVehicleMakeDescriptionById(vehicle.getVehiclemakeid()) + "-" +
             vehicleModelService.getVehicleModelDescriptionById(vehicle.getVehiclemodelid()));
-    vehicle.setPhoto("default.jpg");
-    vehicleService.save(vehicle);
-    return "redirect:/vehicles";
-  }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(Vehicle vehicle) {
-    vehicleService.save(vehicle);
-    return "redirect:/vehicles";
-  }
+    if (file != null && !file.isEmpty()) {  // Download Image
+      try {
+        byte[] bytesFile = file.getBytes();
+        String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+        String fileName = UUID.randomUUID() + fileType;
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
-    vehicleService.delete(id);
-    return "redirect:/vehicles";
-  }
-
-  @GetMapping("/parameters/make/{id}")
-  @ResponseBody
-  public List<VehicleModel> getRegionsByCountry(@PathVariable Integer id){
-    VehicleMake vehicleMake = vehicleMakeService.getById(id);
-    if (vehicleMake != null) {
-      return vehicleModelService.getVehicleModelByMake(vehicleMake);
+        try (BufferedOutputStream stream = new BufferedOutputStream(
+                new FileOutputStream(new File(uploadPhotoPath + fileName)))) {
+          stream.write(bytesFile);
+        }
+        vehicle.setPhoto(fileName);
+      } catch (Exception e) {
+        return "Вам не удалось загрузить " + e.getMessage();
+      }
     } else {
-      return Collections.emptyList();
+      if (vehicle.getPhoto().isEmpty()) {
+        vehicle.setPhoto("default.jpg");
+      }
     }
+    vehicleService.save(vehicle);
+    return "redirect:/vehicles/vehicle";
   }
 
-  @GetMapping("/parameters/uploadPhoto/{id}")
-  public void getIdByCountry(@PathVariable Integer id){
+  @GetMapping("/{op}/{id}")
+  public String getEditAndDetails(@PathVariable String op,
+                                  @PathVariable Integer id, Model model) {
+    addModelAttributes(model);
+    model.addAttribute("vehicle", vehicleService.getById(id).orElse(null));
+    return "/vehicles/vehicle" + op;
+  }
+
+
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Integer id) {
+    vehicleService.delete(id);
+    return "redirect:/vehicles/vehicle";
+  }
+  @GetMapping("/uploadPhoto/{id}")
+  public void getIdByVehicle(@PathVariable Integer id) {
     idByUploadPhoto = id;
   }
 
   @PostMapping("/uploadPhoto")
   public String uploadPhoto(@RequestParam("file") MultipartFile file) throws IOException {
-    String uuid = UUID.randomUUID() + ".jpg";
-    file.transferTo(new File(uploadPhotoPath + "vehicles/" + uuid));
+    if (file != null && !file.isEmpty()) {
+      String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+      String fileName = UUID.randomUUID() + fileType;
+      file.transferTo(new File(uploadPhotoPath + fileName));
 
-    String oldPhoto = vehicleService.findById(idByUploadPhoto).map(Vehicle::getPhoto).orElse("");
-    vehicleService.findById(idByUploadPhoto).ifPresent(vehicle -> {
-      vehicle.setPhoto(uuid);
-      vehicleService.save(vehicle);
-    });
+      String oldPhoto = vehicleService.getById(idByUploadPhoto).map(Vehicle::getPhoto).orElse("");
+      vehicleService.getById(idByUploadPhoto).ifPresent(vehicle -> {
+        vehicle.setPhoto(fileName);
+        vehicleService.save(vehicle);
+      });
 
-    File fileToDelete = new File(uploadPhotoPath + "vehicles/" + oldPhoto);
-    if (fileToDelete.delete()){
-      System.out.println("Файл успешно удален.");
-    } else {
-      System.err.println("Не удалось удалить файл.");
+      File fileToDelete = new File(uploadPhotoPath + oldPhoto);
+      if (fileToDelete.delete()) {
+        System.out.println("Файл успешно удален.");
+      } else {
+        System.err.println("Не удалось удалить файл.");
+      }
     }
-    return "redirect:/vehicles";
+    return "redirect:/vehicles/vehicle";
   }
 }

@@ -21,8 +21,9 @@ import java.util.Date;
 public class Vehicle extends Auditable<String> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehicle_seq_generator")
+  @SequenceGenerator(name = "vehicle_seq_generator", sequenceName = "vehicle_seq", initialValue = 10)
+  @Column(name = "id", updatable = false, nullable = false)
   private int id;
 
   private String name;

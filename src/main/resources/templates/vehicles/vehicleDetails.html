@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Детали транспорта</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Детали транспорта</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/vehicles/vehicle">Данные о транспортах</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form id="cform" class="form-horizontal">
+                    <section class="panel" th:object="${vehicle}">
+                        <header class="panel-heading">Детали запись транспорта</header>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="idDetails" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text"  th:value="${vehicle.id}" class="form-control" id="idDetails" name="id" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleTypeDetails" class="col-sm-4 col-form-label">Тип транспорта:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text"  th:value="${vehicle.vehicleType.description}" class="form-control" id="ddlVehicleTypeDetails" name="id" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNameDetails" class="col-sm-4 col-form-label">Название:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.name}" class="form-control" id="txtVehicleNameDetails" name="name" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtVehicleNumberDetails" class="col-sm-4 col-form-label">Номер:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.vehicleNumber}" class="form-control" id="txtVehicleNumberDetails" name="vehicleNumber" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRegistrationDateDetails" class="col-sm-4 col-form-label">Дата регистрации:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${vehicle.registrationDate}" class="form-control" id="txtRegistrationDateDetails" name="registrationDate" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAcquisitionDateDetails" class="col-sm-4 col-form-label">Дата приобретения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${vehicle.acquisitionDate}" class="form-control" id="txtAcquisitionDateDetails" name="acquisitionDate" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleMakeDetails" class="col-sm-4 col-form-label">Марка:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:field="${vehicle.vehicleMake.description}" class="form-control" id="ddlVehicleMakeDetails" name="vehiclemakeid" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleModelDetails" class="col-sm-4 col-form-label">Модель:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:field="${vehicle.vehicleModel.description}" class="form-control" id="ddlVehicleModelDetails" name="vehiclemodelid" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="ddlCurrentLocationDetails" class="col-sm-4 col-form-label">Текущее местоположение:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.currentLocation.description}" class="form-control" id="ddlCurrentLocationDetails" name="locationid" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtDescriptionDetails" class="col-sm-4 col-form-label">Описание:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" th:field="${vehicle.description}" class="form-control" id="txtDescriptionDetails" name="description" disabled rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtPowerEdit" class="col-sm-4 col-form-label">Питание:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.power}" class="form-control" id="txtPowerEdit" name="power" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFuelCapacityEdit" class="col-sm-4 col-form-label">Объем:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.fuelCapacity}" class="form-control" id="txtFuelCapacityEdit" name="fuelCapacity" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtNetWeightEdit" class="col-sm-4 col-form-label">Вес:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.netWeight}" class="form-control" id="txtNetWeightEdit" name="netWeight" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtRemarksEdit" class="col-sm-4 col-form-label">Комментарий:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" th:field="${vehicle.remarks}" class="form-control" id="txtRemarksEdit" name="remarks" rows="2" disabled></textarea>
+                                    </div>
+                                </div>
+
+                                <!--                                <div class="form-group row">-->
+                                <!--                                    <label for="ddlEmployeeEdit" class="col-sm-4 col-form-label">Ответственный:</label>-->
+                                <!--                                    <div class="col-sm-6">-->
+                                <!--                                        <select class="form-control" id="ddlEmployeeEdit" name="employeeid">-->
+                                <!--                                            <option th:value="${null}">-Выбрать-</option>-->
+                                <!--                                            <option th:each="employee:${employees}"-->
+                                <!--                                                    th:selected="${employee.id}==${vehicle.employeeid}?true:false"-->
+                                <!--                                                    th:value="${employee.id}"-->
+                                <!--                                                    th:text="${employee.firstname}">-->
+                                <!--                                            </option>-->
+                                <!--                                        </select>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+
+                                <div class="form-group row">
+                                    <label for="ddlCurrentStatusEdit" class="col-sm-4 col-form-label">Текущий статус:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.vehicleStatus.description}" class="form-control" id="ddlCurrentStatusEdit" name="vehiclestatusid" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-form-label col-sm-4">Добавлен:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.createdBy}" class="form-control"
+                                               name="createdBy"
+                                               disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label col-sm-4">Дата добавления:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${#dates.format(vehicle.createdDate, 'dd-MM-yyyy HH:mm:ss')}" class="form-control"
+                                               name="createdDate"
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 col-form-label">Последнее обновление от:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${vehicle.lastModifiedBy}" class="form-control"
+                                               name="lastModifiedByDetails"
+                                               disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 col-form-label">Дата обновления:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${#dates.format(vehicle.lastModifiedDate, 'dd-MM-yyyy HH:mm:ss')}"
+                                               class="form-control" name="lastModifiedDateDetails"
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="modal-footer">
+                        <a href="/vehicles/vehicle" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.suleimanov.vehiclecontrol.vehicle.services;
 import com.suleimanov.vehiclecontrol.vehicle.models.Vehicle;
 import com.suleimanov.vehiclecontrol.vehicle.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,15 @@ public class VehicleService {
     return vehicleRepository.findAll();
   }
 
+  public List<Vehicle> getByKeyword(String keyword) {
+    return vehicleRepository.findByKeyword(keyword);
+  }
+
   public void save(Vehicle vehicle){
     vehicleRepository.save(vehicle);
   }
 
-  public Optional<Vehicle> findById(Integer id){
+  public Optional<Vehicle> getById(Integer id){
     return vehicleRepository.findById(id);
   }
 
@@ -30,5 +35,10 @@ public class VehicleService {
     vehicleRepository.deleteById(id);
   }
 
-
+  public List<Vehicle> getVehicleWithSort(String field, String direction) {
+    // asc or desc
+    Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name())
+            ? Sort.by(field).ascending() : Sort.by(field).descending();
+    return vehicleRepository.findAll(sort);
+  }
 }
