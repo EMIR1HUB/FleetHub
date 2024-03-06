@@ -10,9 +10,7 @@ import java.util.List;
 @Repository
 public interface VehicleHireRepository extends JpaRepository<VehicleHire, Integer> {
 
-  @Query(value = "SELECT vh FROM VehicleHire vh " +
-          "LEFT JOIN Client c ON vh.clientid = c.id " +
-          "LEFT JOIN Vehicle v ON vh.vehicleid = v.id " +
-          "WHERE c.name LIKE %?1% OR v.description LIKE %?1%")
+  @Query(value = "SELECT vh FROM VehicleHire vh WHERE " +
+          "concat(vh.vehicle.name, vh.client.name) LIKE %?1%")
   List<VehicleHire> findByKeyword(String keyword);
 }

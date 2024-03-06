@@ -26,7 +26,7 @@
                 <div class="col-lg-3">
                     <a class="btn btn-primary" th:href="@{/vehicles/vehicle-hires/addNew}">Добавить</a>
                 </div>
-                <form th:action="@{/vehicles/vehicle-hires/page}">
+                <form th:action="@{/vehicles/vehicle-hires}">
                     <div class="col-lg-2 navbar-form">
                         <input type="text" name="keyword" class="form-control" placeholder="Поиск">
                     </div>
@@ -39,16 +39,19 @@
                 <thead>
                 <tr>
                     <th><i class="icon_table"></i> Id</th>
-                    <th><i class="icon_table"></i> Транспорт</th>
-                    <th><i class="icon_table"></i> Клиент</th>
-                    <th><i class="icon_table"></i> Дата выдачи</th>
-                    <th><i class="icon_table"></i> Дата получения</th>
+                    <th><i class="icon_table"></i> <a
+                            th:href="@{'/vehicles/vehicle-hires/page/vehicle.name?sortDir=' + ${reverseSortDir}}">Транспорт</a></th>
+                    <th><i class="icon_table"></i> <a
+                            th:href="@{'/vehicles/vehicle-hires/page/client.name?sortDir=' + ${reverseSortDir}}">Клиент</a></th>
+                    <th><i class="icon_table"></i> <a
+                            th:href="@{'/vehicles/vehicle-hires/page/dateOut?sortDir=' + ${reverseSortDir}}">Дата выдачи</a></th>
+                    <th><i class="icon_table"></i> <a
+                            th:href="@{'/vehicles/vehicle-hires/page/dateIn?sortDir=' + ${reverseSortDir}}">Дата получения</a></th>
                     <th><i class="icon_cogs"></i> Действия</th>
                 </tr>
                 <tr th:each="hire:${hires}">
                     <td th:text="${hire.id}">id</td>
-                    <td>Транспорт</td>
-<!--                    <td th:text="${hire.vehicle.name}">Транспорт</td>-->
+                    <td th:text="${hire.vehicle.name}">Транспорт</td>
                     <td th:text="${hire.client.name}">Клиент</td>
                     <td th:text="${#dates.format(hire.dateOut, 'dd-MM-yyyy')} + ' /' + ${hire.timeOut}">Дата выдачи</td>
                     <td th:text="${#dates.format(hire.dateIn, 'dd-MM-yyyy')} + ' /' + ${hire.timeIn}">Дата получения</td>

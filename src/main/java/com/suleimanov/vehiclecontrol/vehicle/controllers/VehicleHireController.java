@@ -5,6 +5,7 @@ import com.suleimanov.vehiclecontrol.parameters.services.LocationService;
 import com.suleimanov.vehiclecontrol.vehicle.models.VehicleHire;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleHireService;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,18 +30,20 @@ public class VehicleHireController {
   }
 
   @GetMapping()
-  public String getVehicleHire(Model model) {
-    return getAllWithSort(model, null);
-  }
-
-  @GetMapping("/page")
-  public String getAllWithSort(Model model, String keyword) {
+  public String getVehicleHire(Model model, String keyword) {
     List<VehicleHire> hires = (keyword == null)
             ? vehicleHireService.getVehicleHires()
             : vehicleHireService.getByKeyword(keyword);
 
     model.addAttribute("hires", hires);
-    addModelAttributes(model);
+    return "/vehicles/hires";
+  }
+
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(@PathVariable("field") String field,
+                               @PathParam("sortDir") String sortDir, Model model) {
+    model.addAttribute("hires", vehicleHireService.getVehicleHireWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
     return "/vehicles/hires";
   }
 

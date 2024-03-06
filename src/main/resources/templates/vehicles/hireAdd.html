@@ -35,7 +35,7 @@
                                             <option th:value="${null}">-Выбрать-</option>
                                             <option th:each="vehicle : ${vehicles}"
                                                     th:value="${vehicle.id}"
-                                                    th:text="${vehicle.description}">
+                                                    th:text="${vehicle.name}">
                                             </option>
                                         </select>
                                     </div>
