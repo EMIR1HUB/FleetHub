@@ -20,11 +20,8 @@ public class User {
   @SequenceGenerator(name = "user_seq_generator", sequenceName = "user_seq", initialValue = 10)
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
-//  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
-//  @SequenceGenerator(name = "user_seq_generator", sequenceName = "user_seq", initialValue = 10)
-  // @Column(name = "id", updatable = false, nullable = false)
-  private String firstname;
-  private String lastname;
+//  private String firstname;
+//  private String lastname;
 
   @Column(unique = true)
   private String email;

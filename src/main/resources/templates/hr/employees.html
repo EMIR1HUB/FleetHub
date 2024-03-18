@@ -4,17 +4,17 @@
       layout:decorate="~{_layout}">
 
 <head>
-    <title>Управление транспортом</title>
+    <title>Управление сотрудниками</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="row">
         <div class="col-lg-12">
-            <h3 class="page-header"><i class="fa fa fa-bars"></i>Список транспортов</h3>
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Список сотрудников</h3>
             <ol class="breadcrumb">
                 <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
-                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
-                <li><i class="fa fa-square-o"></i>Данные о транспортах</li>
+                <li><i class="fa fa-bars"></i><a href="/hr">HR</a></li>
+                <li><i class="fa fa-square-o"></i>Данные о сотрудниках</li>
             </ol>
         </div>
     </div>
@@ -24,9 +24,9 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-3">
-                    <a class="btn btn-primary" th:href="@{/vehicles/vehicle/addNew}">Добавить</a>
+                    <a class="btn btn-primary" th:href="@{/hr/employees/addNew}">Добавить</a>
                 </div>
-                <form th:action="@{/vehicles/vehicle}">
+                <form th:action="@{/hr/employees}">
                     <div class="col-lg-2 navbar-form">
                         <input type="text" name="keyword" class="form-control" placeholder="Поиск">
                     </div>
@@ -41,48 +41,45 @@
                 <tr>
                     <th>Фото</th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{'/vehicles/vehicle/page/name?sortDir=' + ${reverseSortDir}}">Название</a></th>
+                            th:href="@{'/hr/employees/page/fullname?sortDir=' + ${reverseSortDir}}">Полное имя</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{'/vehicles/vehicle/page/vehicleNumber?sortDir=' + ${reverseSortDir}}">Номер</a></th>
+                            th:href="@{'/hr/employees/page/jobTitle.description?sortDir=' + ${reverseSortDir}}">Должность</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{'/vehicles/vehicle/page/description?sortDir=' + ${reverseSortDir}}">Описание</a>
-                    </th>
+                            th:href="@{'/hr/employees/page/hireDate?sortDir=' + ${reverseSortDir}}">Дата найма</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{'/vehicles/vehicle/page/acquisitionDate?sortDir=' + ${reverseSortDir}}">Дата
-                        приобретения</a></th>
+                            th:href="@{'/hr/employees/page/email?sortDir=' + ${reverseSortDir}}">Email</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{'/vehicles/vehicle/page/vehicleStatus.description?sortDir=' + ${reverseSortDir}}">Статус</a>
-                    </th>
+                            th:href="@{'/hr/employees/page/country.description?sortDir=' + ${reverseSortDir}}">Гражданство</a></th>
                     <th><i class="icon_table"></i> <a
-                            th:href="@{'/vehicles/vehicle/page/currentLocation.description?sortDir=' + ${reverseSortDir}}">Локация</a>
-                    </th>
+                            th:href="@{'/hr/employees/page/city?sortDir=' + ${reverseSortDir}}">Город</a></th>
                     <th><i class="icon_cogs"></i> Действия</th>
                 </tr>
-                <tr th:each="vehicle:${vehicles}">
+                <tr th:each="employee:${employees}">
                     <!--                    th:attr="data-photo-url=@{'/img/photos/vehicles/' + ${vehicle.photo}}"-->
                     <td>
-                        <a id="photoButton" th:href="@{'/img/photos/vehicles/' + ${vehicle.photo}}"
-                           th:attr="onclick='sendGetRequest(\'' + ${vehicle.id} + '\')'">
-                            <img th:src="@{'/img/photos/vehicles/' + ${vehicle.photo}}" width="40" height="40">
+                        <a id="photoButton" th:href="@{'/img/photos/employees/' + ${employee.photo}}"
+                           th:attr="onclick='sendGetRequest(\'' + ${employee.id} + '\')'">
+                            <img th:src="@{'/img/photos/employees/' + ${employee.photo}}" width="40" height="40">
                         </a>
                     </td>
-                    <td th:text="${vehicle.name}">Название</td>
-                    <td th:text="${vehicle.vehicleNumber}">Номер</td>
-                    <td th:text="${vehicle.description}">Описание</td>
-                    <td th:text="${#dates.format(vehicle.acquisitionDate, 'dd-MM-yyyy')}">Дата приобретения</td>
-                    <td th:text="${vehicle.vehicleStatus.description}">Статус</td>
-                    <td th:text="${vehicle.currentLocation.description}">Локация</td>
+                    <td th:text="${employee.fullname}">#</td>
+                    <td>JobTitle</td>
+<!--                    <td th:text="${employee.jobTitle.description}">#</td>-->
+                    <td th:text="${#dates.format(employee.hireDate, 'dd-MM-yyyy')}">#</td>
+                    <td th:text="${employee.email}">#</td>
+                    <td th:text="${employee.country.description}">#</td>
+                    <td th:text="${employee.city}">#</td>
                     <td>
                         <div class="btn-group">
                             <a class="btn btn-primary" id="editButton"
-                               th:href="@{/vehicles/vehicle/Edit/{id}(id=${vehicle.id})}"><i
+                               th:href="@{/hr/employees/Edit/{id}(id=${employee.id})}"><i
                                     class="icon_pencil-edit"></i></a>
                             <a class="btn btn-success" id="detailsButton"
-                               th:href="@{/vehicles/vehicle/Details/{id}(id=${vehicle.id})}"><i
+                               th:href="@{/hr/employees/Details/{id}(id=${employee.id})}"><i
                                     class="icon_document_alt"></i></a>
                             <a class="btn btn-danger"
                                onclick="return confirm('Вы уверены, что хотите удалить данные')"
-                               th:href="@{/vehicles/vehicle/delete/{id}(id=${vehicle.id})}"><i
+                               th:href="@{/hr/employees/delete/{id}(id=${employee.id})}"><i
                                     class="icon_close_alt2"></i></a>
                         </div>
                     </td>
@@ -92,7 +89,7 @@
             <footer class="panel-footer text-center">
                 <div class="row-footer align-items-center">
                     <div class="col">
-                        Количество записей: [[${vehicles.size()}]]
+                        Количество записей: [[${employees.size()}]]
                     </div>
                 </div>
             </footer>
@@ -127,12 +124,13 @@
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
 
 <th:block layout:fragment="script">
-    <script th:inline="javascript">
+    <script defer="defer">
         $('document').ready(function () {
             $('.table #photoButton').on('click', function (event) {
                 event.preventDefault();
@@ -142,10 +140,10 @@
             })
         })
 
-        function sendGetRequest(vehicleId) {
+        function sendGetRequest(employeeId) {
             // Создаем новый объект XMLHttpRequest
             var xhr = new XMLHttpRequest();
-            var url = '/vehicles/vehicle/uploadPhoto/' + vehicleId;  // Формируем URL с параметром id
+            var url = '/hr/employees/uploadPhoto/' + employeeId;  // Формируем URL с параметром id
             xhr.open('GET', url, true); // Открываем GET-запрос
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {

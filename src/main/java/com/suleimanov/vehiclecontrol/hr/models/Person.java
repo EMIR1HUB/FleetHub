@@ -23,6 +23,7 @@ public class Person extends Auditable<String> {
   @SequenceGenerator(name = "person_seq_generator", sequenceName = "person_seq", initialValue = 10)
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
+
   private String firstname;
   private String lastname;
   private String othername;
@@ -47,8 +48,8 @@ public class Person extends Auditable<String> {
   private String address;
   private String phone;
   private String email;
-  private String title;
-  private String initials;
+
+  @Column(unique = true)
   private String passport;
   private String gender;
   private String maritalStatus;

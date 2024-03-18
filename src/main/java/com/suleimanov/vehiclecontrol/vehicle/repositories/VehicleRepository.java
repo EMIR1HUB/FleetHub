@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
   @Query(value = "SELECT v FROM Vehicle v WHERE " +
           "concat(v.name, v.description, v.vehicleStatus.description, " +
-          "v.currentLocation.description) LIKE %?1%")
+          "v.currentLocation.description, v.vehicleNumber) LIKE %?1%")
   List<Vehicle> findByKeyword(String keyword);
 }

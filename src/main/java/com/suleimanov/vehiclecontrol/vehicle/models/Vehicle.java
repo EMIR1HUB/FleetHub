@@ -34,6 +34,7 @@ public class Vehicle extends Auditable<String> {
   private VehicleType vehicleType;
   private Integer vehicletypeid;
 
+  @Column(unique = true)
   private String vehicleNumber;
   private String description;
 

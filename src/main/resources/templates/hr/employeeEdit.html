@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Обновление данных сотрудника</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Обновление данных</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/hr">HR</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/hr/employees">Данные о сотрудниках</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/hr/employees}" method="POST" id="cform" class="form-horizontal"
+                      onsubmit="return confirm('Вы уверены, что хотите обновить данные?')">
+                    <section class="panel">
+                        <header class="panel-heading">Обновление данных транспорта</header>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="idEdit" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.id}" class="form-control" id="idEdit" name="id" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtPassportAdd" class="col-sm-4 col-form-label">Номер паспорт:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.passport}" class="form-control" id="txtPassportAdd" name="passport" placeholder="Номер паспорт" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtFirstnameAdd" class="col-sm-4 col-form-label">Имя:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.firstname}" class="form-control" id="txtFirstnameAdd" name="firstname" placeholder="Имя" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtLastnameAdd" class="col-sm-4 col-form-label">Фамилия:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.lastname}" class="form-control" id="txtLastnameAdd" name="lastname" placeholder="Фамилия" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtOthernameAdd" class="col-sm-4 col-form-label">Отчество:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.othername}" class="form-control" id="txtOthernameAdd" name="othername" placeholder="Отчество">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlGenderAdd" class="col-sm-4 col-form-label">Пол:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlGenderAdd" name="gender" required>
+                                            <option value="Муж." th:selected="${employee.gender == 'Муж.'}">Муж.</option>
+                                            <option value="Жен." th:selected="${employee.gender == 'Жен.'}">Жен.</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlNationalityAdd" class="col-sm-4 col-form-label">Гражданство:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlNationalityAdd" name="countryid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="country : ${countries}"
+                                                    th:selected="${country.id}==${employee.countryid}? true : false"
+                                                    th:value="${country.id}"
+                                                    th:text="${country.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label for="txtDateOfBirthAdd" class="col-sm-4 col-form-label">Дата рождения:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${employee.dateOfBirth}" class="form-control" id="txtDateOfBirthAdd" name="DateOfBirth" placeholder="Дата рождения" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtAddressAdd" class="col-sm-4 col-form-label">Адрес проживания:</label>
+                                    <div class="col-sm-6">
+                                        <textarea style="resize: vertical" type="text" th:field="${employee.address}"  class="form-control" id="txtAddressAdd" name="address" placeholder="Адрес проживания" rows="2" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="ddlRegionAdd" class="col-sm-4 col-form-label">Регион/Область:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlRegionAdd" name="regionid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="region : ${regions}"
+                                                    th:selected="${region.id}==${employee.regionid}? true : false"
+                                                    th:value="${region.id}"
+                                                    th:text="${region.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtCityAdd" class="col-sm-4 col-form-label">Город:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.city}" class="form-control" id="txtCityAdd" name="city" placeholder="Город" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlMaritalStatusAdd" class="col-sm-4 col-form-label">Семейное положение:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlMaritalStatusAdd" name="maritalStatus">
+                                            <option value="В браке" th:selected="${employee.maritalStatus == 'В браке'}">В браке</option>
+                                            <option value="Разведен(-а)" th:selected="${employee.maritalStatus == 'Разведен(-а)'}">Разведен(-а)</option>
+                                            <option value="Холост" th:selected="${employee.maritalStatus == 'Холост'}">Холост</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtPhoneAdd" class="col-sm-4 col-form-label">Телефон:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.phone}" class="form-control" id="txtPhoneAdd" name="phone" placeholder="Телефон" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtEmailAdd" class="col-sm-4 col-form-label">Email:</label>
+                                    <div class="col-sm-6">
+                                        <input type="email" th:value="${employee.email}" class="form-control" id="txtEmailAdd" name="email" placeholder="Email" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="txtHireDateAdd" class="col-sm-4 col-form-label">Дата найма:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${employee.hireDate}" class="form-control" id="txtHireDateAdd" name="hireDate" placeholder="Дата найма" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlJobTitleAdd" class="col-sm-4 col-form-label">Должность:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlJobTitleAdd" name="jobtitleid">
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="jobTitle : ${jobTitles}"
+                                                    th:selected="${jobTitle.id}==${employee.jobtitleid}? true : false"
+                                                    th:value="${jobTitle.id}"
+                                                    th:text="${jobTitle.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlEmployeeTypeAdd" class="col-sm-4 col-form-label">Тип:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlEmployeeTypeAdd" name="employeetypeid">
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="employeeType : ${employeeTypes}"
+                                                    th:selected="${employeeType.id}==${employee.employeetypeid}? true : false"
+                                                    th:value="${employeeType.id}"
+                                                    th:text="${employeeType.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input hidden type="text" th:value="${employee.photo}" id="txtImageEdit" name="photo">
+                            </div>
+                        </div>
+                    </section>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="/hr/employees" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script defer="defer">
+        $('document').ready(function () {
+            $("#ddlVehicleMakeEdit").on('change', function () {
+                $("#ddlVehicleModelEdit").empty().append('<option value="null">-Выбрать-</option>')
+                var makeId = $(this).val();
+
+                // Отправка запроса на получение регионов для выбранной страны
+                $.get("/vehicles/vehicle-makes/" + makeId, function (make, status) {
+                    // Обновление раскрывающегося списка регионов
+                    var models = make.vehicleModels;
+
+                    // Заполнение раскрывающегося списка регионов новыми значениями
+                    $.each(models, function (index, model) {
+                        $("#ddlVehicleModelEdit").append($("<option>").text(model.description).val(model.id));
+                    });
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

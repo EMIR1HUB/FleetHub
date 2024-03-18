@@ -7,6 +7,7 @@ import com.suleimanov.vehiclecontrol.vehicle.services.*;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class VehicleController {
   @Value("${upload.path}")
   private String uploadPhotoPath;
 
-  private Integer idByUploadPhoto;
+  private Long idByUploadPhoto;
 
   private void addModelAttributes(Model model) {
     model.addAttribute("types", vehicleTypeService.getVehiclesTypes());
@@ -78,7 +79,7 @@ public class VehicleController {
 
   @GetMapping("/{id}")
   @ResponseBody
-  public Vehicle getVehicle(@PathVariable Integer id) {
+  public Vehicle getVehicle(@PathVariable Long id) {
     return vehicleService.getById(id).orElse(null);
   }
 
@@ -109,7 +110,7 @@ public class VehicleController {
         return "Вам не удалось загрузить " + e.getMessage();
       }
     } else {
-      if (vehicle.getPhoto().isEmpty()) {
+      if (vehicle.getPhoto() == null || vehicle.getPhoto().isEmpty()) {
         vehicle.setPhoto("default.jpg");
       }
     }
@@ -119,7 +120,7 @@ public class VehicleController {
 
   @GetMapping("/{op}/{id}")
   public String getEditAndDetails(@PathVariable String op,
-                                  @PathVariable Integer id, Model model) {
+                                  @PathVariable Long id, Model model) {
     addModelAttributes(model);
     model.addAttribute("vehicle", vehicleService.getById(id).orElse(null));
     return "/vehicles/vehicle" + op;
@@ -127,13 +128,24 @@ public class VehicleController {
 
 
   @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(@PathVariable Integer id) {
+  public String delete(@PathVariable Long id) {
+    String photo = vehicleService.getById(id).map(Vehicle::getPhoto).orElse("");
+    if (!photo.equals("default.jpg")){
+      File fileToDelete = new File(uploadPhotoPath + photo);
+      if (fileToDelete.delete()) {
+        System.out.println("Файл успешно удален.");
+      } else {
+        System.err.println("Не удалось удалить файл.");
+      }
+    }
     vehicleService.delete(id);
     return "redirect:/vehicles/vehicle";
   }
+
   @GetMapping("/uploadPhoto/{id}")
-  public void getIdByVehicle(@PathVariable Integer id) {
+  public ResponseEntity<Void> getIdByVehicle(@PathVariable Long id) {
     idByUploadPhoto = id;
+    return ResponseEntity.noContent().build(); // Возвращаем пустой ответ
   }
 
   @PostMapping("/uploadPhoto")
@@ -149,11 +161,13 @@ public class VehicleController {
         vehicleService.save(vehicle);
       });
 
-      File fileToDelete = new File(uploadPhotoPath + oldPhoto);
-      if (fileToDelete.delete()) {
-        System.out.println("Файл успешно удален.");
-      } else {
-        System.err.println("Не удалось удалить файл.");
+      if (!oldPhoto.equals("default.jpg")){
+        File fileToDelete = new File(uploadPhotoPath + oldPhoto);
+        if (fileToDelete.delete()) {
+          System.out.println("Файл успешно удален.");
+        } else {
+          System.err.println("Не удалось удалить файл.");
+        }
       }
     }
     return "redirect:/vehicles/vehicle";

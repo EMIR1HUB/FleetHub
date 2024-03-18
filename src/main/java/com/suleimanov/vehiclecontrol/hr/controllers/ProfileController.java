@@ -31,12 +31,12 @@ public class ProfileController {
   @GetMapping()
   public String profile(Model model, Principal principal) {
     String userName = principal.getName();
-    model.addAttribute("employee", employeeService.findByUsername(userName).orElse(null));
+//    model.addAttribute("employee", employeeService.findByUsername(userName).orElse(null));
     model.addAttribute("jobTitles", jobTitleService.getJobsTitles());
     model.addAttribute("employeeTypes", employeeTypeService.getEmployeesTypes());
     model.addAttribute("countries", countryService.getCountries());
     model.addAttribute("regions", regionService.getRegions());
-    return "profile";
+    return "/assets/profile";
   }
 
   @PostMapping("/uploadPhoto3")
@@ -44,21 +44,18 @@ public class ProfileController {
     // Сохраняем файл
     file.transferTo(new File(uploadPhotoPath + principal.getName() + ".jpg"));
 
-    String userName = principal.getName();
-    employeeService.findByUsername(userName).ifPresent(employee -> {
-      employee.setPhoto(principal.getName() + ".jpg");
-      employeeService.save(employee);
-    });
+//    String userName = principal.getName();
+//    employeeService.findByUsername(userName).ifPresent(employee -> {
+//      employee.setPhoto(principal.getName() + ".jpg");
+//      employeeService.save(employee);
+//    });
     return "redirect:/profile";
   }
 
   @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
   public String update(Employee employee, Principal principal){
-    employee.setInitials(employee.getLastname() + " " +
-            employee.getFirstname().substring(0, 1) + "." +
-            employee.getOthername().substring(0, 1) + ".");
 
-    employeeService.save(employee);
+//    employeeService.save(employee);
     return "redirect:/profile";
   }
 }

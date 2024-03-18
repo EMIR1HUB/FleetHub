@@ -27,11 +27,11 @@ public class VehicleService {
     vehicleRepository.save(vehicle);
   }
 
-  public Optional<Vehicle> getById(Integer id){
+  public Optional<Vehicle> getById(Long id){
     return vehicleRepository.findById(id);
   }
 
-  public void delete(Integer id) {
+  public void delete(Long id) {
     vehicleRepository.deleteById(id);
   }
 
