@@ -41,4 +41,8 @@ public class VehicleService {
             ? Sort.by(field).ascending() : Sort.by(field).descending();
     return vehicleRepository.findAll(sort);
   }
+
+  public List<Vehicle> getVehiclesByStatusNoRemote(){
+    return vehicleRepository.findVehiclesByStatusNoRemote();
+  }
 }

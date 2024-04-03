@@ -14,4 +14,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
           "concat(v.name, v.description, v.vehicleStatus.description, " +
           "v.currentLocation.description, v.vehicleNumber) LIKE %?1%")
   List<Vehicle> findByKeyword(String keyword);
+
+  @Query(value = "SELECT v FROM Vehicle v WHERE " +
+          "v.vehicleStatus.description NOT LIKE 'На обслуживании' OR v.vehicleStatus.id != 411")
+  List<Vehicle> findVehiclesByStatusNoRemote();
 }

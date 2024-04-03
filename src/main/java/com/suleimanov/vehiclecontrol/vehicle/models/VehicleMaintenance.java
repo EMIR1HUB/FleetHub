@@ -20,15 +20,14 @@ import java.util.Date;
 public class VehicleMaintenance extends Auditable<String> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehicle_maintenance_seq_generator")
-  @SequenceGenerator(name = "vehicle_maintenance_seq_generator", sequenceName = "vehicle_maintenance_seq", initialValue = 10)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", updatable = false, nullable = false)
-  private int id;
+  private Long id;
 
   @ManyToOne
   @JoinColumn(name="vehicleid", insertable=false, updatable=false)
   private Vehicle vehicle;
-  private Integer vehicleid;
+  private Long vehicleid;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date startDate;
@@ -39,7 +38,7 @@ public class VehicleMaintenance extends Auditable<String> {
   @ManyToOne
   @JoinColumn(name="supplierid", insertable=false, updatable=false)
   private Supplier supplier;
-  private Integer supplierid;
+  private Long supplierid;
 
   private String price;
   private String remarks;

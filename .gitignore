@@ -43,3 +43,5 @@ application.yaml
 /src/**/JwtRequestFilter.java
 /mvnw
 /mvnw.cmd
+/src/main/java/com/suleimanov/vehiclecontrol/ReportTemp.java
+/src/main/resources/templates/reports/

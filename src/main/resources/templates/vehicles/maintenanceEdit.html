@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Обновление данных техобслуживания</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Обновление данных</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/vehicles/vehicle-maintenances">Техобслуживание</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/vehicles/vehicle-maintenances}" method="POST" id="cform" class="form-horizontal"
+                      onsubmit="return confirm('Вы уверены, что хотите обновить данные?')">
+                    <section class="panel">
+                        <header class="panel-heading">Обновление данных техобслуживания</header>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="idEdit" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${maintenance.id}" class="form-control" id="idEdit" name="id" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="ddlVehicleEdit" class="col-sm-4 col-form-label">Транспорт:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleEdit" name="vehicleid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="vehicle : ${vehicles}"
+                                                    th:selected="${vehicle.id}==${maintenance.vehicleid}? true : false"
+                                                    th:value="${vehicle.id}"
+                                                    th:text="${vehicle.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startDateEdit" class="col-sm-4 col-form-label">Дата начала:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${maintenance.startDate}" class="form-control" id="startDateEdit" name="startDate" placeholder="Дата начала" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endDateEdit" class="col-sm-4 col-form-label">Дата окончания:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:field="${maintenance.endDate}" class="form-control" id="endDateEdit" name="endDate" placeholder="Дата окончания" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="ddlSupplierEdit" class="col-sm-4 col-form-label">Поставщик:</label>
+                                    <div class="col-sm-6">
+                                        <select id="ddlSupplierEdit" name="supplierid" class="form-control" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="supplier : ${suppliers}"
+                                                    th:selected="${supplier.id}==${maintenance.supplierid}? true : false"
+                                                    th:value="${supplier.id}"
+                                                    th:text="${supplier.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="priceEdit" class="col-sm-4 col-form-label">Цена:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" th:value="${maintenance.price}" class="form-control" id="priceEdit" name="price" placeholder="Цена" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtRemarksEdit" class="col-sm-4 col-form-label">Комментарий:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${maintenance.remarks}" class="form-control" id="txtRemarksEdit" name="remarks" placeholder="Комментарий" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="/vehicles/vehicle-maintenances" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script defer="defer">
+        $('document').ready(function () {
+            $("#ddlVehicleMakeEdit").on('change', function () {
+                $("#ddlVehicleModelEdit").empty().append('<option value="null">-Выбрать-</option>')
+                var makeId = $(this).val();
+
+                // Отправка запроса на получение регионов для выбранной страны
+                $.get("/vehicles/vehicle-makes/" + makeId, function (make, status) {
+                    // Обновление раскрывающегося списка регионов
+                    var models = make.vehicleModels;
+
+                    // Заполнение раскрывающегося списка регионов новыми значениями
+                    $.each(models, function (index, model) {
+                        $("#ddlVehicleModelEdit").append($("<option>").text(model.description).val(model.id));
+                    });
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

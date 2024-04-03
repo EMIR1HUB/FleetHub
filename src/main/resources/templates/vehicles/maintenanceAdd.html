@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<head>
+    <title>Техобслуживание транспорта</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Новые данные</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/vehicles/vehicle-maintenances">Техобслуживание</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- page start-->
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/vehicles/vehicle-maintenances}" method="POST" id="cform" class="form-horizontal">
+                    <section class="panel">
+                        <header class="panel-heading">Аренда</header>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="ddlVehicleAdd" class="col-sm-4 col-form-label">Транспорт:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" id="ddlVehicleAdd" name="vehicleid" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="vehicle : ${vehicles}"
+                                                    th:value="${vehicle.id}"
+                                                    th:text="${vehicle.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startDateAdd" class="col-sm-4 col-form-label">Дата начала:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="startDateAdd" name="startDate" placeholder="Дата начала" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endDateAdd" class="col-sm-4 col-form-label">Дата окончания:</label>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" id="endDateAdd" name="endDate" placeholder="Дата окончания" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+
+                                <div class="form-group row">
+                                    <label for="ddlSupplierAdd" class="col-sm-4 col-form-label">Поставщик:</label>
+                                    <div class="col-sm-6">
+                                        <select id="ddlSupplierAdd" name="supplierid" class="form-control" required>
+                                            <option th:value="${null}">-Выбрать-</option>
+                                            <option th:each="supplier : ${suppliers}"
+                                                    th:value="${supplier.id}"
+                                                    th:text="${supplier.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="priceAdd" class="col-sm-4 col-form-label">Цена:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control" id="priceAdd" name="price" placeholder="Цена" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtRemarksAdd" class="col-sm-4 col-form-label">Комментарий:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtRemarksAdd" name="remarks" placeholder="Комментарий" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="/vehicles/vehicle-maintenances" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

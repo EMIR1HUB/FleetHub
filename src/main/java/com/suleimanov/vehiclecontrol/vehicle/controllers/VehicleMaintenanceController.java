@@ -1,18 +1,19 @@
 package com.suleimanov.vehiclecontrol.vehicle.controllers;
 
-import com.suleimanov.vehiclecontrol.vehicle.models.VehicleMaintenance;
 import com.suleimanov.vehiclecontrol.parameters.services.SupplierService;
+import com.suleimanov.vehiclecontrol.vehicle.models.VehicleMaintenance;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleMaintenanceService;
 import com.suleimanov.vehiclecontrol.vehicle.services.VehicleService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @Controller
-@RequestMapping("/vehicles_maintenances")
+@RequestMapping("/vehicles/vehicle-maintenances")
 public class VehicleMaintenanceController {
 
   @Autowired private VehicleMaintenanceService vehicleMaintenanceService;
@@ -20,34 +21,63 @@ public class VehicleMaintenanceController {
   @Autowired private SupplierService supplierService;
 
   @GetMapping()
-  public String getVehicleMaintenance(Model model) {
-    model.addAttribute("vehicleMaintenances", vehicleMaintenanceService.getVehicleMaintenances());
-    model.addAttribute("vehicles", vehicleService.getVehicles());
-    model.addAttribute("suppliers", supplierService.getSuppliers());
-    return "vehicle_maintenance";
+  public String getAll(Model model, String keyword) {
+    List<VehicleMaintenance> vehicleMaintenances = keyword == null
+            ? vehicleMaintenanceService.getVehicleMaintenances()
+            : vehicleMaintenanceService.getByKeyword(keyword);
+
+    model.addAttribute("maintenances", vehicleMaintenances);
+    return "/vehicles/maintenances";
   }
 
-  @GetMapping("/findById")
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(@PathVariable("field") String field,
+                               @PathParam("sortDir") String sortDir, Model model){
+    model.addAttribute("maintenances", vehicleMaintenanceService.getVehicleWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    return "/vehicles/maintenances";
+  }
+
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<VehicleMaintenance> findById(Integer id) {
-    return vehicleMaintenanceService.findById(id);
+  public VehicleMaintenance getVehicleMaintenance(@PathVariable Long id) {
+    return vehicleMaintenanceService.getById(id).orElse(null);
   }
 
-  @PostMapping("/addNew")
+  @GetMapping("/addNew")
+  public String getAddNew(Model model){
+    model.addAttribute("vehicles", vehicleService.getVehiclesByStatusNoRemote());
+    model.addAttribute("suppliers", supplierService.getSuppliers());
+    return "/vehicles/maintenanceAdd";
+  }
+
+  @PostMapping()
   public String addNew(VehicleMaintenance vehicleMaintenance) {
     vehicleMaintenanceService.save(vehicleMaintenance);
-    return "redirect:/vehicles_maintenances";
+    return "redirect:/vehicles/vehicle-maintenances";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(VehicleMaintenance vehicleMaintenance) {
-    vehicleMaintenanceService.save(vehicleMaintenance);
-    return "redirect:/vehicles_maintenances";
+  @GetMapping("/{op}/{id}")
+  public String getEditAndDetails(@PathVariable String op,
+                                  @PathVariable Long id, Model model){
+
+    model.addAttribute("vehicles", vehicleService.getVehicles());
+    model.addAttribute("suppliers", supplierService.getSuppliers());
+    model.addAttribute("maintenance", vehicleMaintenanceService.getById(id).orElse(null));
+    return "/vehicles/maintenance" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Long id) {
     vehicleMaintenanceService.delete(id);
-    return "redirect:/vehicles_maintenances";
+    return "redirect:/vehicles/vehicle-maintenances";
   }
 }
+
+
+
+
+
+
+
+
