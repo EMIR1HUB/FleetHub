@@ -1,0 +1,7 @@
+
+docker run -d --name vehicle-postgresql \
+-p 15432:5432 \
+-e POSTGRES_USER=demo \
+-e POSTGRES_PASSWORD=demo \
+-e POSTGRES_DB=vehiclehub \
+postgres
