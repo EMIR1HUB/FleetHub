@@ -6,6 +6,8 @@ import com.suleimanov.vehiclecontrol.hr.services.EmployeeTypeService;
 import com.suleimanov.vehiclecontrol.hr.services.JobTitleService;
 import com.suleimanov.vehiclecontrol.parameters.services.CountryService;
 import com.suleimanov.vehiclecontrol.parameters.services.RegionService;
+import com.suleimanov.vehiclecontrol.security.models.User;
+import com.suleimanov.vehiclecontrol.security.services.UserService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ public class EmployeeController {
   @Autowired private EmployeeTypeService employeeTypeService;
   @Autowired private CountryService countryService;
   @Autowired private RegionService regionService;
+  @Autowired private UserService userService;
+
 //
 //  @Value("${upload.path}")
 //  private String uploadPhotoPath;
@@ -52,11 +56,11 @@ public class EmployeeController {
     return "/hr/employees";
   }
 
-//  @GetMapping("/findById")
-//  @ResponseBody
-//  public Employee findById(Integer id) {
-//    return employeeService.findById(id).orElse(null);
-//  }
+  @GetMapping("/{id}")
+  @ResponseBody
+  public Employee findById(@PathVariable Long id) {
+    return employeeService.getById(id);
+  }
 
   @GetMapping("/addNew")
   public String getAddNew(Model model) {
@@ -82,7 +86,13 @@ public class EmployeeController {
   @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
   public String delete(@PathVariable Long id) {
     employeeService.delete(id);
-    return "redirect:/vehicles/vehicle";
+    return "redirect:/hr/employees";
+  }
+
+  @PostMapping("/registration")
+  public String addAccount(User user, @RequestParam("employeeid") Long employeeId) {
+    userService.saveForEmployee(user, employeeId);
+    return "redirect:/hr/employees";
   }
 
 //  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})

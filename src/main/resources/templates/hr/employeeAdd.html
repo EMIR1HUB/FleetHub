@@ -76,9 +76,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="ddlNationalityAdd" class="col-sm-4 col-form-label">Гражданство:</label>
+                                    <label for="ddlCountryAdd" class="col-sm-4 col-form-label">Гражданство:</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control" id="ddlNationalityAdd" name="countryid" required>
+                                        <select class="form-control" id="ddlCountryAdd" name="countryid" required>
                                             <option th:value="${null}">-Выбрать-</option>
                                             <option th:each="country : ${countries}"
                                                     th:value="${country.id}"
@@ -200,18 +200,18 @@
 <th:block layout:fragment="script">
     <script defer="defer">
         $('document').ready(function () {
-            $("#ddlVehicleMakeAdd").on('change', function () {
-                $("#ddlVehicleModelAdd").empty().append('<option value="null">-Выбрать-</option>')
-                var makeId = $(this).val();
+            $("#ddlCountryAdd").on('change', function () {
+                $("#ddlRegionAdd").empty().append('<option value="null">-Выбрать-</option>')
+                var countryId = $(this).val();
 
                 // Отправка запроса на получение регионов для выбранной страны
-                $.get("/vehicles/vehicle-makes/" + makeId, function (make, status) {
+                $.get("/parameters/countries/" + countryId, function (country, status) {
                     // Обновление раскрывающегося списка регионов
-                    var models = make.vehicleModels;
+                    var regions = country.regions;
 
                     // Заполнение раскрывающегося списка регионов новыми значениями
-                    $.each(models, function (index, model) {
-                        $("#ddlVehicleModelAdd").append($("<option>").text(model.description).val(model.id));
+                    $.each(regions, function (index, region) {
+                        $("#ddlRegionAdd").append($("<option>").text(region.name).val(region.id));
                     });
                 });
             });

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <title>Добавление аккаунта сотрудника</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Добавление аккаунта сотрудника</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/hr">HR</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/hr/employees">Данные о сотрудниках</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/hr/employees/registration}" method="POST" id="cform" class="form-horizontal"
+                      onsubmit="return confirm('Вы уверены, что хотите обновить данные?')">
+                    <section class="panel">
+                        <header class="panel-heading">Добавление аккаунта</header>
+                        <div class="panel-body">
+                            <div class="col-lg-6">
+                                <div class="form-group row">
+                                    <label for="idEdit" class="col-sm-4 col-form-label">Id:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.userid}" class="form-control" id="idEdit" name="id" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="emailEdit" class="col-sm-4 col-form-label">Email:</label>
+                                    <div class="col-sm-6">
+                                        <input type="email" th:value="${employee.email}" class="form-control" id="emailEdit" name="email" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="usernameEdit" class="col-sm-4 col-form-label">Логин:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.user == null ? null : employee.user.username}" class="form-control" id="usernameEdit" name="username" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="passwordEdit" class="col-sm-4 col-form-label">Пароль:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" th:value="${employee.user == null ? null : employee.user.password}" class="form-control" id="passwordEdit" name="password" required>
+                                    </div>
+                                </div>
+
+                                <input hidden type="text" th:value="${employee.id}" id="txtUserId" name="employeeid">
+                            </div>
+                        </div>
+                    </section>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="/hr/employees" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--<th:block layout:fragment="script">-->
+<!--    <script defer="defer">-->
+<!--        $('document').ready(function () {-->
+<!--            $("#ddlVehicleMakeEdit").on('change', function () {-->
+<!--                $("#ddlVehicleModelEdit").empty().append('<option value="null">-Выбрать-</option>')-->
+<!--                var makeId = $(this).val();-->
+
+<!--                // Отправка запроса на получение регионов для выбранной страны-->
+<!--                $.get("/vehicles/vehicle-makes/" + makeId, function (make, status) {-->
+<!--                    // Обновление раскрывающегося списка регионов-->
+<!--                    var models = make.vehicleModels;-->
+
+<!--                    // Заполнение раскрывающегося списка регионов новыми значениями-->
+<!--                    $.each(models, function (index, model) {-->
+<!--                        $("#ddlVehicleModelEdit").append($("<option>").text(model.description).val(model.id));-->
+<!--                    });-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</th:block>-->
+</body>
+</html>

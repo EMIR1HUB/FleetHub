@@ -2,50 +2,61 @@ package com.suleimanov.vehiclecontrol.hr.controllers;
 
 import com.suleimanov.vehiclecontrol.hr.models.JobTitle;
 import com.suleimanov.vehiclecontrol.hr.services.JobTitleService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-@RequestMapping("/job_titles")
+@RequestMapping("/hr/job_titles")
 public class JobTitleController {
 
   @Autowired
   private JobTitleService jobTitleService;
 
   @GetMapping()
-  public String getJobTitle(Model model) {
-    List<JobTitle> jobTitles = jobTitleService.getJobsTitles();
+  public String getAll(Model model, String keyword) {
+    List<JobTitle> jobTitles = (keyword == null)
+            ? jobTitleService.getJobsTitles()
+            : jobTitleService.getByKeyword(keyword);
 
-    model.addAttribute("jobTitles", jobTitles);
-    return "job_title";
+    model.addAttribute("titles", jobTitles);
+    return "/hr/jobTitles";
   }
 
-  @GetMapping("/findById")
+  @GetMapping("/page/{field}")
+  public String getAllWithSort(@PathVariable String field,
+                               @PathParam("sortDir") String sortDir, Model model) {
+    model.addAttribute("titles", jobTitleService.getJobTitleWithSort(field, sortDir));
+    model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    return "/hr/jobTitles";
+  }
+
+  @GetMapping("/{id}")
   @ResponseBody
-  public Optional<JobTitle> findById(Integer id) {
-    return jobTitleService.findById(id);
+  public JobTitle getById(@PathVariable Long id) {
+    return jobTitleService.getById(id);
   }
 
-  @PostMapping("/addNew")
-  public String addNew(JobTitle jobTitle) {
+  @PostMapping()
+  public String add(JobTitle jobTitle) {
     jobTitleService.save(jobTitle);
-    return "redirect:/job_titles";
+    return "redirect:/hr/job_titles";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(JobTitle jobTitle) {
-    jobTitleService.save(jobTitle);
-    return "redirect:/job_titles";
+  @GetMapping("/{op}/{id}")
+  public String getDetails(@PathVariable String op,
+                           @PathVariable Long id, Model model) {
+    model.addAttribute("title", jobTitleService.getById(id));
+    return "/hr/jobTitle" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Integer id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Long id) {
     jobTitleService.delete(id);
-    return "redirect:/job_titles";
+    return "redirect:/hr/job_titles";
   }
 }

@@ -2,12 +2,15 @@ package com.suleimanov.vehiclecontrol.hr.services;
 
 import com.suleimanov.vehiclecontrol.hr.models.Employee;
 import com.suleimanov.vehiclecontrol.hr.repositories.EmployeeRepository;
+import com.suleimanov.vehiclecontrol.security.models.User;
 import com.suleimanov.vehiclecontrol.security.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -23,6 +26,12 @@ public class EmployeeService {
   }
 
   public void save(Employee employee){
+    if (userRepository.findByEmail(employee.getEmail()).isPresent() && employee.getUserid() == null){
+      User user = userRepository.findByEmail(employee.getEmail()).orElseThrow(
+              () -> new UsernameNotFoundException("User with email " + employee.getEmail() + " not found")
+      );
+      employee.setUserid(user.getId());
+    }
     employeeRepository.save(employee);
   }
 
@@ -42,9 +51,14 @@ public class EmployeeService {
   }
 
 
-//  public Optional<Employee> findByUsername(String username){
-//    return Optional.ofNullable(employeeRepository.findByUsername(username));
-//  }
+  public Optional<Employee> findByUsername(String username){
+    User user = userRepository.findByUsername(username).orElse(null);
+    return employeeRepository.findByUserId(user.getId());
+  }
+
+  public Optional<Employee> getByEmail(String email){
+    return employeeRepository.findByEmail(email);
+  }
 
   // Установить username сотрудника, firstname and lastname которого совпадают
 //  public void assignUsername(Integer id){

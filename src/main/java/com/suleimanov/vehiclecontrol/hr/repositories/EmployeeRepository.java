@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
@@ -14,5 +15,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
           "concat(e.fullname, e.email, e.country.description, e.city) LIKE %?1%") // e.jobTitle.description
   List<Employee> findByKeyword(String keyword);
 
-//  Employee findByUsername(String username);
+  Optional<Employee> findByUserId(Long id);
+  Optional<Employee> findByEmail(String email);
 }

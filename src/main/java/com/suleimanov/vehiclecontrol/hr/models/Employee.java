@@ -20,8 +20,9 @@ import java.util.Date;
 public class Employee extends Person{
 
   @OneToOne
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @JoinColumn(name = "userid", insertable=false, updatable=false)
   private User user;
+  private Long userid;
 
   @ManyToOne
   @JoinColumn(name="employeetypeid", insertable=false, updatable=false)

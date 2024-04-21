@@ -63,21 +63,23 @@
                         </a>
                     </td>
                     <td th:text="${employee.fullname}">#</td>
-                    <td>JobTitle</td>
-<!--                    <td th:text="${employee.jobTitle.description}">#</td>-->
+                    <td th:text="${employee.jobTitle.description}">#</td>
                     <td th:text="${#dates.format(employee.hireDate, 'dd-MM-yyyy')}">#</td>
                     <td th:text="${employee.email}">#</td>
                     <td th:text="${employee.country.description}">#</td>
                     <td th:text="${employee.city}">#</td>
                     <td>
                         <div class="btn-group">
-                            <a class="btn btn-primary" id="editButton"
+                            <a class="btn btn-primary" id="editButton" title="изменить"
                                th:href="@{/hr/employees/Edit/{id}(id=${employee.id})}"><i
                                     class="icon_pencil-edit"></i></a>
-                            <a class="btn btn-success" id="detailsButton"
+                            <a class="btn btn-success" id="detailsButton" title="детали"
                                th:href="@{/hr/employees/Details/{id}(id=${employee.id})}"><i
                                     class="icon_document_alt"></i></a>
-                            <a class="btn btn-danger"
+                            <a class="btn btn-info" id="accountButton" title="добавить аккаунт"
+                               th:href="@{/hr/employees/Account/{id}(id=${employee.id})}"><i
+                                    class="icon_profile"></i></a>
+                            <a class="btn btn-danger" title="удалить"
                                onclick="return confirm('Вы уверены, что хотите удалить данные')"
                                th:href="@{/hr/employees/delete/{id}(id=${employee.id})}"><i
                                     class="icon_close_alt2"></i></a>

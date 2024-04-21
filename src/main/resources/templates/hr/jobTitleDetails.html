@@ -13,7 +13,7 @@
             <ol class="breadcrumb">
                 <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
                 <li><i class="fa fa-bars"></i><a href="/hr">HR</a></li>
-                <li><i class="fa fa-square-o"></i><a href="/hr/employees_types">Типы сотрудников</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/hr/job_titles">Должности</a></li>
             </ol>
         </div>
     </div>
@@ -28,21 +28,21 @@
                                 <div class="form-group row">
                                     <label for="txtIdAdd" class="col-sm-4 col-form-label">Id:</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:value="${type.id}" class="form-control"
+                                        <input type="text" th:value="${title.id}" class="form-control"
                                                id="txtIdAdd" name="id" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="txtDescriptionAdd" class="col-sm-4 col-form-label">Название:</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:value="${type.description}" class="form-control"
+                                        <input type="text" th:value="${title.description}" class="form-control"
                                                id="txtDescriptionAdd" name="description" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="txtDetailsAdd" class="col-sm-4 col-form-label">Детали:</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:value="${type.details}" class="form-control"
+                                        <input type="text" th:value="${title.details}" class="form-control"
                                                id="txtDetailsAdd" name="details" disabled>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                 <div class="form-group">
                                     <label class="col-form-label col-sm-4">Добавлен:</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:value="${type.createdBy}" class="form-control"
+                                        <input type="text" th:value="${title.createdBy}" class="form-control"
                                                name="createdBy"
                                                disabled>
                                     </div>
@@ -60,7 +60,7 @@
                                     <label class="col-form-label col-sm-4">Дата добавления:</label>
                                     <div class="col-sm-6">
                                         <input type="text"
-                                               th:value="${#dates.format(type.createdDate, 'dd-MM-yyyy HH:mm:ss')}"
+                                               th:value="${#dates.format(title.createdDate, 'dd-MM-yyyy HH:mm:ss')}"
                                                class="form-control"
                                                name="createdDate"
                                                disabled>
@@ -69,7 +69,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 col-form-label">Последнее обновление от:</label>
                                     <div class="col-sm-6">
-                                        <input type="text" th:value="${type.lastModifiedBy}" class="form-control"
+                                        <input type="text" th:value="${title.lastModifiedBy}" class="form-control"
                                                name="lastModifiedByDetails"
                                                disabled>
                                     </div>
@@ -78,7 +78,7 @@
                                     <label class="col-sm-4 col-form-label">Дата обновления:</label>
                                     <div class="col-sm-6">
                                         <input type="text"
-                                               th:value="${#dates.format(type.lastModifiedDate, 'dd-MM-yyyy HH:mm:ss')}"
+                                               th:value="${#dates.format(title.lastModifiedDate, 'dd-MM-yyyy HH:mm:ss')}"
                                                class="form-control" name="lastModifiedDateDetails"
                                                disabled>
                                     </div>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="/hr/employees_types" class="btn btn-danger">Выйти</a>
+                            <a href="/hr/job_titles" class="btn btn-danger">Выйти</a>
                         </div>
                     </section>
                 </form>

@@ -3,10 +3,10 @@ package com.suleimanov.vehiclecontrol.hr.services;
 import com.suleimanov.vehiclecontrol.hr.models.JobTitle;
 import com.suleimanov.vehiclecontrol.hr.repositories.JobTitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class JobTitleService {
@@ -18,15 +18,25 @@ public class JobTitleService {
     return jobTitleRepository.findAll();
   }
 
+  public List<JobTitle> getByKeyword(String keyword) {
+    return jobTitleRepository.findByKeyword(keyword);
+  }
+
   public void save(JobTitle jobTitle){
     jobTitleRepository.save(jobTitle);
   }
 
-  public Optional<JobTitle> findById(Integer id){
-    return jobTitleRepository.findById(id);
+  public JobTitle getById(Long id){
+    return jobTitleRepository.findById(id).orElse(null);
   }
 
-  public void delete(Integer id) {
+  public void delete(Long id) {
     jobTitleRepository.deleteById(id);
+  }
+
+  public List<JobTitle> getJobTitleWithSort(String field, String direction) {
+    Sort sort = direction.equalsIgnoreCase(Sort.Direction.ASC.name())
+            ? Sort.by(field).ascending() : Sort.by(field).descending();
+    return jobTitleRepository.findAll(sort);
   }
 }
