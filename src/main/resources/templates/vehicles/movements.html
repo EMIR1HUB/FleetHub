@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+    <head>
+        <title>Управление передвижением</title>
+    </head>
+    <body>
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header"><i class="fa fa fa-bars"></i>Список передвижений транспорта</h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                    <li><i class="fa fa-bars"></i><a href="/vehicles">Транспорты</a></li>
+                    <li><i class="fa fa-square-o"></i>Передвижения</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- page start-->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <a class="btn btn-primary" th:href="@{/vehicles/vehicle-movements/addNew}">Добавить</a>
+                    </div>
+                    <form th:action="@{/vehicles/vehicle-movements}">
+                        <div class="col-lg-2 navbar-form">
+                            <input type="text" name="keyword" class="form-control" placeholder="Поиск">
+                        </div>
+                        <div class="col-lg-1">
+                            <input type="submit" class="btn-success form-control" value="Найти">
+                        </div>
+                    </form>
+                </div>
+
+                <table class="table table-advance table-hover">
+                    <thead>
+                    <tr>
+<!--                        <th><i class="icon_table"></i> <a-->
+<!--                                th:href="@{'/vehicles/vehicle-movements/page/id?sortDir=' + ${reverseSortDir}}">id</a></th>-->
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-movements/page/vehicle?sortDir=' + ${reverseSortDir}}">Транспорт</a></th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-movements/page/date1?sortDir=' + ${reverseSortDir}}">Дата выезда</a></th>
+                        <th><i class="icon_cogs"></i> <a
+                                th:href="@{'/vehicles/vehicle-movements/page/location1.description?sortDir=' + ${reverseSortDir}}">Выезд</a></th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-movements/page/date2?sortDir=' + ${reverseSortDir}}">Дата прибытия</a></th>
+                        <th><i class="icon_cogs"></i> <a
+                                th:href="@{'/vehicles/vehicle-movements/page/location2.description?sortDir=' + ${reverseSortDir}}">Прибытие</a></th>
+                        <th><i class="icon_table"></i> <a
+                                th:href="@{'/vehicles/vehicle-movements/page/remarks?sortDir=' + ${reverseSortDir}}">Комментарий</a></th>
+                        <th><i class="icon_cogs"></i> Действия</th>
+                    </tr>
+                    <tr th:each="movement:${movements}">
+<!--                        <td th:text="${movement.id}">id</td>-->
+                        <td th:text="${movement.vehicle.name}">Транспорт</td>
+                        <td th:text="${#dates.format(movement.date1, 'dd-MM-yyyy')}">Дата</td>
+                        <td th:text="${movement.location1.description}">Выезд</td>
+                        <td th:text="${#dates.format(movement.date2, 'dd-MM-yyyy')}">Дата</td>
+                        <td th:text="${movement.location2.description}">Прибытие</td>
+                        <td th:text="${movement.remarks}">Комментарий</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" id="editButton"
+                                   th:href="@{/vehicles/vehicle-movements/Edit/{id}(id=${movement.id})}"><i
+                                        class="icon_pencil-edit"></i></a>
+                                <a class="btn btn-success" id="detailsButton"
+                                   th:href="@{/vehicles/vehicle-movements/Details/{id}(id=${movement.id})}"><i
+                                        class="icon_document_alt"></i></a>
+                                <a class="btn btn-danger"
+                                   onclick="return confirm('Вы уверены, что хотите удалить данные')"
+                                   th:href="@{/vehicles/vehicle-movements/delete/{id}(id=${movement.id})}"><i
+                                        class="icon_close_alt2"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+                <footer class="panel-footer text-center">
+                    <div class="row-footer align-items-center">
+                        <div class="col">
+                            Количество записей: [[${movements.size()}]]
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

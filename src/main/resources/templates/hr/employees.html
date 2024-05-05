@@ -55,11 +55,15 @@
                     <th><i class="icon_cogs"></i> Действия</th>
                 </tr>
                 <tr th:each="employee:${employees}">
-                    <!--                    th:attr="data-photo-url=@{'/img/photos/vehicles/' + ${vehicle.photo}}"-->
+<!--                    <td>-->
+<!--                        <a id="photoButton" th:href="@{'/img/photos/employees/' + ${employee.photo}}"-->
+<!--                           th:attr="onclick='sendGetRequest(\'' + ${employee.id} + '\')'">-->
+<!--                            <img th:src="@{'/img/photos/employees/' + ${employee.photo}}" width="40" height="40">-->
+<!--                        </a>-->
+<!--                    </td>-->
                     <td>
-                        <a id="photoButton" th:href="@{'/img/photos/employees/' + ${employee.photo}}"
-                           th:attr="onclick='sendGetRequest(\'' + ${employee.id} + '\')'">
-                            <img th:src="@{'/img/photos/employees/' + ${employee.photo}}" width="40" height="40">
+                        <a id="photoButton" href="/img/photos/employees/avatar_default.jpg">
+                            <img src="/img/photos/employees/avatar_default.jpg" width="40" height="40">
                         </a>
                     </td>
                     <td th:text="${employee.fullname}">#</td>

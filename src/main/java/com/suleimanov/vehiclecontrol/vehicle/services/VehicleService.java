@@ -45,4 +45,8 @@ public class VehicleService {
   public List<Vehicle> getVehiclesByStatusNoRemote(){
     return vehicleRepository.findVehiclesByStatusNoRemote();
   }
+
+  public List<Vehicle> getVehiclesByNoMovement() {
+    return vehicleRepository.findVehiclesByNoMovement();
+  }
 }
