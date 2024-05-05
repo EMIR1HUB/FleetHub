@@ -21,7 +21,7 @@ public class VehicleMaintenanceService {
   private VehicleRepository vehicleRepository;
 
   private final Integer ID_STATUS_ON_REMOTE = 411;
-  private final Integer ID_STATUS_ON_AVAILABLE = 412;
+  private final Integer ID_STATUS_ON_AVAILABLE = 414;
 
   public List<VehicleMaintenance> getVehicleMaintenances() {
     return vehicleMaintenanceRepository.findAll();

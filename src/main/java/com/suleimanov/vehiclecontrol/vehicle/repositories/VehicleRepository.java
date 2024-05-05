@@ -18,4 +18,9 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
   @Query(value = "SELECT v FROM Vehicle v WHERE " +
           "v.vehicleStatus.description NOT LIKE 'На обслуживании' OR v.vehicleStatus.id != 411")
   List<Vehicle> findVehiclesByStatusNoRemote();
+
+
+  @Query(value = "SELECT v FROM Vehicle v WHERE " +
+          "v.id NOT IN (SELECT vm.vehicleid FROM VehicleMovement vm)")
+  List<Vehicle> findVehiclesByNoMovement();
 }

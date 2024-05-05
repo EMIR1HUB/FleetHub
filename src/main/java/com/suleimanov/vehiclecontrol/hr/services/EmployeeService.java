@@ -60,6 +60,10 @@ public class EmployeeService {
     return employeeRepository.findByEmail(email);
   }
 
+  public Optional<Employee> getByUserId(Long userId){
+    return employeeRepository.findByUserId(userId);
+  }
+
   // Установить username сотрудника, firstname and lastname которого совпадают
 //  public void assignUsername(Integer id){
 //    Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Сотрудник с id=" + id + "не найден"));

@@ -152,7 +152,7 @@
                                 <div class="form-group row">
                                     <label for="ddlEmployeeAdd" class="col-sm-4 col-form-label">Ответственный:</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control" id="ddlEmployeeAdd" name="employeeid">
+                                        <select class="form-control" id="ddlEmployeeAdd" name="employeeid" required>
                                             <option>-Выбрать-</option>
                                             <option th:each="employee:${employees}"
                                                     th:value="${employee.id}"

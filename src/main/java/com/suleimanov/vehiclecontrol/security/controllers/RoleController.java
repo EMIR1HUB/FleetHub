@@ -1,5 +1,6 @@
 package com.suleimanov.vehiclecontrol.security.controllers;
 
+import com.suleimanov.vehiclecontrol.hr.services.EmployeeService;
 import com.suleimanov.vehiclecontrol.security.models.User;
 import com.suleimanov.vehiclecontrol.security.models.Role;
 import com.suleimanov.vehiclecontrol.security.services.RoleService;
@@ -17,6 +18,9 @@ public class RoleController {
   private RoleService roleService;
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private EmployeeService employeeService;
 
   @GetMapping()
   public String getRoles(Model model) {
@@ -54,6 +58,7 @@ public class RoleController {
     model.addAttribute("user", user);
     model.addAttribute("userRoles", roleService.getUserRoles(user));
     model.addAttribute("userNotRoles", roleService.getUserNotRoles(user));
+    model.addAttribute("employee", employeeService.getByUserId(user.getId()).orElse(null));
     return "user_edit";
   }
 

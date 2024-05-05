@@ -23,17 +23,17 @@ public class VehicleMovement extends Auditable<String> {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehicle_movement_seq_generator")
   @SequenceGenerator(name = "vehicle_movement_seq_generator", sequenceName = "vehicle_movement_seq", initialValue = 10)
   @Column(name = "id", updatable = false, nullable = false)
-  private int id;
+  private Long id;
 
   @ManyToOne
   @JoinColumn(name="vehicleid", insertable=false, updatable=false)
   private Vehicle vehicle;
-  private int vehicleid;
+  private Long vehicleid;
 
   @ManyToOne
   @JoinColumn(name="locationid1", insertable=false, updatable=false)
   private Location location1;
-  private int locationid1;
+  private Long locationid1;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date date1;
@@ -41,7 +41,7 @@ public class VehicleMovement extends Auditable<String> {
   @ManyToOne
   @JoinColumn(name="locationid2", insertable=false, updatable=false)
   private Location location2;
-  private int locationid2;
+  private Long locationid2;
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date date2;
