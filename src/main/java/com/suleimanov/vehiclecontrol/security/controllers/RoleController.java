@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/roles")
+@RequestMapping("/security/roles")
 public class RoleController {
 
   @Autowired
@@ -23,54 +25,63 @@ public class RoleController {
   private EmployeeService employeeService;
 
   @GetMapping()
-  public String getRoles(Model model) {
-    model.addAttribute("roles", roleService.getRoles());
-    return "role";
+  public String getRoles(Model model, String keyword) {
+    List<Role> roles = keyword == null
+            ? roleService.getRoles()
+            : roleService.getByKeyword(keyword);
+
+    model.addAttribute("roles", roles);
+    return "/security/roles";
   }
 
-  @GetMapping("/findById")
+  @RequestMapping("/{id}")
   @ResponseBody
-  public Role findById(Long id) {
-    return roleService.findById(id);
+  public Role getById(@PathVariable Long id) {
+    return roleService.getById(id);
   }
 
-  @PostMapping("/addNew")
+  @GetMapping("/addNew")
+  public String getAddNew(){
+    return "/security/roleAdd";
+  }
+
+  @PostMapping()
   public String addNew(Role role) {
     roleService.save(role);
-    return "redirect:/roles";
+    return "redirect:/security/roles";
   }
 
-  @RequestMapping(value = "/update", method = {RequestMethod.PUT, RequestMethod.GET})
-  public String update(Role role) {
-    roleService.save(role);
-    return "redirect:/roles";
+  @GetMapping("/{op}/{id}")
+  public String edit(@PathVariable String op, @PathVariable Long id, Model model) {
+    model.addAttribute("role", roleService.getById(id));
+    return "/security/role" + op;
   }
 
-  @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-  public String delete(Long id) {
+  @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.GET})
+  public String delete(@PathVariable Long id) {
     roleService.delete(id);
-    return "redirect:/roles";
+    return "redirect:/security/roles";
   }
 
   @GetMapping("/user/edit/{id}")
   public String editUser(@PathVariable Long id, Model model) {
-    User user = userService.findById(id).orElse(null);
+    User user = userService.getById(id);
     model.addAttribute("user", user);
     model.addAttribute("userRoles", roleService.getUserRoles(user));
-    model.addAttribute("userNotRoles", roleService.getUserNotRoles(user));
+    model.addAttribute("userNotRoles", roleService.getRolesNotUser(user));
     model.addAttribute("employee", employeeService.getByUserId(user.getId()).orElse(null));
-    return "user_edit";
+    return "/security/userRolesEdit";
   }
 
   @GetMapping("/user/assign/{userId}/{roleId}")
   public String assignRole(@PathVariable Long userId, @PathVariable Long roleId) {
     roleService.assignUserRole(userId, roleId);
-    return "redirect:/roles/user/edit/" + userId;
+    return "redirect:/security/roles/user/edit/" + userId;
   }
 
   @GetMapping("/user/unassign/{userId}/{roleId}")
   public String unassignRole(@PathVariable Long userId, @PathVariable Long roleId){
     roleService.unassignUserRole(userId, roleId);
-    return "redirect:/roles/user/edit/" + userId;
+    return "redirect:/security/roles/user/edit/" + userId;
   }
 }

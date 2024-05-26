@@ -40,6 +40,11 @@ public class ApplicationController {
     return "accounts/index";
   }
 
+  @GetMapping("/security")
+  public String security(){
+    return "security/index";
+  }
+
 
   @GetMapping("/login")
   public String login(){
@@ -49,11 +54,6 @@ public class ApplicationController {
   @GetMapping("/logout")
   public String logout(){
     return "login";
-  }
-
-  @GetMapping("/registration")
-  public String register(){
-    return "registration";
   }
 
   @GetMapping("/accessDenied")

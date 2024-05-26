@@ -28,6 +28,10 @@ public class User {
 
   @Column(unique = true)
   private String username;
+
+  //  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
+//          message = "Пароль должен содержать хотя бы одну цифру, одну строчную букву, одну заглавную букву и быть не менее 8 символов")
+//  @Size(min = 4, message = "Пароль должен быть от 4 символов")
   private String password;
 
   @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)   // FetchType.EAGER обеспечивает жадную загрузку связанных сущностей

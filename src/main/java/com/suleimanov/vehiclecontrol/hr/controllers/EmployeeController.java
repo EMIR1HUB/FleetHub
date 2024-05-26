@@ -91,7 +91,7 @@ public class EmployeeController {
 
   @PostMapping("/registration")
   public String addAccount(User user, @RequestParam("employeeid") Long employeeId) {
-    userService.saveForEmployee(user, employeeId);
+    userService.saveAccountForEmployee(user, employeeId);
     return "redirect:/hr/employees";
   }
 

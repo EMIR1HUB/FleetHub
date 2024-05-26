@@ -12,9 +12,9 @@
         <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa fa-bars"></i>Роли пользователя</h3>
             <ol class="breadcrumb">
-                <li><i class="fa fa-home"></i><a th:href="@{/index}">Главная</a></li>
-                <li><i class="fa fa-bars"></i><a th:href="@{/roles}">Роли</a></li>
-                <li><i class="fa fa-bars"></i><a th:href="@{/users}">Пользователи</a></li>
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/security">Безопасность</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/security/users">Данные пользователей</a></li>
                 <li><i class="fa fa-square-o"></i>Роли пользователя</li>
             </ol>
         </div>
@@ -83,7 +83,7 @@
                             <td>
                                 <div class="btn-group">
                                     <a onclick="return confirm('Вы уверены, что хотите у пользователя снять назначение роли ?')"
-                                       th:href="@{'/roles/user/unassign/'+${user.id}+'/' +${userRole.id}}"
+                                       th:href="@{'/security/roles/user/unassign/'+${user.id}+'/' +${userRole.id}}"
                                        class="btn btn-danger"><i class="icon_close_alt2"></i> Снять назначение</a>
                                 </div>
                             </td>
@@ -112,7 +112,7 @@
                         <td>
                             <div class="btn-group">
                                 <a onclick="return confirm('Вы уверены, что хотите назначить пользователю роль?')"
-                                   th:href="@{'/roles/user/assign/'+${user.id}+'/' +${userNotRole.id}}"
+                                   th:href="@{'/security/roles/user/assign/'+${user.id}+'/' +${userNotRole.id}}"
                                    class="btn btn-success"><i class="icon_plus_alt2"></i> Назначить</a>
                             </div>
                         </td>

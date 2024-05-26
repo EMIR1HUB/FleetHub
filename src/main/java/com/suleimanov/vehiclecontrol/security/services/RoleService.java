@@ -22,7 +22,11 @@ public class RoleService {
     return roleRepository.findAll();
   }
 
-  public Role findById(Long id) {
+  public List<Role> getByKeyword(String keyword) {
+    return roleRepository.findByKeyword(keyword);
+  }
+
+  public Role getById(Long id) {
     return roleRepository.findById(id).orElse(null);
   }
 
@@ -58,7 +62,7 @@ public class RoleService {
     return user.getRoles();
   }
 
-  public Set<Role> getUserNotRoles(User user) {
-    return roleRepository.getUserNotRoles(user.getId());
+  public Set<Role> getRolesNotUser(User user) {
+    return roleRepository.findRolesNotUser(user.getId());
   }
 }

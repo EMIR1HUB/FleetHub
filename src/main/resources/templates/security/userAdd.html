@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<head>
+    <title>Добавление пользователя</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header"><i class="fa fa fa-bars"></i>Добавление пользователя</h3>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-home"></i><a href="/index">Главная</a></li>
+                <li><i class="fa fa-bars"></i><a href="/security">Безопасность</a></li>
+                <li><i class="fa fa-square-o"></i><a href="/security/users">Данные пользователей</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- page start-->
+    <div class="container" style="width: 70%">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <form th:action="@{/security/users}" method="POST" id="cform" enctype="multipart/form-data"
+                      class="form-horizontal">
+                    <section class="panel">
+                        <header class="panel-heading">Пользователь</header>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label for="emailAdd" class="control-label col-sm-4">Email:</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="emailAdd" name="email" placeholder="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="usernameAdd" class="control-label col-sm-4">Логин:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="usernameAdd" name="username" placeholder="Логин" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="control-label col-sm-4">Пароль:</label>
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Пароль" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword" class="control-label col-sm-4">Подтверждение пароля:</label>
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Подтверждение пароля">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="/security/users" class="btn btn-danger">Выйти</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/register.js}"></script>
+</th:block>
+</body>
+</html>
